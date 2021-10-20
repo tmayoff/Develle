@@ -143,8 +143,8 @@ namespace InstrumentorUtils {
 template <size_t N> struct ChangeResult { char Data[N]; };
 
 template <size_t N, size_t K>
-constexpr auto CleanOutputString(const char (&expr)[N],
-                                 const char (&remove)[K]) {
+constexpr auto CleanupOutputString(const char (&expr)[N],
+                                   const char (&remove)[K]) {
   ChangeResult<N> result = {};
 
   size_t srcIndex = 0;
