@@ -1,4 +1,5 @@
 build
-subprojects
+subprojects/*
+!subprojects/*.wrap
 *.log
 *Profile*.json
