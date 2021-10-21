@@ -20,4 +20,5 @@ dependencies += [spdlog_dep]
 
 
 subdir('Develle')
+subdir('DevelleEditor')
 subdir('Sandbox')

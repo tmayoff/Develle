@@ -20,6 +20,18 @@ Application::Application(const std::string &name,
 
 Application::~Application() { DV_PROFILE_FUNCTION(); }
 
+void Application::PushLayer(Layer *layer) {
+  DV_PROFILE_FUNCTION();
+  layerStack.PushOverlay(layer);
+  layer->OnAttach();
+}
+
+void Application::PushOverlay(Layer *layer) {
+  DV_PROFILE_FUNCTION();
+  layerStack.PushOverlay(layer);
+  layer->OnAttach();
+}
+
 void Application::Close() { running = false; }
 
 void Application::Run() {

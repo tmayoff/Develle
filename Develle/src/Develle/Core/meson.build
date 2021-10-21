@@ -1,1 +1,1 @@
-sources += files('Application.cpp', 'Log.cpp', 'Window.cpp')
+sources += files('Application.cpp', 'Layer.cpp', 'LayerStack.cpp', 'Log.cpp', 'Window.cpp')

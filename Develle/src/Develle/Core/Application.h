@@ -2,6 +2,7 @@
 #define APPLICATION_H_
 
 #include <Develle/Core/Core.h>
+#include <Develle/Core/LayerStack.h>
 #include <Develle/Core/Window.h>
 #include <Develle/Events/Event.h>
 #include <Develle/Events/WindowEvent.h>
@@ -28,6 +29,9 @@ public:
 
   void OnEvent(Event &e);
 
+  void PushLayer(Layer *layer);
+  void PushOverlay(Layer *layer);
+
   void Close();
 
   static Application &Get() { return *instance; }
@@ -42,6 +46,7 @@ private:
 
   ApplicationCommandLineArgs commandLineArgs;
   Scope<Window> window;
+  LayerStack layerStack;
   bool running = true;
   bool minimized = false;
   float lastFrameTime = 0.0f;

@@ -4,6 +4,7 @@
 #include <Develle/Core/Application.h>
 #include <Develle/Core/Assert.h>
 #include <Develle/Core/Core.h>
+#include <Develle/Core/Layer.h>
 #include <Develle/Core/Log.h>
 #include <Develle/Events/Event.h>
 
