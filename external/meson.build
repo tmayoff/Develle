@@ -1,0 +1,2 @@
+subdir('glad')
+subdir('entt')

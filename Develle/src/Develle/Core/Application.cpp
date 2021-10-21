@@ -16,6 +16,9 @@ Application::Application(const std::string &name,
 
   window = Window::Create(name);
   window->SetEventCallback(DV_BIND_EVENT_FN(Application::OnEvent));
+
+  imGuiLayer = new ImGuiLayer();
+  PushOverlay(imGuiLayer);
 }
 
 Application::~Application() { DV_PROFILE_FUNCTION(); }
@@ -41,7 +44,15 @@ void Application::Run() {
     DV_PROFILE_SCOPE("RunLoop");
 
     if (!minimized) {
-      //
+
+      imGuiLayer->Begin();
+      {
+        DV_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+        for (Layer *layer : layerStack)
+          layer->OnImGuiRender();
+      }
+      imGuiLayer->End();
     }
 
     window->OnUpdate();

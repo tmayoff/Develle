@@ -19,8 +19,12 @@ spdlog_dep = spdlog.get_variable('spdlog_dep')
 imgui = subproject('imgui')
 imgui_dep = imgui.get_variable('imgui_dep')
 
-dependencies += [spdlog_dep]
+subdir('external')
 
+dependencies += [spdlog_dep, entt_dep, imgui_dep]
+
+
+# Targets
 subdir('Develle')
 subdir('DevelleEditor')
 subdir('Sandbox')

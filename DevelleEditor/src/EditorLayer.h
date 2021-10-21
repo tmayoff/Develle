@@ -3,6 +3,8 @@
 
 #include <Develle.h>
 
+#include <Panels/SceneHierarchyPanel.h>
+
 namespace Develle {
 
 class EditorLayer : public Layer {
@@ -16,6 +18,9 @@ public:
   void OnUpdate(Timestep ts) override;
   void OnImGuiRender() override;
   void OnEvent(Event &e) override;
+
+  SceneHierarchyPanel sceneHierarchyPanel;
+  // ContentBrowserPanel contentBrowserPanel;
 };
 
 } // namespace Develle

@@ -6,6 +6,7 @@
 #include <Develle/Core/Window.h>
 #include <Develle/Events/Event.h>
 #include <Develle/Events/WindowEvent.h>
+#include <Develle/ImGui/ImGuiLayer.h>
 
 int main(int argc, char **argv);
 
@@ -32,7 +33,11 @@ public:
   void PushLayer(Layer *layer);
   void PushOverlay(Layer *layer);
 
+  Window &GetWindow() { return *window; }
+
   void Close();
+
+  ImGuiLayer *GetImGuiLayer() { return imGuiLayer; }
 
   static Application &Get() { return *instance; }
 
@@ -47,6 +52,7 @@ private:
   ApplicationCommandLineArgs commandLineArgs;
   Scope<Window> window;
   LayerStack layerStack;
+  ImGuiLayer *imGuiLayer;
   bool running = true;
   bool minimized = false;
   float lastFrameTime = 0.0f;
