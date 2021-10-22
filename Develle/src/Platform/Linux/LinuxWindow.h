@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include <Develle/Core/Window.h>
+#include <Develle/Renderer/GraphicsContext.h>
 
 namespace Develle {
 
@@ -30,6 +31,7 @@ private:
   virtual void Shutdown();
 
   SDL_Window *window;
+  Scope<GraphicsContext> context;
 
   struct WindowData {
     std::string Title;

@@ -35,9 +35,11 @@ void LinuxWindow::Init(const WindowProps &props) {
     DV_PROFILE_SCOPE("SDL_CreateWindow");
     window = SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED, props.Width, props.Height,
-                              SDL_WINDOW_SHOWN);
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
-  // TODO(tyer) Init Graphics Context
+
+  context = GraphicsContext::Create(window);
+  context->Init();
 }
 
 void LinuxWindow::OnUpdate() {

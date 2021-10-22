@@ -21,7 +21,7 @@ imgui_dep = imgui.get_variable('imgui_dep')
 
 subdir('external')
 
-dependencies += [spdlog_dep, entt_dep, imgui_dep]
+dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep]
 
 
 # Targets

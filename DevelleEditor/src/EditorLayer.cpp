@@ -41,6 +41,40 @@ void EditorLayer::OnImGuiRender() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
   ImGui::Begin("Develle Editor", &dockspaceOpen, windowFlags);
   ImGui::PopStyleVar();
+
+  if (optFullscreen)
+    ImGui::PopStyleVar(2);
+
+  // Dockspace
+  ImGuiIO &io = ImGui::GetIO();
+  ImGuiStyle &style = ImGui::GetStyle();
+  float minWinSizeX = style.WindowMinSize.x;
+  style.WindowMinSize.x = 370.f;
+  if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+    ImGuiID dockspaceID = ImGui::GetID("Develle Editor");
+    ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
+  }
+
+  style.WindowMinSize.x = minWinSizeX;
+
+  if (ImGui::BeginMenuBar()) {
+    if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("New", "Ctrl+N")) {
+      }
+
+      if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+      }
+
+      if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
+      }
+
+      if (ImGui::MenuItem("Exit"))
+        Application::Get().Close();
+    }
+    ImGui::EndMenuBar();
+  }
+
+  ImGui::End();
 }
 
 void EditorLayer::OnEvent(Event &e) {}
