@@ -6,7 +6,17 @@ namespace Develle {
 
 EditorLayer::EditorLayer() : Layer("Editor Layer") {}
 
-void EditorLayer::OnAttach() {}
+void EditorLayer::OnAttach() {
+  DV_PROFILE_FUNCTION();
+
+  FramebufferSpecification fbSpec;
+  fbSpec.Attachments = {FramebufferTextureFormat::RGBA8,
+                        FramebufferTextureFormat::RED_INTEGER,
+                        FramebufferTextureFormat::Depth};
+  fbSpec.Width = 1280;
+  fbSpec.Height = 720;
+  framebuffer = Framebuffer::Create(fbSpec);
+}
 
 void EditorLayer::OnDetach() {}
 
@@ -14,11 +24,11 @@ void EditorLayer::OnUpdate(Timestep) {
 
   // Render
   // Renderer2D::ResetStats();
-  framebuffer->Bind();
+  // framebuffer->Bind();
   RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
   RenderCommand::Clear();
 
-  framebuffer->ClearAttachment(1, -1);
+  // framebuffer->ClearAttachment(1, -1);
 }
 
 void EditorLayer::OnImGuiRender() {

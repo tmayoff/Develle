@@ -18,7 +18,6 @@ void OpenGLGraphicsContext::Init() {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
   context = SDL_GL_CreateContext(windowHandle);
-  printf("%s\n", SDL_GetError());
   DV_CORE_ASSERT(context, SDL_GetError());
 
   SDL_GL_MakeCurrent(windowHandle, context);

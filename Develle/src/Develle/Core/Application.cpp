@@ -2,6 +2,8 @@
 
 #include <Develle/Renderer/Renderer.hpp>
 
+#include <SDL2/SDL.h>
+
 namespace Develle {
 
 Application *Application::instance = nullptr;
@@ -47,7 +49,18 @@ void Application::Run() {
   while (running) {
     DV_PROFILE_SCOPE("RunLoop");
 
+    float timeMS = static_cast<float>(SDL_GetTicks());
+    Timestep delta = timeMS - lastFrameTime;
+    lastFrameTime = timeMS;
+
     if (!minimized) {
+
+      {
+        DV_PROFILE_SCOPE("LayerStack OnUpdate");
+
+        for (Layer *layer : layerStack)
+          layer->OnUpdate(delta);
+      }
 
       imGuiLayer->Begin();
       {
@@ -75,6 +88,12 @@ void Application::OnEvent(Event &e) {
 bool Application::OnWindowClose(WindowCloseEvent &) {
   running = false;
   return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent &e) {
+  DV_PROFILE_FUNCTION();
+
+  // if (e.GetWidth())
 }
 
 } // namespace Develle

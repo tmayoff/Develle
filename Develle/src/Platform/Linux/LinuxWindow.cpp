@@ -1,4 +1,4 @@
-#include <Develle/Events/WindowEvent.h>
+#include <Develle/Events/ApplicationEvent.hpp>
 #include <Platform/Linux/LinuxWindow.h>
 
 namespace Develle {
@@ -18,9 +18,12 @@ void LinuxWindow::Shutdown() {
   SDL_Quit();
 }
 
-void LinuxWindow::SetVSync(bool enabled) { DV_PROFILE_FUNCTION(); }
+void LinuxWindow::SetVSync(bool enabled) {
+  DV_PROFILE_FUNCTION();
+  SDL_GL_SetSwapInterval(enabled);
+}
 
-bool LinuxWindow::IsVSync() const {}
+bool LinuxWindow::IsVSync() const { return SDL_GL_GetSwapInterval(); }
 
 void LinuxWindow::Init(const WindowProps &props) {
   DV_PROFILE_FUNCTION();
@@ -53,6 +56,8 @@ void LinuxWindow::OnUpdate() {
       data.EventCallback(event);
     }
   }
+
+  SDL_GL_SwapWindow(window);
 }
 
 } // namespace Develle

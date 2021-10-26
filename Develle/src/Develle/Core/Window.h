@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include <Develle/Core/Core.h>
-#include <Develle/Events/Event.h>
+#include <Develle/Events/Event.hpp>
 
 namespace Develle {
 

@@ -1,1 +1,1 @@
-sources += files('Buffer.cpp', 'GraphicsContext.cpp', 'RenderCommand.cpp', 'Renderer.cpp', 'RendererAPI.cpp')
+sources += files('Buffer.cpp', 'Framebuffer.cpp', 'GraphicsContext.cpp', 'RenderCommand.cpp', 'Renderer.cpp', 'RendererAPI.cpp')

@@ -4,8 +4,8 @@
 #include <Develle/Core/Core.h>
 #include <Develle/Core/LayerStack.h>
 #include <Develle/Core/Window.h>
-#include <Develle/Events/Event.h>
-#include <Develle/Events/WindowEvent.h>
+#include <Develle/Events/ApplicationEvent.hpp>
+#include <Develle/Events/Event.hpp>
 #include <Develle/ImGui/ImGuiLayer.h>
 
 int main(int argc, char **argv);
@@ -48,6 +48,7 @@ public:
 private:
   void Run();
   bool OnWindowClose(WindowCloseEvent &e);
+  bool OnWindowResize(WindowResizeEvent &e);
 
   ApplicationCommandLineArgs commandLineArgs;
   Scope<Window> window;
