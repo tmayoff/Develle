@@ -28,7 +28,7 @@ private:
 #define DV_CORE_INFO(...) ::Develle::Log::GetLogger()->info(__VA_ARGS__)
 #define DV_CORE_WARN(...) ::Develle::Log::GetLogger()->warn(__VA_ARGS__)
 #define DV_CORE_ERROR(...) ::Develle::Log::GetLogger()->error(__VA_ARGS__)
-#define DV_CORE_FATAL(...) ::Develle::Log::GetLogger()->fatal(__VA_ARGS__)
+#define DV_CORE_FATAL(...) ::Develle::Log::GetLogger()->critical(__VA_ARGS__)
 
 // Client log macros
 #define DV_CLIENT_TRACE(...)                                                   \
@@ -38,6 +38,6 @@ private:
 #define DV_CLIENT_ERROR(...)                                                   \
   ::Develle::Log::GetClientLogger()->error(__VA_ARGS__)
 #define DV_CLIENT_FATAL(...)                                                   \
-  ::Develle::Log::GetClientLogger()->fatal(__VA_ARGS__)
+  ::Develle::Log::GetClientLogger()->critical(__VA_ARGS__)
 
 #endif // LOG_H_
