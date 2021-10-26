@@ -22,13 +22,8 @@ void Scene::OnUpdateRuntime(Timestep) {
   // TODO(tyler)
 }
 
-void Scene::OnUpdateEditor(Timestep /*ts, EditorCamera camera*/) {}
-
-template <typename T> void Scene::OnComponentAdded(Entity, T &) {
-  //   static_assert(false);
+void Scene::OnUpdateEditor(Timestep /*ts, EditorCamera camera*/) {
+  // TODO(tyler)
 }
-
-template <>
-void Scene::OnComponentAdded<TagComponent>(Entity, TagComponent &) {}
 
 } // namespace Develle

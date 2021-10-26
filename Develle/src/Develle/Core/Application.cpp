@@ -1,5 +1,7 @@
 #include <Develle/Core/Application.h>
 
+#include <Develle/Renderer/Renderer.hpp>
+
 namespace Develle {
 
 Application *Application::instance = nullptr;
@@ -16,6 +18,8 @@ Application::Application(const std::string &name,
 
   window = Window::Create(name);
   window->SetEventCallback(DV_BIND_EVENT_FN(Application::OnEvent));
+
+  Renderer::Init();
 
   imGuiLayer = new ImGuiLayer();
   PushOverlay(imGuiLayer);
@@ -68,7 +72,7 @@ void Application::OnEvent(Event &e) {
       DV_BIND_EVENT_FN(Application::OnWindowClose));
 }
 
-bool Application::OnWindowClose(WindowCloseEvent &e) {
+bool Application::OnWindowClose(WindowCloseEvent &) {
   running = false;
   return true;
 }

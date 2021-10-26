@@ -18,7 +18,7 @@ public:
 
     T &component =
         scene->registry.emplace<T>(entityHandle, std::forward<Args>(args)...);
-    scene->OnComponentAdded<T>(*this, component);
+    // scene->OnComponentAdded<T>(*this, component);
     return component;
   }
 

@@ -21,6 +21,8 @@ public:
 
   SceneHierarchyPanel sceneHierarchyPanel;
   // ContentBrowserPanel contentBrowserPanel;
+private:
+  Ref<Framebuffer> framebuffer;
 };
 
 } // namespace Develle

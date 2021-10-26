@@ -10,14 +10,21 @@ void EditorLayer::OnAttach() {}
 
 void EditorLayer::OnDetach() {}
 
-void EditorLayer::OnUpdate(Timestep ts) {}
+void EditorLayer::OnUpdate(Timestep) {
+
+  // Render
+  // Renderer2D::ResetStats();
+  framebuffer->Bind();
+  RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+  RenderCommand::Clear();
+
+  framebuffer->ClearAttachment(1, -1);
+}
 
 void EditorLayer::OnImGuiRender() {
   DV_PROFILE_FUNCTION();
 
-  static bool dockspaceOpen = true;
-  static bool optFullscreenPersistant = true;
-  bool optFullscreen = optFullscreenPersistant;
+  bool optFullscreen = true;
   static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
   ImGuiWindowFlags windowFlags =
@@ -39,6 +46,7 @@ void EditorLayer::OnImGuiRender() {
     windowFlags |= ImGuiWindowFlags_NoBackground;
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+  static bool dockspaceOpen = true;
   ImGui::Begin("Develle Editor", &dockspaceOpen, windowFlags);
   ImGui::PopStyleVar();
 
@@ -49,7 +57,7 @@ void EditorLayer::OnImGuiRender() {
   ImGuiIO &io = ImGui::GetIO();
   ImGuiStyle &style = ImGui::GetStyle();
   float minWinSizeX = style.WindowMinSize.x;
-  style.WindowMinSize.x = 370.f;
+  style.WindowMinSize.x = 370.0f;
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
     ImGuiID dockspaceID = ImGui::GetID("Develle Editor");
     ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
@@ -70,13 +78,18 @@ void EditorLayer::OnImGuiRender() {
 
       if (ImGui::MenuItem("Exit"))
         Application::Get().Close();
+      ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
   }
 
+  ImGui::Begin("Stats");
+  ImGui::Text("Renderer2D Stats: ");
+  ImGui::End();
+
   ImGui::End();
 }
 
-void EditorLayer::OnEvent(Event &e) {}
+void EditorLayer::OnEvent(Event &) {}
 
 } // namespace Develle

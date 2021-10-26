@@ -1,6 +1,6 @@
 project('Develle', 'cpp',
   version : '0.1',
-  default_options : ['warning_level=3'])
+  default_options : ['warning_level=3', 'cpp_std=c++20'])
 
 dependencies = []
 
@@ -19,10 +19,12 @@ spdlog_dep = spdlog.get_variable('spdlog_dep')
 imgui = subproject('imgui')
 imgui_dep = imgui.get_variable('imgui_dep')
 
+glm = subproject('glm')
+glm_dep = glm.get_variable('glm_dep')
+
 subdir('external')
 
-dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep]
-
+dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep]
 
 # Targets
 subdir('Develle')
