@@ -195,7 +195,9 @@ constexpr auto CleanupOutputString(const char (&expr)[N],
 #define DV_PROFILE_END_SESSION() ::Develle::Instrumentor::Get().EndSession();
 #define DV_PROFILE_SCOPE_LINE2(name, line)                                     \
   constexpr auto fixedName##line =                                             \
-      ::Develle::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");
+      ::Develle::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");     \
+  ::Develle::InstrumentationTimer timer##line(fixedName##line.Data)
+
 #define DV_PROFILE_SCOPE_LINE(name, line) DV_PROFILE_SCOPE_LINE2(name, line)
 #define DV_PROFILE_SCOPE(name) DV_PROFILE_SCOPE_LINE(name, __LINE__)
 #define DV_PROFILE_FUNCTION() DV_PROFILE_SCOPE(DV_FUNC_SIG)
