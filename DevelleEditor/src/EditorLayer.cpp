@@ -93,6 +93,8 @@ void EditorLayer::OnImGuiRender() {
     ImGui::EndMenuBar();
   }
 
+  ImGui::ShowDemoWindow();
+
   ImGui::Begin("Stats");
   ImGui::Text("Renderer2D Stats: ");
   ImGui::End();

@@ -1,4 +1,6 @@
 #include <Develle/Events/ApplicationEvent.hpp>
+#include <Develle/Events/KeyEvent.hpp>
+#include <Develle/Events/MouseEvent.hpp>
 #include <Platform/Linux/LinuxWindow.h>
 
 namespace Develle {
@@ -48,9 +50,64 @@ void LinuxWindow::Init(const WindowProps &props) {
 void LinuxWindow::OnUpdate() {
   DV_PROFILE_FUNCTION();
 
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
-    switch (event.type) {
+  SDL_Event e;
+  while (SDL_PollEvent(&e)) {
+    switch (e.type) {
+    case SDL_WINDOWEVENT: {
+
+      switch (e.window.event) {
+      case SDL_WINDOWEVENT_RESIZED: {
+        data.Width = e.window.data1;
+        data.Height = e.window.data2;
+
+        WindowResizeEvent event(e.window.data1, e.window.data2);
+        data.EventCallback(event);
+        break;
+      }
+      case SDL_WINDOWEVENT_CLOSE: {
+        WindowCloseEvent event;
+        data.EventCallback(event);
+        break;
+      }
+      }
+
+      break;
+    }
+    case SDL_TEXTINPUT: {
+      KeyTypedEvent event(e.text.text);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_KEYUP: {
+      KeyReleasedEvent event(e.key.keysym.scancode);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_KEYDOWN: {
+      KeyPressedEvent event(e.key.keysym.scancode, e.key.repeat);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_MOUSEMOTION: {
+      MouseMovedEvent event(e.motion.x, e.motion.y);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_MOUSEWHEEL: {
+      MouseScrolledEvent event(e.wheel.x, e.wheel.y);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_MOUSEBUTTONUP: {
+      MouseButtonReleasedEvent event(e.button.button);
+      data.EventCallback(event);
+      break;
+    }
+    case SDL_MOUSEBUTTONDOWN: {
+      MouseButtonPressedEvent event(e.button.button);
+      data.EventCallback(event);
+      break;
+    }
     case SDL_EventType::SDL_QUIT:
       WindowCloseEvent event;
       data.EventCallback(event);

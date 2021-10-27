@@ -1,3 +1,6 @@
+#ifndef APPLICATIONEVENT_HPP_
+#define APPLICATIONEVENT_HPP_
+
 #include <Develle/Events/Event.hpp>
 
 namespace Develle {
@@ -32,3 +35,5 @@ public:
 };
 
 } // namespace Develle
+
+#endif // APPLICATIONEVENT_HPP_

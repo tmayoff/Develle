@@ -2,6 +2,9 @@
 #define IMGUILAYER_H_
 
 #include <Develle/Core/Layer.h>
+#include <Develle/Events/ApplicationEvent.hpp>
+#include <Develle/Events/KeyEvent.hpp>
+#include <Develle/Events/MouseEvent.hpp>
 
 namespace Develle {
 
@@ -20,6 +23,13 @@ public:
   void BlockEvents(bool block) { blockEvents = block; }
 
 private:
+  bool OnKeyPressedEvent(KeyPressedEvent &e);
+  bool OnKeyReleasedEvent(KeyReleasedEvent &e);
+  bool OnKeyTypedEvent(KeyTypedEvent &e);
+  bool OnMouseButtonPressedEvent(MouseButtonPressedEvent &e);
+  bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent &e);
+  bool OnMouseScrolledEvent(MouseScrolledEvent &e);
+
   bool blockEvents = true;
 };
 
