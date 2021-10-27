@@ -17,7 +17,7 @@ struct ApplicationCommandLineArgs {
   char **Args = nullptr;
 
   const char *operator[](int index) const {
-    DV_CORE_ASSERT(index < Count);
+    DV_CORE_ASSERT(index < Count, "Index out of range");
     return Args[index];
   }
 };
