@@ -9,8 +9,7 @@ Scene::~Scene() {}
 
 Entity Scene::CreateEntity(const std::string &name) {
   Entity entity{registry.create(), this};
-  //  TODO(tyler) Add Transform component
-  //   entity.AddComponent<TransformComponent>();
+  entity.AddComponent<TransformComponent>();
   auto &tag = entity.AddComponent<TagComponent>();
   tag.Tag = name.empty() ? "Entity" : name;
   return entity;
