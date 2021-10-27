@@ -1,4 +1,4 @@
-#include <EditorLayer.h>
+#include <EditorLayer.hpp>
 
 #include <imgui.h>
 
@@ -16,6 +16,10 @@ void EditorLayer::OnAttach() {
   fbSpec.Width = 1280;
   fbSpec.Height = 720;
   framebuffer = Framebuffer::Create(fbSpec);
+
+  activeScene = CreateRef<Scene>();
+
+  sceneHierarchyPanel.SetContext(activeScene);
 }
 
 void EditorLayer::OnDetach() {}
@@ -93,7 +97,9 @@ void EditorLayer::OnImGuiRender() {
     ImGui::EndMenuBar();
   }
 
-  ImGui::ShowDemoWindow();
+  // ImGui::ShowDemoWindow();
+
+  sceneHierarchyPanel.OnImGuiRender();
 
   ImGui::Begin("Stats");
   ImGui::Text("Renderer2D Stats: ");
