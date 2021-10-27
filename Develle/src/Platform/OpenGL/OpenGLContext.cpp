@@ -23,7 +23,7 @@ void OpenGLGraphicsContext::Init() {
   SDL_GL_MakeCurrent(windowHandle, context);
 
   int status = gladLoadGL();
-  DV_CORE_ASSERT(gladLoadGL(); == GL_TRUE, "Failed to initialize GLAD");
+  DV_CORE_ASSERT(gladLoadGL() == GL_TRUE, "Failed to initialize GLAD");
 
   DV_CORE_INFO("OpenGL Info");
   DV_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));

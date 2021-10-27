@@ -5,6 +5,7 @@ project('Develle', 'cpp',
 dependencies = []
 
 add_project_arguments('-DDV_DEBUG', language: 'cpp')
+add_project_arguments('-DDV_ENABLE_ASSERTS', language: 'cpp')
 if build_machine.system() == 'linux'
   add_project_arguments('-DDV_PLATFORM_LINUX', language: 'cpp')
   SDL2 = dependency('SDL2')
