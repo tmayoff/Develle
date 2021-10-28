@@ -25,7 +25,7 @@ glm_dep = glm.get_variable('glm_dep')
 
 subdir('external')
 
-dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep]
+dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep]
 
 # Targets
 subdir('Develle')

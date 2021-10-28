@@ -100,6 +100,8 @@ bool Application::OnWindowResize(WindowResizeEvent &e) {
   DV_PROFILE_FUNCTION();
 
   // if (e.GetWidth())
+
+  return false;
 }
 
 } // namespace Develle

@@ -1,1 +1,1 @@
-sources += files('OpenGLBuffer.cpp', 'OpenGLContext.cpp', 'OpenGLRendererAPI.cpp', 'OpenGLVertexArray.cpp')
+sources += files('OpenGLBuffer.cpp', 'OpenGLContext.cpp', 'OpenGLRendererAPI.cpp', 'OpenGLTexture.cpp', 'OpenGLVertexArray.cpp')

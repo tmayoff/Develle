@@ -6,6 +6,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+#include <Develle/Renderer/Texture.hpp>
+
 namespace Develle {
 
 struct TagComponent {
@@ -31,6 +33,16 @@ struct TransformComponent {
     return glm::translate(glm::mat4(1.0f), Position) * rotation *
            glm::scale(glm::mat4(1.0f), Scale);
   }
+};
+
+struct SpriteRendererComponent {
+  glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
+  Ref<Texture2D> Texture;
+  float TilingFactor = 1.0f;
+
+  SpriteRendererComponent() = default;
+  SpriteRendererComponent(const SpriteRendererComponent &) = default;
+  SpriteRendererComponent(const glm::vec4 &color) : Color(color) {}
 };
 
 } // namespace Develle
