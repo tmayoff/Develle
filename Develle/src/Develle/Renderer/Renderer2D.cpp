@@ -1,12 +1,13 @@
 #include <Develle/Renderer/Renderer2D.hpp>
 
-#include <Develle/Renderer/RenderCommand.hpp>
-#include <Develle/Renderer/Shader.hpp>
-// #include <Develle/Renderer/UniformBuffer.hpp>
-#include <Develle/Renderer/VertexArray.hpp>
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <Develle/Renderer/RenderCommand.hpp>
+#include <Develle/Renderer/Shader.hpp>
+#include <Develle/Renderer/Texture.hpp>
+#include <Develle/Renderer/UniformBuffer.hpp>
+#include <Develle/Renderer/VertexArray.hpp>
 
 namespace Develle {
 
@@ -52,22 +53,115 @@ struct Renderer2DData {
 
 static Renderer2DData data;
 
-void Renderer2D::Init() {}
+void Renderer2D::Init() {
+  DV_PROFILE_FUNCTION();
 
-void Renderer2D::Shutdown() {}
+  data.QuadVertexArray = VertexArray::Create();
 
-void Renderer2D::BeginScene(const OrthographicCamera &camera) {}
+  data.QuadVertexBuffer =
+      VertexBuffer::Create(data.MaxVertices * sizeof(QuadVertex));
+  data.QuadVertexBuffer->SetLayout({{ShaderDataType::Float3, "a_Position"},
+                                    {ShaderDataType::Float4, "a_Color"},
+                                    {ShaderDataType::Float2, "a_TexCoord"},
+                                    {ShaderDataType::Float, "a_TexIndex"},
+                                    {ShaderDataType::Float, "a_TilingFactor"},
+                                    {ShaderDataType::Int, "a_EntityID"}});
+  data.QuadVertexArray->AddVertexBuffer(data.QuadVertexBuffer);
 
-void Renderer2D::EndScene() {}
+  data.QuadVertexBufferBase = new QuadVertex[data.MaxVertices];
 
-void Renderer2D::Flush() {}
+  uint32_t *quadIndices = new uint32_t[data.MaxIndices];
 
-void Renderer2D::ResetStats() {}
+  uint32_t offset = 0;
+  for (uint32_t i = 0; i < data.MaxIndices; i += 6) {
+    quadIndices[i + 0] = offset + 0;
+    quadIndices[i + 1] = offset + 1;
+    quadIndices[i + 2] = offset + 2;
 
-Statistics Renderer2D::GetStats() {}
+    quadIndices[i + 3] = offset + 2;
+    quadIndices[i + 4] = offset + 3;
+    quadIndices[i + 5] = offset + 0;
 
-void Renderer2D::StartBatch() {}
+    offset += 4;
+  }
 
-void Renderer2D::NextBatch() {}
+  Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, data.MaxIndices);
+  data.QuadVertexArray->SetIndexBuffer(quadIB);
+  delete[] quadIndices;
+
+  data.WhiteTexture = Texture2D::Create(1, 1);
+  uint32_t whiteTextureData = 0xFFFFFFFF;
+  data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+  int32_t samplers[data.MaxTextureSlots];
+  for (uint32_t i = 0; i < data.MaxTextureSlots; i++)
+    samplers[i] = i;
+
+  data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+
+  // Set first texture slot 0
+  data.TextureSlots[0] = data.WhiteTexture;
+
+  data.QuadVertexPositions[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
+  data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
+  data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
+  data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
+
+  data.CameraUniformBuffer =
+      UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+}
+
+void Renderer2D::Shutdown() {
+  DV_PROFILE_FUNCTION();
+  delete[] data.QuadVertexBufferBase;
+}
+
+void Renderer2D::BeginScene(const OrthographicCamera &camera) {
+  DV_PROFILE_FUNCTION();
+
+  data.CameraBuffer.ViewProjetion = camera.GetViewProjectionMatrix();
+  data.CameraUniformBuffer->SetData(&data.CameraBuffer,
+                                    sizeof(Renderer2DData::CameraData));
+
+  StartBatch();
+}
+
+void Renderer2D::EndScene() {
+  DV_PROFILE_FUNCTION();
+  Flush();
+}
+
+void Renderer2D::Flush() {
+  if (data.QuadIndexCount == 0)
+    return; // Nothing to draw
+
+  uint32_t dataSize = (uint32_t)((uint8_t *)data.QuadVertexBufferPtr -
+                                 (uint8_t *)data.QuadVertexBufferBase);
+  data.QuadVertexBuffer->SetData(data.QuadVertexBufferBase, dataSize);
+
+  // Bind Textures
+  for (uint32_t i = 0; i < data.TextureSlotIndex; i++)
+    data.TextureSlots[i]->Bind();
+
+  data.TextureShader->Bind();
+  RenderCommand::DrawIndexed(data.QuadVertexArray, data.QuadIndexCount);
+  data.Stats.DrawCalls++;
+}
+
+void Renderer2D::ResetStats() { data.Stats = {}; }
+
+Renderer2D::Statistics Renderer2D::GetStats() { return data.Stats; }
+
+void Renderer2D::StartBatch() {
+  data.QuadIndexCount = 0;
+  data.QuadVertexBufferPtr = data.QuadVertexBufferBase;
+
+  data.TextureSlotIndex = 1;
+}
+
+void Renderer2D::NextBatch() {
+  Flush();
+  StartBatch();
+}
 
 } // namespace Develle

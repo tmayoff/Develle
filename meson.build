@@ -28,7 +28,6 @@ spirv_cross_opt = cmake.subproject_options()
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_STATIC': true})
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_FORCE_PIC': true})
 spirv_cross = cmake.subproject('spirv_cross', options: spirv_cross_opt)
-message('CMaket targets:\n - ' + '\n - '.join(spirv_cross.target_list()))
 spirv_cross_dep = spirv_cross.dependency('spirv-cross-cpp')
 
 shaderc = dependency('shaderc')

@@ -11,7 +11,9 @@
 #include <Develle/Renderer/Framebuffer.hpp>
 #include <Develle/Renderer/OrthographicCameraController.hpp>
 #include <Develle/Renderer/RenderCommand.hpp>
+#include <Develle/Renderer/Renderer2D.hpp>
 #include <Develle/Renderer/Texture.hpp>
+#include <Develle/Renderer/UniformBuffer.hpp>
 #include <Develle/Renderer/VertexArray.hpp>
 
 #endif // DEVELLE_H_
