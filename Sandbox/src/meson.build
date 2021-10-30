@@ -1,1 +1,1 @@
-sources += files('SandboxApp.cpp')
+sources += files('Sandbox2D.cpp', 'SandboxApp.cpp')

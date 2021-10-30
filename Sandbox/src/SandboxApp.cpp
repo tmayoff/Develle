@@ -1,9 +1,11 @@
 #include <Develle.h>
 #include <Develle/Core/EntryPoint.h>
 
+#include <Sandbox2D.hpp>
+
 class Sandbox : public Develle::Application {
 public:
-  Sandbox(Develle::ApplicationCommandLineArgs) {}
+  Sandbox(Develle::ApplicationCommandLineArgs) { PushLayer(new Sandbox2D()); }
 
   ~Sandbox() {}
 };
