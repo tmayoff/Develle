@@ -1,8 +1,8 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include <Develle/Core/Timestep.h>
-// #include <Develle/Renderer/EditorCamera.h>
+#include <Develle/Core/Timestep.hpp>
+#include <Develle/Renderer/EditorCamera.hpp>
 
 #include <entt.hpp>
 
@@ -19,7 +19,7 @@ public:
   void DestroyEntity(Entity entity);
 
   void OnUpdateRuntime(Timestep delta);
-  void OnUpdateEditor(Timestep delta /*, EditorCamera &camera*/);
+  void OnUpdateEditor(Timestep delta, EditorCamera &camera);
   void OnViewportResize(uint32_t width, uint32_t height);
 
   Entity GetPrimaryCameraEntity();

@@ -22,6 +22,8 @@ public:
 
   Ref<Scene> activeScene;
 
+  EditorCamera editorCamera;
+
   SceneHierarchyPanel sceneHierarchyPanel;
   // ContentBrowserPanel contentBrowserPanel;
 private:

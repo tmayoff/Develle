@@ -21,8 +21,8 @@ void Scene::OnUpdateRuntime(Timestep) {
   // TODO(tyler)
 }
 
-void Scene::OnUpdateEditor(Timestep /*ts, EditorCamera camera*/) {
-  // TODO(tyler)
+void Scene::OnUpdateEditor(Timestep delta, EditorCamera &camera) {
+  // TODO(tyler) Update Editor
 }
 
 } // namespace Develle

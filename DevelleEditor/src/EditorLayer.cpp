@@ -19,18 +19,22 @@ void EditorLayer::OnAttach() {
 
   activeScene = CreateRef<Scene>();
 
+  editorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
   sceneHierarchyPanel.SetContext(activeScene);
 }
 
 void EditorLayer::OnDetach() {}
 
-void EditorLayer::OnUpdate(Timestep) {
+void EditorLayer::OnUpdate(Timestep deltaTime) {
 
   // Render
   // Renderer2D::ResetStats();
   // framebuffer->Bind();
   RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
   RenderCommand::Clear();
+
+  editorCamera.OnUpdate(deltaTime);
 
   // framebuffer->ClearAttachment(1, -1);
 }

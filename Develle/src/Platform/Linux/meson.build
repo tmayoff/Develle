@@ -1,1 +1,1 @@
-sources += files('LinuxWindow.cpp')
+sources += files('LinuxInput.cpp', 'LinuxWindow.cpp')
