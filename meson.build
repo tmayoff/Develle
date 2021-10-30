@@ -23,9 +23,19 @@ imgui_dep = imgui.get_variable('imgui_dep')
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
 
+cmake = import('cmake')
+spirv_cross_opt = cmake.subproject_options()
+spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_STATIC': true})
+spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_FORCE_PIC': true})
+spirv_cross = cmake.subproject('spirv_cross', options: spirv_cross_opt)
+message('CMaket targets:\n - ' + '\n - '.join(spirv_cross.target_list()))
+spirv_cross_dep = spirv_cross.dependency('spirv-cross-cpp')
+
+shaderc = dependency('shaderc')
+
 subdir('external')
 
-dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep]
+dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep, shaderc, spirv_cross_dep]
 
 # Targets
 subdir('Develle')
