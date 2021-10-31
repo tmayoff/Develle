@@ -50,7 +50,9 @@ static const char *GLShaderStageToString(GLenum stage) {
   }
 }
 
-static const char *GetCacheDirectory() { return "assets/cache/shader/opengl"; }
+static std::string GetCacheDirectory() {
+  return std::string(ASSETS_ROOT) + "/cache/shader/opengl";
+}
 
 static void CreateCacheDirectoryIfNeeded() {
   std::string cacheDirectory = GetCacheDirectory();
@@ -275,7 +277,6 @@ OpenGLShader::PreProcess(const std::string &source) {
 
 void OpenGLShader::CompileOrGetVulkanBinaries(
     const std::unordered_map<GLenum, std::string> &shaderSources) {
-  GLuint program = glCreateProgram();
 
   shaderc::Compiler compiler;
   shaderc::CompileOptions options;

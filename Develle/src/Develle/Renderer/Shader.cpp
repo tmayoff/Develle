@@ -4,7 +4,11 @@
 
 namespace Develle {
 
-Ref<Shader> Shader::Create(const std::string &filepath) {
+Ref<Shader> Shader::Create(std::string filepath) {
+  auto p = std::filesystem::path(filepath);
+  if (!p.is_absolute())
+    filepath = std::string(ASSETS_ROOT) + std::string("/") + filepath;
+
   // TODO(tyler) Add multiple APIs
   return CreateRef<OpenGLShader>(filepath);
 }

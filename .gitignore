@@ -4,3 +4,4 @@ subprojects/*
 !subprojects/packagefiles
 *.log
 *Profile*.json
+**/cache/*

@@ -14,6 +14,9 @@ elif build_machine.system() == 'windows'
   add_project_arguments('-DDV_PLATFORM_WINDOWS', language: 'cpp')
 endif
 
+assets_root = meson.current_source_dir() + '/Develle/assets'
+add_project_arguments('-DASSETS_ROOT="' + assets_root + '"', language: 'cpp')
+
 spdlog = subproject('spdlog')
 spdlog_dep = spdlog.get_variable('spdlog_dep')
 
@@ -28,13 +31,16 @@ spirv_cross_opt = cmake.subproject_options()
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_STATIC': true})
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_FORCE_PIC': true})
 spirv_cross = cmake.subproject('spirv_cross', options: spirv_cross_opt)
-spirv_cross_dep = spirv_cross.dependency('spirv-cross-cpp')
+spirv_cross_core_dep = spirv_cross.dependency('spirv-cross-core')
+spirv_cross_cpp_dep = spirv_cross.dependency('spirv-cross-cpp')
+spirv_cross_glsl_dep = spirv_cross.dependency('spirv-cross-glsl')
 
 shaderc = dependency('shaderc')
 
 subdir('external')
 
-dependencies += [spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep, shaderc, spirv_cross_dep]
+dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep, 
+                spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets
 subdir('Develle')
