@@ -94,7 +94,6 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
       vertexBufferIndex++;
       break;
     }
-
     case ShaderDataType::Mat3:
     case ShaderDataType::Mat4: {
       uint8_t count = element.GetComponentCount();
@@ -115,6 +114,8 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
       DV_CORE_ASSERT(false, "Unknown ShaderDataType");
     }
   }
+
+  vertexBuffers.push_back(vertexBuffer);
 }
 
 void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {

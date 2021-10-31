@@ -56,7 +56,7 @@ private:
   ImGuiLayer *imGuiLayer;
   bool running = true;
   bool minimized = false;
-  float lastFrameTime = 0.0f;
+  float lastFrameTimeMS = 0.0f;
 
   static Application *instance;
   friend int ::main(int argc, char **argv);

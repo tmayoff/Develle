@@ -66,13 +66,13 @@ OpenGLIndexBuffer::~OpenGLIndexBuffer() {
 void OpenGLIndexBuffer::Bind() const {
   DV_PROFILE_FUNCTION();
 
-  glBindBuffer(GL_ARRAY_BUFFER, rendererID);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
 }
 
 void OpenGLIndexBuffer::Unbind() const {
   DV_PROFILE_FUNCTION();
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 } // namespace Develle

@@ -50,8 +50,8 @@ void Application::Run() {
     DV_PROFILE_SCOPE("RunLoop");
 
     float timeMS = static_cast<float>(SDL_GetTicks());
-    Timestep delta = timeMS - lastFrameTime;
-    lastFrameTime = timeMS;
+    Timestep delta = timeMS - lastFrameTimeMS;
+    lastFrameTimeMS = timeMS;
 
     if (!minimized) {
 
