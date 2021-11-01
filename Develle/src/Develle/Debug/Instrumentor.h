@@ -3,23 +3,26 @@
 
 #include <Tracy.hpp>
 
-namespace Develle {
-
-#define DV_PROFILE 1
 #if DV_PROFILE
+
+// void *operator new(std::size_t count) {
+//   auto ptr = malloc(count);
+//   TracyAlloc(ptr, count);
+//   return ptr;
+// }
+
+// void operator delete(void *ptr) noexcept {
+//   TracyFree(ptr);
+//   free(ptr);
+// }
 
 #define DV_PROFILE_SCOPE(name) ZoneScopedN(name)
 #define DV_PROFILE_FUNCTION() ZoneScoped
 
-#else
+#else // DV_PROFILE
 
-#define DV_PROFILE_BEGIN_SESSION(name, filepath)
-#define DV_PROFILE_END_SESSION()
-#define DV_PROFILE_SCOPE_LINE(name, line)
 #define DV_PROFILE_SCOPE(name)
 #define DV_PROFILE_FUNCTION()
 
-#endif
-
-} // namespace Develle
-#endif
+#endif // DV_PROFILE
+#endif // INSTRUMENTOR_H_
