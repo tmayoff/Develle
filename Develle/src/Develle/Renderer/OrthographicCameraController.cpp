@@ -27,14 +27,14 @@ void OrthographicCameraController::OnUpdate(Timestep delta) {
 
   if (Input::IsKeyPressed(Key::W)) {
     cameraPosition.x +=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y +=
         sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y +=
+        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   } else if (Input::IsKeyPressed(Key::S)) {
     cameraPosition.x -=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y -=
         sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y -=
+        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   }
 
   if (rotation) {
