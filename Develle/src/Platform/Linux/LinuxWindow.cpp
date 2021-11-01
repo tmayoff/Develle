@@ -52,6 +52,7 @@ void LinuxWindow::OnUpdate() {
 
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
+    DV_PROFILE_SCOPE("Poll Event");
     switch (e.type) {
     case SDL_WINDOWEVENT: {
 

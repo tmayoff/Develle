@@ -14,6 +14,7 @@ elif build_machine.system() == 'windows'
   add_project_arguments('-DDV_PLATFORM_WINDOWS', language: 'cpp')
 endif
 
+
 assets_root = meson.current_source_dir() + '/Develle/assets'
 add_project_arguments('-DASSETS_ROOT="' + assets_root + '"', language: 'cpp')
 
@@ -25,6 +26,10 @@ imgui_dep = imgui.get_variable('imgui_dep')
 
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
+
+add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
+tracy = subproject('tracy')
+tracy_dep = tracy.get_variable('tracy_dep')
 
 cmake = import('cmake')
 spirv_cross_opt = cmake.subproject_options()
@@ -39,7 +44,8 @@ shaderc = dependency('shaderc')
 
 subdir('external')
 
-dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep, 
+dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep,
+                tracy_dep,
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets
