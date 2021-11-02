@@ -12,8 +12,8 @@ public:
   static void Init();
   static void Shutdown();
 
-  static void
-  BeginScene(const OrthographicCamera &camera); // TODO(tyler) Remove
+  static void BeginScene(const OrthographicCamera &camera);
+
   static void EndScene();
   static void Flush();
 

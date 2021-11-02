@@ -82,20 +82,20 @@ void main() {
   case 9:
     texColor *= texture(u_Textures[9], Input.TexCoord * Input.TilingFactor);
     break;
-  case 12:
-    texColor *= texture(u_Textures[12], Input.TexCoord * Input.TilingFactor);
-    break;
   case 10:
     texColor *= texture(u_Textures[10], Input.TexCoord * Input.TilingFactor);
+    break;
+  case 11:
+    texColor *= texture(u_Textures[11], Input.TexCoord * Input.TilingFactor);
+    break;
+  case 12:
+    texColor *= texture(u_Textures[12], Input.TexCoord * Input.TilingFactor);
     break;
   case 13:
     texColor *= texture(u_Textures[13], Input.TexCoord * Input.TilingFactor);
     break;
   case 14:
     texColor *= texture(u_Textures[14], Input.TexCoord * Input.TilingFactor);
-    break;
-  case 11:
-    texColor *= texture(u_Textures[11], Input.TexCoord * Input.TilingFactor);
     break;
   case 15:
     texColor *= texture(u_Textures[15], Input.TexCoord * Input.TilingFactor);

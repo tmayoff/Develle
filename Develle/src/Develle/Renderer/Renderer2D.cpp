@@ -5,7 +5,6 @@
 
 #include <Develle/Renderer/RenderCommand.hpp>
 #include <Develle/Renderer/Shader.hpp>
-#include <Develle/Renderer/Texture.hpp>
 #include <Develle/Renderer/UniformBuffer.hpp>
 #include <Develle/Renderer/VertexArray.hpp>
 
@@ -19,7 +18,7 @@ struct QuadVertex {
   float TilingFactor;
 
   // Editor Only
-  int entityID;
+  int EntityID;
 };
 
 struct Renderer2DData {
@@ -45,7 +44,7 @@ struct Renderer2DData {
   Renderer2D::Statistics Stats;
 
   struct CameraData {
-    glm::mat4 ViewProjetion;
+    glm::mat4 ViewProjection;
   };
   CameraData CameraBuffer;
   Ref<UniformBuffer> CameraUniformBuffer;
@@ -119,7 +118,7 @@ void Renderer2D::Shutdown() {
 void Renderer2D::BeginScene(const OrthographicCamera &camera) {
   DV_PROFILE_FUNCTION();
 
-  data.CameraBuffer.ViewProjetion = camera.GetViewProjectionMatrix();
+  data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
   data.CameraUniformBuffer->SetData(&data.CameraBuffer,
                                     sizeof(Renderer2DData::CameraData));
 
@@ -244,7 +243,7 @@ void Renderer2D::DrawQuad(const glm::mat4 &transform, const glm::vec4 &color,
     data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
     data.QuadVertexBufferPtr->TexIndex = textureIndex;
     data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
-    data.QuadVertexBufferPtr->entityID = entityID;
+    data.QuadVertexBufferPtr->EntityID = entityID;
     data.QuadVertexBufferPtr++;
   }
 
@@ -287,9 +286,9 @@ void Renderer2D::DrawQuad(const glm::mat4 &transform,
         transform * data.QuadVertexPositions[i];
     data.QuadVertexBufferPtr->Color = tintColor;
     data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
-    data.QuadVertexBufferPtr->TexIndex = 1;
+    data.QuadVertexBufferPtr->TexIndex = textureIndex;
     data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
-    data.QuadVertexBufferPtr->entityID = entityID;
+    data.QuadVertexBufferPtr->EntityID = entityID;
     data.QuadVertexBufferPtr++;
   }
 
