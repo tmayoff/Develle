@@ -272,7 +272,6 @@ OpenGLShader::PreProcess(const std::string &source) {
 
 void OpenGLShader::CompileOrGetVulkanBinaries(
     const std::unordered_map<GLenum, std::string> &shaderSources) {
-  GLuint program = glCreateProgram();
 
   shaderc::Compiler compiler;
   shaderc::CompileOptions options;
