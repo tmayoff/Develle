@@ -24,13 +24,12 @@ static GLenum ShaderTypeFromString(const std::string &type) {
   return 0;
 }
 
-static shaderc_shader_kind GLShaderStageToShader(GLenum stage) {
+static shaderc_shader_kind GLShaderStageToShaderC(GLenum stage) {
   switch (stage) {
   case GL_VERTEX_SHADER:
     return shaderc_glsl_vertex_shader;
   case GL_FRAGMENT_SHADER:
     return shaderc_glsl_fragment_shader;
-
   default:
     DV_CORE_ASSERT(false, "Unknown shader stage");
     return (shaderc_shader_kind)0;
@@ -43,7 +42,6 @@ static const char *GLShaderStageToString(GLenum stage) {
     return "GL_VERTEX_SHADER";
   case GL_FRAGMENT_SHADER:
     return "GL_FRAGMENT_SHADER";
-
   default:
     DV_CORE_ASSERT(false, "Unknown shader stage");
     return nullptr;
@@ -60,26 +58,24 @@ static void CreateCacheDirectoryIfNeeded() {
     std::filesystem::create_directories(cacheDirectory);
 }
 
-static const char *GLShaderStageCachedOpenGLFileExtension(GLenum stage) {
+static const char *GLShaderStageCachedOpenGLFileExtension(uint32_t stage) {
   switch (stage) {
   case GL_VERTEX_SHADER:
     return ".cached_opengl.vert";
   case GL_FRAGMENT_SHADER:
     return ".cached_opengl.frag";
-
   default:
     DV_CORE_ASSERT(false, "Unknown shader stage");
     return "";
   }
 }
 
-static const char *GLShaderStageCachedVulkanFileExtension(GLenum stage) {
+static const char *GLShaderStageCachedVulkanFileExtension(uint32_t stage) {
   switch (stage) {
   case GL_VERTEX_SHADER:
     return ".cached_vulkan.vert";
   case GL_FRAGMENT_SHADER:
     return ".cached_vulkan.frag";
-
   default:
     DV_CORE_ASSERT(false, "Unknown shader stage");
     return "";
@@ -233,10 +229,10 @@ std::string OpenGLShader::ReadFile(const std::string &filepath) {
       in.seekg(0, std::ios::beg);
       in.read(&result[0], size);
     } else {
-      DV_CORE_ERROR("Coult not read from file '{0}'", filepath);
+      DV_CORE_ERROR("Could not read from file '{0}'", filepath);
     }
   } else {
-    DV_CORE_ERROR("Coult not read from file '{0}'", filepath);
+    DV_CORE_ERROR("Could not read file '{0}'", filepath);
   }
 
   return result;
@@ -255,14 +251,13 @@ OpenGLShader::PreProcess(const std::string &source) {
         source.find_first_of("\r\n", pos); // End of shader type declaration
     DV_CORE_ASSERT(eol != std::string::npos, "Syntax error");
     size_t begin = pos + typeTokenLength +
-                   1; // Start of shader type name (after '#type' keywork)
+                   1; // Start of shader type name (after '#type' keyword)
     std::string type = source.substr(begin, eol - begin);
     DV_CORE_ASSERT(Utils::ShaderTypeFromString(type),
                    "Invalid shader type specified");
 
     size_t nextLinePos = source.find_first_not_of(
-        "\r\n",
-        eol); // Start of shader code after shadder type declaration line
+        "\r\n", eol); // Start of shader code after shader type declaration line
     DV_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
     pos = source.find(typeToken, nextLinePos);
 
@@ -277,6 +272,7 @@ OpenGLShader::PreProcess(const std::string &source) {
 
 void OpenGLShader::CompileOrGetVulkanBinaries(
     const std::unordered_map<GLenum, std::string> &shaderSources) {
+  GLuint program = glCreateProgram();
 
   shaderc::Compiler compiler;
   shaderc::CompileOptions options;
@@ -307,11 +303,13 @@ void OpenGLShader::CompileOrGetVulkanBinaries(
       in.read((char *)data.data(), size);
     } else {
 
-      shaderc::SpvCompilationResult module =
-          compiler.CompileGlslToSpv(source, Utils::GLShaderStageToShader(stage),
-                                    filepath.c_str(), options);
-      if (module.GetCompilationStatus() != shaderc_compilation_status_success)
-        DV_CORE_ASSERT(false, module.GetErrorMessage())
+      shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(
+          source, Utils::GLShaderStageToShaderC(stage), filepath.c_str(),
+          options);
+      if (module.GetCompilationStatus() != shaderc_compilation_status_success) {
+        DV_CORE_ERROR(module.GetErrorMessage());
+        DV_CORE_ASSERT(false);
+      }
 
       shaderData[stage] = std::vector<uint32_t>(module.cbegin(), module.cend());
 
@@ -365,9 +363,11 @@ void OpenGLShader::CompileOrGetOpenGLBinaries() {
       auto &source = openGLSourceCode[stage];
 
       shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(
-          source, Utils::GLShaderStageToShader(stage), filepath.c_str());
-      if (module.GetCompilationStatus() != shaderc_compilation_status_success)
-        DV_CORE_ASSERT(false, module.GetErrorMessage());
+          source, Utils::GLShaderStageToShaderC(stage), filepath.c_str());
+      if (module.GetCompilationStatus() != shaderc_compilation_status_success) {
+        DV_CORE_ERROR(module.GetErrorMessage());
+        DV_CORE_ASSERT(false);
+      }
 
       shaderData[stage] = std::vector<uint32_t>(module.cbegin(), module.cend());
 
