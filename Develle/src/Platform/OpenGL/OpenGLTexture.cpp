@@ -64,6 +64,8 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &path) : path(path) {
                         GL_UNSIGNED_BYTE, data);
 
     stbi_image_free(data);
+  } else {
+    DV_CORE_ERROR("Failed to load Texture");
   }
 }
 
