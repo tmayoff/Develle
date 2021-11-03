@@ -115,6 +115,16 @@ void Renderer2D::Shutdown() {
   delete[] data.QuadVertexBufferBase;
 }
 
+void Renderer2D::BeginScene(const EditorCamera &camera) {
+  DV_PROFILE_FUNCTION();
+
+  data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+  data.CameraUniformBuffer->SetData(&data.CameraBuffer,
+                                    sizeof(Renderer2DData::CameraData));
+
+  StartBatch();
+}
+
 void Renderer2D::BeginScene(const OrthographicCamera &camera) {
   DV_PROFILE_FUNCTION();
 

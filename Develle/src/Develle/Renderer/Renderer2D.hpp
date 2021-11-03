@@ -1,6 +1,7 @@
 #ifndef RENDERER2D_HPP_
 #define RENDERER2D_HPP_
 
+#include <Develle/Renderer/EditorCamera.hpp>
 #include <Develle/Renderer/OrthographicCamera.hpp>
 #include <Develle/Renderer/Texture.hpp>
 #include <Develle/Scene/Components.h>
@@ -12,6 +13,7 @@ public:
   static void Init();
   static void Shutdown();
 
+  static void BeginScene(const EditorCamera &camera);
   static void BeginScene(const OrthographicCamera &camera);
 
   static void EndScene();

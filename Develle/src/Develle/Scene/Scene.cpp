@@ -1,3 +1,4 @@
+#include <Develle/Renderer/Renderer2D.hpp>
 #include <Develle/Scene/Components.h>
 #include <Develle/Scene/Entity.h>
 #include <Develle/Scene/Scene.h>
@@ -21,8 +22,42 @@ void Scene::OnUpdateRuntime(Timestep) {
   // TODO(tyler)
 }
 
-void Scene::OnUpdateEditor(Timestep delta, EditorCamera &camera) {
-  // TODO(tyler) Update Editor
+void Scene::OnUpdateEditor(Timestep, EditorCamera &camera) {
+  Renderer2D::BeginScene(camera);
+
+  auto group =
+      registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+  for (auto entity : group) {
+    auto [transform, sprite] =
+        group.get<TransformComponent, SpriteRendererComponent>(entity);
+    Renderer2D::DrawQuad(transform.GetTransform(), sprite, (int)entity);
+  }
+
+  Renderer2D::EndScene();
+}
+
+void Scene::OnViewportResize(uint32_t width, uint32_t height) {
+  viewportWidth = width;
+  viewportHeight = height;
+
+  auto view = registry.view<CameraComponent>();
+  for (auto entity : view) {
+    auto &cameraComponent = view.get<CameraComponent>(entity);
+    if (!cameraComponent.FixedAspectRatio)
+      cameraComponent.Camera.SetViewportSize(width, height);
+  }
+}
+
+Entity Scene::GetPrimaryCameraEntity() {
+  auto view = registry.view<CameraComponent>();
+  for (auto entity : view) {
+    const auto &camera = view.get<CameraComponent>(entity);
+    if (camera.Primary)
+      return Entity{entity, this};
+  }
+
+  DV_CORE_WARN("No Primary camera");
 }
 
 } // namespace Develle

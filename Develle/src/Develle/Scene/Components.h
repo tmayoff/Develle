@@ -7,6 +7,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include <Develle/Renderer/Texture.hpp>
+#include <Develle/Scene/SceneCamera.hpp>
 
 namespace Develle {
 
@@ -43,6 +44,15 @@ struct SpriteRendererComponent {
   SpriteRendererComponent() = default;
   SpriteRendererComponent(const SpriteRendererComponent &) = default;
   SpriteRendererComponent(const glm::vec4 &color) : Color(color) {}
+};
+
+struct CameraComponent {
+  SceneCamera Camera;
+  bool Primary = true;
+  bool FixedAspectRatio = false;
+
+  CameraComponent() = default;
+  CameraComponent(const CameraComponent &) = default;
 };
 
 } // namespace Develle

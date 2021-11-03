@@ -1,1 +1,1 @@
-sources += files('Entity.cpp', 'Scene.cpp')
+sources += files('Entity.cpp', 'Scene.cpp', 'SceneCamera.cpp')
