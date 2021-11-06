@@ -31,6 +31,8 @@ public:
   void SetOrthographicNear(float nearClip) { orthographicNear = nearClip; }
   float GetOrthographicFar() const { return orthographicFar; }
   void SetOrthographicFar(float farClip) { orthographicFar = farClip; }
+  float GetOrthographicSize() const { return orthographicSize; }
+  void SetOrthographicSize(float size) { orthographicSize = size; }
 
   ProjectionType GetProjectionType() const { return projectionType; }
   void SetProjectionType(ProjectionType type) {

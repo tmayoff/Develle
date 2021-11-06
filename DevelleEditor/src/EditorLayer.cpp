@@ -1,6 +1,6 @@
-#include <EditorLayer.hpp>
-
 #include <imgui.h>
+
+#include <EditorLayer.hpp>
 
 namespace Develle {
 
@@ -10,8 +10,7 @@ void EditorLayer::OnAttach() {
   DV_PROFILE_FUNCTION();
 
   FramebufferSpecification fbSpec;
-  fbSpec.Attachments = {FramebufferTextureFormat::RGBA8,
-                        FramebufferTextureFormat::RED_INTEGER,
+  fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER,
                         FramebufferTextureFormat::Depth};
   fbSpec.Width = 1280;
   fbSpec.Height = 720;
@@ -27,7 +26,6 @@ void EditorLayer::OnAttach() {
 void EditorLayer::OnDetach() {}
 
 void EditorLayer::OnUpdate(Timestep deltaTime) {
-
   DV_PROFILE_FUNCTION();
 
   // Resize framebuffer
@@ -36,11 +34,11 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
       (spec.Width != viewportSize.x || spec.Height != viewportSize.y)) {
     framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
     editorCamera.SetViewportSize(viewportSize.x, viewportSize.y);
-    activeScene->OnViewportResize((uint32_t)viewportSize.x,
-                                  (uint32_t)viewportSize.y);
+    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
   }
 
   // Render
+  Renderer2D::ResetStats();
   framebuffer->Bind();
   RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
   RenderCommand::Clear();
@@ -51,6 +49,17 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
 
   framebuffer->ClearAttachment(1, -1);
 
+  auto [mx, my] = ImGui::GetMousePos();
+  mx -= viewportBounds[0].x;
+  my -= viewportBounds[0].y;
+  glm::vec2 viewportSize = viewportBounds[1] - viewportBounds[0];
+  my = viewportSize.y - my;
+  int mouseX = (int)mx;
+  int mouseY = (int)my;
+  if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
+    int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
+    hoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, activeScene.get());
+  }
 
   framebuffer->Unbind();
 }
@@ -61,8 +70,7 @@ void EditorLayer::OnImGuiRender() {
   bool optFullscreen = true;
   static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
-  ImGuiWindowFlags windowFlags =
-      ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+  ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
   if (optFullscreen) {
     ImGuiViewport *viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->Pos);
@@ -72,8 +80,7 @@ void EditorLayer::OnImGuiRender() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
                    ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-                   ImGuiWindowFlags_NoBringToFrontOnFocus |
-                   ImGuiWindowFlags_NoNavFocus;
+                   ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
   }
 
   if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
@@ -84,8 +91,7 @@ void EditorLayer::OnImGuiRender() {
   ImGui::Begin("Develle Editor", &dockspaceOpen, windowFlags);
   ImGui::PopStyleVar();
 
-  if (optFullscreen)
-    ImGui::PopStyleVar(2);
+  if (optFullscreen) ImGui::PopStyleVar(2);
 
   // Dockspace
   ImGuiIO &io = ImGui::GetIO();
@@ -110,8 +116,7 @@ void EditorLayer::OnImGuiRender() {
       if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
       }
 
-      if (ImGui::MenuItem("Exit"))
-        Application::Get().Close();
+      if (ImGui::MenuItem("Exit")) Application::Get().Close();
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
@@ -120,6 +125,19 @@ void EditorLayer::OnImGuiRender() {
   sceneHierarchyPanel.OnImGuiRender();
 
   ImGui::Begin("Stats");
+  std::string name = "None";
+  if (hoveredEntity) name = hoveredEntity.GetComponent<TagComponent>().Tag;
+  ImGui::Text("Hovered Entity: %s", name.c_str());
+
+  auto stats = Renderer2D::GetStats();
+  ImGui::Text("Renderer2D Stats:");
+  ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+  ImGui::Text("Quads: %d", stats.QuadCount);
+  ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+  ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+  ImGui::End();
+
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0f, 0.0f});
   ImGui::Begin("Viewport");
   auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
@@ -132,15 +150,13 @@ void EditorLayer::OnImGuiRender() {
 
   viewportFocused = ImGui::IsWindowFocused();
   viewportHovered = ImGui::IsWindowHovered();
-  Application::Get().GetImGuiLayer()->BlockEvents(!viewportFocused &&
-                                                  !viewportHovered);
+  Application::Get().GetImGuiLayer()->BlockEvents(!viewportFocused && !viewportHovered);
 
   ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
   viewportSize = {viewportPanelSize.x, viewportPanelSize.y};
 
   uint64_t textureID = framebuffer->GetColorAttachmentRendererID();
-  ImGui::Image(reinterpret_cast<void *>(textureID),
-               ImVec2{viewportSize.x, viewportSize.y});
+  ImGui::Image(reinterpret_cast<void *>(textureID), ImVec2{viewportSize.x, viewportSize.y});
 
   ImGui::End();
   ImGui::PopStyleVar();
@@ -150,4 +166,4 @@ void EditorLayer::OnImGuiRender() {
 
 void EditorLayer::OnEvent(Event &) {}
 
-} // namespace Develle
+}  // namespace Develle

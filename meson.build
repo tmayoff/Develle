@@ -41,12 +41,17 @@ spirv_cross_core_dep = spirv_cross.dependency('spirv-cross-core')
 spirv_cross_cpp_dep = spirv_cross.dependency('spirv-cross-cpp')
 spirv_cross_glsl_dep = spirv_cross.dependency('spirv-cross-glsl')
 
+yaml_opt = cmake.subproject_options()
+yaml_opt.add_cmake_defines({'YAML_BUILD_SHARED_LIBS': true})
+yaml = cmake.subproject('yaml-cpp', options: yaml_opt)
+yaml_dep = yaml.dependency('yaml-cpp')
+
 shaderc = dependency('shaderc')
 
 subdir('external')
 
 dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep,
-                tracy_dep,
+                tracy_dep, yaml_dep,
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets

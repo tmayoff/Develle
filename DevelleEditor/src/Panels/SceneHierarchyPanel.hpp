@@ -8,7 +8,7 @@
 namespace Develle {
 
 class SceneHierarchyPanel {
-public:
+ public:
   SceneHierarchyPanel() = default;
   SceneHierarchyPanel(const Ref<Scene> &scene);
 
@@ -19,7 +19,7 @@ public:
   Entity GetSelectedEntity() const { return selectionContext; }
   void SetSelectedEntity(Entity entity);
 
-private:
+ private:
   void DrawEntityNode(Entity entity);
   void DrawComponents(Entity entity);
 
@@ -27,5 +27,5 @@ private:
   Entity selectionContext;
 };
 
-} // namespace Develle
-#endif // SCENEHIERACHYPANEL_H_
+}  // namespace Develle
+#endif  // SCENEHIERACHYPANEL_H_

@@ -6,17 +6,14 @@
 namespace Develle {
 
 class DevelleEditor : public Application {
-public:
-  DevelleEditor(ApplicationCommandLineArgs args)
-      : Application("Develle Editor", args) {
+ public:
+  DevelleEditor(ApplicationCommandLineArgs args) : Application("Develle Editor", args) {
     PushLayer(new EditorLayer());
   }
 
   ~DevelleEditor() {}
 };
 
-Application *CreateApplication(ApplicationCommandLineArgs args) {
-  return new DevelleEditor(args);
-}
+Application *CreateApplication(ApplicationCommandLineArgs args) { return new DevelleEditor(args); }
 
-} // namespace Develle
+}  // namespace Develle
