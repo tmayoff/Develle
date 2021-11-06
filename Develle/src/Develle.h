@@ -6,6 +6,8 @@
 #include <Develle/Core/Core.h>
 #include <Develle/Core/Layer.h>
 #include <Develle/Core/Log.h>
+
+#include <Develle/Core/Input.hpp>
 #include <Develle/Events/Event.hpp>
 #include <Develle/Renderer/Buffer.hpp>
 #include <Develle/Renderer/Framebuffer.hpp>
@@ -16,4 +18,4 @@
 #include <Develle/Renderer/UniformBuffer.hpp>
 #include <Develle/Renderer/VertexArray.hpp>
 
-#endif // DEVELLE_H_
+#endif  // DEVELLE_H_

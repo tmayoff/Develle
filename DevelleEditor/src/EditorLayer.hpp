@@ -21,6 +21,11 @@ class EditorLayer : public Layer {
   void OnEvent(Event &e) override;
 
  private:
+  void OpenScene();
+  void OpenScene(const std::filesystem::path &path);
+  void SaveSceneAs();
+  bool OnKeyPressed(KeyPressedEvent &e);
+
   Ref<Scene> activeScene;
 
   // Entity
@@ -35,7 +40,7 @@ class EditorLayer : public Layer {
 
   bool viewportFocused = false, viewportHovered = false;
   glm::vec2 viewportSize = {0.0f, 0.0f};
-  glm::vec2 viewportBounds[2];
+  std::array<glm::vec2, 2> viewportBounds;
 };
 
 }  // namespace Develle

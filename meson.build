@@ -1,6 +1,6 @@
 project('Develle', 'cpp',
   version : '0.1',
-  default_options : ['warning_level=3', 'cpp_std=c++20'])
+  default_options : ['warning_level=3', 'cpp_std=c++20', 'b_sanitize=address'])
 
 dependencies = []
 
@@ -46,12 +46,15 @@ yaml_opt.add_cmake_defines({'YAML_BUILD_SHARED_LIBS': true})
 yaml = cmake.subproject('yaml-cpp', options: yaml_opt)
 yaml_dep = yaml.dependency('yaml-cpp')
 
+pfd = cmake.subproject('pfd')
+pfd_dep = pfd.dependency('portable-file-dialogs')
+
 shaderc = dependency('shaderc')
 
 subdir('external')
 
 dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, stbi_dep,
-                tracy_dep, yaml_dep,
+                tracy_dep, yaml_dep, pfd_dep,
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets

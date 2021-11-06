@@ -1,5 +1,7 @@
 #include <imgui.h>
 
+#include <Develle/Scene/SceneSerializer.hpp>
+#include <Develle/Utils/PlatformUtils.hpp>
 #include <EditorLayer.hpp>
 
 namespace Develle {
@@ -110,11 +112,9 @@ void EditorLayer::OnImGuiRender() {
       if (ImGui::MenuItem("New", "Ctrl+N")) {
       }
 
-      if (ImGui::MenuItem("Open...", "Ctrl+O")) {
-      }
+      if (ImGui::MenuItem("Open...", "Ctrl+O")) OpenScene();
 
-      if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
-      }
+      if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) SaveSceneAs();
 
       if (ImGui::MenuItem("Exit")) Application::Get().Close();
       ImGui::EndMenu();
@@ -164,6 +164,59 @@ void EditorLayer::OnImGuiRender() {
   ImGui::End();
 }
 
-void EditorLayer::OnEvent(Event &) {}
+void EditorLayer::OnEvent(Event &e) {
+  EventDispatcher dispatcher(e);
+  dispatcher.Dispatch<KeyPressedEvent>(DV_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+}
+
+void EditorLayer::OpenScene() {
+  auto file = FileDialogs::OpenFile({"Develle Scene (*.develle)", "*.develle"});
+  if (!file.empty()) OpenScene(file);
+}
+
+void EditorLayer::OpenScene(const std::filesystem::path &path) {
+  if (path.extension().string() != ".develle") {
+    DV_CORE_WARN("Could not load {0} - not a scene file", path.filename().string());
+    return;
+  }
+
+  Ref<Scene> newScene = CreateRef<Scene>();
+  SceneSerializer serializer(newScene);
+  if (serializer.Deserialize(path.string())) {
+    activeScene = newScene;
+    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+    sceneHierarchyPanel.SetContext(activeScene);
+  }
+}
+
+void EditorLayer::SaveSceneAs() {
+  std::filesystem::path filepath =
+      FileDialogs::SaveFile({"Develle Scene (*.develle)", "*.develle"});
+  if (!filepath.empty()) {
+    SceneSerializer serializer(activeScene);
+    serializer.Serialize(filepath.string());
+  }
+}
+
+bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
+  if (e.GetRepeatCount() > 0) return false;
+
+  bool ctrl = Input::IsKeyPressed(Key::LCTRL) || Input::IsKeyPressed(Key::RCTRL);
+  bool shft = Input::IsKeyPressed(Key::LSHIFT) || Input::IsKeyPressed(Key::RSHIFT);
+
+  switch (e.GetKeyCode()) {
+    case Key::N:
+      // if (Control) NewScene();
+      break;
+    case Key::O:
+      if (ctrl) OpenScene();
+      break;
+    case Key::S:
+      if (ctrl && shft) SaveSceneAs();
+      break;
+  }
+
+  return false;
+}
 
 }  // namespace Develle
