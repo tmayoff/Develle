@@ -1,6 +1,6 @@
-#include <Develle/Renderer/GraphicsContext.h>
+#include "GraphicsContext.hpp"
 
-#include <Platform/OpenGL/OpenGLContext.h>
+#include <Platform/OpenGL/OpenGLContext.hpp>
 
 namespace Develle {
 
@@ -10,4 +10,4 @@ Scope<GraphicsContext> GraphicsContext::Create(void *window) {
   return CreateScope<OpenGLGraphicsContext>(static_cast<SDL_Window *>(window));
 }
 
-} // namespace Develle
+}  // namespace Develle

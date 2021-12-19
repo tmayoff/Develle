@@ -1,12 +1,12 @@
 #ifndef SCENESERIALIZER_HPP_
 #define SCENESERIALIZER_HPP_
 
-#include <Develle/Scene/Scene.h>
+#include "Scene.hpp"
 
 namespace Develle {
 
 class SceneSerializer {
-public:
+ public:
   SceneSerializer(const Ref<Scene> &scene);
 
   void Serialize(const std::string &filepath);
@@ -15,9 +15,9 @@ public:
   bool Deserialize(const std::string &filepath);
   bool DeserializeRuntime(const std::string &filepath);
 
-private:
+ private:
   Ref<Scene> scene;
 };
 
-} // namespace Develle
-#endif // SCENESERIALIZER_HPP_
+}  // namespace Develle
+#endif  // SCENESERIALIZER_HPP_

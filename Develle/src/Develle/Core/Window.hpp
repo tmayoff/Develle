@@ -1,10 +1,10 @@
-#ifndef WINDOW_H_
-#define WINDOW_H_
+#ifndef WINDOW_HPP_
+#define WINDOW_HPP_
 
+#include <Develle/Events/Event.hpp>
 #include <sstream>
 
-#include <Develle/Core/Core.h>
-#include <Develle/Events/Event.hpp>
+#include "Core.hpp"
 
 namespace Develle {
 
@@ -13,13 +13,13 @@ struct WindowProps {
   uint32_t Width;
   uint32_t Height;
 
-  WindowProps(const std::string &title = "Develle Engine",
-              uint32_t width = 1600, uint32_t height = 900)
+  WindowProps(const std::string &title = "Develle Engine", uint32_t width = 1600,
+              uint32_t height = 900)
       : Title(title), Width(width), Height(height) {}
 };
 
 class Window {
-public:
+ public:
   using EventCallbackFn = std::function<void(Event &)>;
 
   virtual ~Window() = default;
@@ -38,6 +38,6 @@ public:
   static Scope<Window> Create(const WindowProps &props = WindowProps());
 };
 
-} // namespace Develle
+}  // namespace Develle
 
-#endif // WINDOW_H_
+#endif  // WINDOW_HPP_

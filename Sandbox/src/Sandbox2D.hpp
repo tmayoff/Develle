@@ -1,10 +1,10 @@
 #ifndef SANDBOX2D_HPP_
 #define SANDBOX2D_HPP_
 
-#include <Develle.h>
+#include <Develle.hpp>
 
 class Sandbox2D : public Develle::Layer {
-public:
+ public:
   Sandbox2D();
   ~Sandbox2D() = default;
 
@@ -15,11 +15,11 @@ public:
   void OnImGuiRender() override;
   void OnEvent(Develle::Event &e) override;
 
-private:
+ private:
   Develle::OrthographicCameraController cameraController;
 
   glm::vec4 squareColor = {0.2f, 0.3f, 0.8f, 1.0f};
   Develle::Ref<Develle::Texture2D> checkerboardTexture;
 };
 
-#endif // SANDBOX2D_HPP_
+#endif  // SANDBOX2D_HPP_

@@ -1,7 +1,7 @@
-#include <Develle/Scene/Components.h>
-#include <Develle/Scene/Entity.h>
 #include <yaml-cpp/yaml.h>
 
+#include <Develle/Scene/Components.hpp>
+#include <Develle/Scene/Entity.hpp>
 #include <Develle/Scene/SceneSerializer.hpp>
 #include <fstream>
 

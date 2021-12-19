@@ -1,10 +1,10 @@
-#ifndef TIMESTEP_H_
-#define TIMESTEP_H_
+#ifndef TIMESTEP_HPP_
+#define TIMESTEP_HPP_
 
 namespace Develle {
 
 class Timestep {
-public:
+ public:
   Timestep(float time = 0.0f) : time(time * 0.001f) {}
 
   operator float() const { return time; }
@@ -12,9 +12,10 @@ public:
   float GetSeconds() const { return time; }
   float GetMilliseconds() const { return time * 1000.0f; }
 
-private:
+ private:
   float time;
 };
 
-} // namespace Develle
-#endif // TIMESTEP_H_
+}  // namespace Develle
+
+#endif  // TIMESTEP_HPP_

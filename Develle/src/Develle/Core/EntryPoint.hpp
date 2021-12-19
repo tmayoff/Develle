@@ -1,11 +1,10 @@
 #ifndef ENTRYPOINT_H_
 #define ENTRYPOINT_H_
 
-#include <Develle/Core/Application.h>
-#include <Develle/Core/Core.h>
+#include "Application.hpp"
+#include "Core.hpp"
 
-extern Develle::Application *
-Develle::CreateApplication(ApplicationCommandLineArgs args);
+extern Develle::Application *Develle::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char **argv) {
   Develle::Log::Init();
@@ -17,4 +16,4 @@ int main(int argc, char **argv) {
   delete app;
 }
 
-#endif // ENTRYPOINT_H_
+#endif  // ENTRYPOINT_H_

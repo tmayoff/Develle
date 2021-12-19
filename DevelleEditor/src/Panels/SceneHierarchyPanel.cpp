@@ -1,7 +1,7 @@
-#include <Develle/Scene/Components.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 
+#include <Develle/Scene/Components.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 #include <glm/gtc/type_ptr.hpp>
 

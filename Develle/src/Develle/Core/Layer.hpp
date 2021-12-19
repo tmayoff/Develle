@@ -1,13 +1,14 @@
-#ifndef LAYER_H_
-#define LAYER_H_
+#ifndef LAYER_HPP_
+#define LAYER_HPP_
 
-#include <Develle/Core/Timestep.hpp>
 #include <Develle/Events/Event.hpp>
+
+#include "Timestep.hpp"
 
 namespace Develle {
 
 class Layer {
-public:
+ public:
   Layer(const std::string &name = "Layer");
   virtual ~Layer() = default;
 
@@ -19,9 +20,10 @@ public:
 
   const std::string &GetName() const { return debugName; }
 
-protected:
+ protected:
   std::string debugName;
 };
 
-} // namespace Develle
-#endif // LAYER_H_
+}  // namespace Develle
+
+#endif  // LAYER_HPP_

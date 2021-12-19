@@ -1,5 +1,5 @@
-#ifndef CORE_H_
-#define CORE_H_
+#ifndef CORE_HPP_
+#define CORE_HPP_
 
 #include <memory>
 
@@ -21,28 +21,30 @@
 
 #define BIT(x) (1 << x)
 
-#define DV_BIND_EVENT_FN(fn)                                                   \
-  [this](auto &&...args) -> decltype(auto) {                                   \
-    return this->fn(std::forward<decltype(args)>(args)...);                    \
+#define DV_BIND_EVENT_FN(fn)                                \
+  [this](auto &&...args) -> decltype(auto) {                \
+    return this->fn(std::forward<decltype(args)>(args)...); \
   }
 
 namespace Develle {
 
-template <typename T> using Scope = std::unique_ptr<T>;
+template <typename T>
+using Scope = std::unique_ptr<T>;
 template <typename T, typename... Args>
 constexpr Scope<T> CreateScope(Args &&...args) {
   return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
-template <typename T> using Ref = std::shared_ptr<T>;
+template <typename T>
+using Ref = std::shared_ptr<T>;
 template <typename T, typename... Args>
 constexpr Ref<T> CreateRef(Args &&...args) {
   return std::make_shared<T>(std::forward<Args>(args)...);
 }
 
-} // namespace Develle
+}  // namespace Develle
 
-#include <Develle/Core/Assert.h>
-#include <Develle/Core/Log.h>
+#include <Develle/Core/Assert.hpp>
+#include <Develle/Core/Log.hpp>
 
-#endif // CORE_H_
+#endif  // CORE_HPP_

@@ -1,8 +1,7 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
-#include <Develle/Core/Core.h>
-
+#include <Develle/Core/Core.hpp>
 namespace Develle {
 
 enum class EventType {
@@ -33,16 +32,16 @@ enum EventCategory {
   EventCategoryMouseButton = BIT(4)
 };
 
-#define EVENT_CLASS_TYPE(type)                                                 \
-  static EventType GetStaticType() { return EventType::type; }                 \
-  virtual EventType GetEventType() const override { return GetStaticType(); }  \
+#define EVENT_CLASS_TYPE(type)                                                \
+  static EventType GetStaticType() { return EventType::type; }                \
+  virtual EventType GetEventType() const override { return GetStaticType(); } \
   virtual const char *GetName() const override { return #type; }
 
-#define EVENT_CLASS_CATEGORY(category)                                         \
+#define EVENT_CLASS_CATEGORY(category) \
   virtual int GetCategoryFlags() const override { return category; }
 
 class Event {
-public:
+ public:
   virtual ~Event() = default;
 
   virtual EventType GetEventType() const = 0;
@@ -50,18 +49,17 @@ public:
   virtual int GetCategoryFlags() const = 0;
   virtual std::string ToString() const { return GetName(); }
 
-  bool IsInCategory(EventCategory category) {
-    return GetCategoryFlags() & category;
-  }
+  bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
   bool Handled = false;
 };
 
 class EventDispatcher {
-public:
+ public:
   EventDispatcher(Event &event) : event(event) {}
 
-  template <typename T, typename F> bool Dispatch(const F &func) {
+  template <typename T, typename F>
+  bool Dispatch(const F &func) {
     if (event.GetEventType() == T::GetStaticType()) {
       event.Handled |= func(static_cast<T &>(event));
       return true;
@@ -69,14 +67,12 @@ public:
     return false;
   }
 
-private:
+ private:
   Event &event;
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Event &e) {
-  return os << e.ToString();
-}
+inline std::ostream &operator<<(std::ostream &os, const Event &e) { return os << e.ToString(); }
 
-} // namespace Develle
+}  // namespace Develle
 
-#endif // EVENT_H_
+#endif  // EVENT_H_

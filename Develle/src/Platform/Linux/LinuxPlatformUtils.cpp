@@ -1,10 +1,10 @@
 #ifndef LINUXPLATFORMUTILS_HPP_
 #define LINUXPLATFORMUTILS_HPP_
-#include <Develle/Utils/PlatformUtils.hpp>
 
-//
-#include <Develle/Core/Application.h>
 #include <portable-file-dialogs.h>
+
+#include <Develle/Core/Application.hpp>
+#include <Develle/Utils/PlatformUtils.hpp>
 
 namespace Develle {
 

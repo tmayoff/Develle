@@ -1,12 +1,13 @@
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef APPLICATION_HPP_
+#define APPLICATION_HPP_
 
-#include <Develle/Core/Core.h>
-#include <Develle/Core/LayerStack.h>
-#include <Develle/Core/Window.h>
 #include <Develle/Events/ApplicationEvent.hpp>
 #include <Develle/Events/Event.hpp>
-#include <Develle/ImGui/ImGuiLayer.h>
+#include <Develle/ImGui/ImGuiLayer.hpp>
+
+#include "Core.hpp"
+#include "LayerStack.hpp"
+#include "Window.hpp"
 
 int main(int argc, char **argv);
 
@@ -23,7 +24,7 @@ struct ApplicationCommandLineArgs {
 };
 
 class Application {
-public:
+ public:
   Application(const std::string &name = "Develle App",
               ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
   virtual ~Application();
@@ -41,11 +42,9 @@ public:
 
   static Application &Get() { return *instance; }
 
-  ApplicationCommandLineArgs GetCommandLineArguments() const {
-    return commandLineArgs;
-  }
+  ApplicationCommandLineArgs GetCommandLineArguments() const { return commandLineArgs; }
 
-private:
+ private:
   void Run();
   bool OnWindowClose(WindowCloseEvent &e);
   bool OnWindowResize(WindowResizeEvent &e);
@@ -65,6 +64,6 @@ private:
 // To be defined in the client app
 Application *CreateApplication(ApplicationCommandLineArgs args);
 
-} // namespace Develle
+}  // namespace Develle
 
-#endif // APPLICATION_H_
+#endif  // APPLICATION_HPP_

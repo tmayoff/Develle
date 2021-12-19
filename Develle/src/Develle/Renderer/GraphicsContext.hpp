@@ -1,10 +1,10 @@
-#ifndef GRAPHICSCONTEXT_H_
-#define GRAPHICSCONTEXT_H_
+#ifndef GRAPHICSCONTEXT_HPP_
+#define GRAPHICSCONTEXT_HPP_
 
 namespace Develle {
 
 class GraphicsContext {
-public:
+ public:
   virtual ~GraphicsContext() = default;
 
   virtual void Init() = 0;
@@ -13,5 +13,6 @@ public:
   static Scope<GraphicsContext> Create(void *window);
 };
 
-} // namespace Develle
-#endif // GRAPHICSCONTEXT_H_
+}  // namespace Develle
+
+#endif  // GRAPHICSCONTEXT_HPP_

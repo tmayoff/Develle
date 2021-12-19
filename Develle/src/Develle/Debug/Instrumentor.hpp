@@ -3,7 +3,7 @@
 
 #include <Tracy.hpp>
 
-#if DV_PROFILE
+#ifdef DV_PROFILE
 
 // void *operator new(std::size_t count) {
 //   auto ptr = malloc(count);
@@ -19,10 +19,10 @@
 #define DV_PROFILE_SCOPE(name) ZoneScopedN(name)
 #define DV_PROFILE_FUNCTION() ZoneScoped
 
-#else // DV_PROFILE
+#else  // DV_PROFILE
 
 #define DV_PROFILE_SCOPE(name)
 #define DV_PROFILE_FUNCTION()
 
-#endif // DV_PROFILE
-#endif // INSTRUMENTOR_H_
+#endif  // DV_PROFILE
+#endif  // INSTRUMENTOR_H_

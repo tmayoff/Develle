@@ -3,13 +3,13 @@
 
 #include <SDL2/SDL.h>
 
-#include <Develle/Core/Window.h>
-#include <Develle/Renderer/GraphicsContext.h>
+#include <Develle/Core/Window.hpp>
+#include <Develle/Renderer/GraphicsContext.hpp>
 
 namespace Develle {
 
 class LinuxWindow : public Window {
-public:
+ public:
   LinuxWindow(const WindowProps &props);
   virtual ~LinuxWindow();
 
@@ -18,15 +18,13 @@ public:
   uint32_t GetWidth() const override { return data.Width; }
   uint32_t GetHeight() const override { return data.Height; }
 
-  void SetEventCallback(const EventCallbackFn &callback) override {
-    data.EventCallback = callback;
-  }
+  void SetEventCallback(const EventCallbackFn &callback) override { data.EventCallback = callback; }
   void SetVSync(bool enabled) override;
   bool IsVSync() const override;
 
   virtual void *GetNativeWindow() const override { return window; }
 
-private:
+ private:
   virtual void Init(const WindowProps &props);
   virtual void Shutdown();
 
@@ -44,5 +42,5 @@ private:
   WindowData data;
 };
 
-} // namespace Develle
-#endif // LINUXWINDOW_H_
+}  // namespace Develle
+#endif  // LINUXWINDOW_H_

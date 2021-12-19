@@ -1,9 +1,9 @@
 #ifndef SCENEHIERACHYPANEL_H_
 #define SCENEHIERACHYPANEL_H_
 
-#include <Develle/Core/Core.h>
-#include <Develle/Scene/Entity.h>
-#include <Develle/Scene/Scene.h>
+#include <Develle/Core/Core.hpp>
+#include <Develle/Scene/Entity.hpp>
+#include <Develle/Scene/Scene.hpp>
 
 namespace Develle {
 

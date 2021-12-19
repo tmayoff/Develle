@@ -1,9 +1,8 @@
-#ifndef SCENE_H_
-#define SCENE_H_
+#ifndef SCENE_HPP_
+#define SCENE_HPP_
 
 #include <Develle/Core/Timestep.hpp>
 #include <Develle/Renderer/EditorCamera.hpp>
-
 #include <entt.hpp>
 
 namespace Develle {
@@ -11,7 +10,7 @@ namespace Develle {
 class Entity;
 
 class Scene {
-public:
+ public:
   Scene();
   ~Scene();
 
@@ -24,8 +23,9 @@ public:
 
   Entity GetPrimaryCameraEntity();
 
-private:
-  template <typename T> void OnComponentAdded(Entity entity, T &component);
+ private:
+  template <typename T>
+  void OnComponentAdded(Entity entity, T &component);
 
   entt::registry registry;
   uint32_t viewportWidth = 0, viewportHeight = 0;
@@ -35,5 +35,6 @@ private:
   friend class SceneHierarchyPanel;
 };
 
-} // namespace Develle
-#endif // SCENE_H_
+}  // namespace Develle
+
+#endif  // SCENE_HPP_

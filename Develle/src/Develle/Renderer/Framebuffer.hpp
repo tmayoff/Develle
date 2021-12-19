@@ -1,8 +1,7 @@
 #ifndef FRAMEBUFFER_H_
 #define FRAMEBUFFER_H_
 
-#include <Develle/Core/Core.h>
-
+#include <Develle/Core/Core.hpp>
 namespace Develle {
 
 enum class FramebufferTextureFormat {
@@ -21,8 +20,7 @@ enum class FramebufferTextureFormat {
 
 struct FramebufferTextureSpecification {
   FramebufferTextureSpecification() = default;
-  FramebufferTextureSpecification(FramebufferTextureFormat format)
-      : TextureFormat(format) {}
+  FramebufferTextureSpecification(FramebufferTextureFormat format) : TextureFormat(format) {}
 
   FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::None;
   // TODO(tyler) Filtering/Wrap
@@ -46,7 +44,7 @@ struct FramebufferSpecification {
 };
 
 class Framebuffer {
-public:
+ public:
   virtual ~Framebuffer() = default;
 
   virtual void Bind() = 0;
@@ -64,5 +62,5 @@ public:
   static Ref<Framebuffer> Create(const FramebufferSpecification &spec);
 };
 
-} // namespace Develle
-#endif // FRAMEBUFFER_H_
+}  // namespace Develle
+#endif  // FRAMEBUFFER_H_

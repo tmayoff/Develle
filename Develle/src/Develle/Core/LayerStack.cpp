@@ -1,4 +1,4 @@
-#include "LayerStack.h"
+#include "LayerStack.hpp"
 
 namespace Develle {
 
@@ -33,4 +33,4 @@ void LayerStack::PopOverlay(Layer *overlay) {
   }
 }
 
-} // namespace Develle
+}  // namespace Develle

@@ -4,12 +4,12 @@
 #include <Develle/Renderer/EditorCamera.hpp>
 #include <Develle/Renderer/OrthographicCamera.hpp>
 #include <Develle/Renderer/Texture.hpp>
-#include <Develle/Scene/Components.h>
+#include <Develle/Scene/Components.hpp>
 
 namespace Develle {
 
 class Renderer2D {
-public:
+ public:
   static void Init();
   static void Shutdown();
 
@@ -19,10 +19,8 @@ public:
   static void EndScene();
   static void Flush();
 
-  static void DrawQuad(const glm::vec2 &position, const glm::vec2 &size,
-                       const glm::vec4 &color);
-  static void DrawQuad(const glm::vec3 &position, const glm::vec2 &size,
-                       const glm::vec4 &color);
+  static void DrawQuad(const glm::vec2 &position, const glm::vec2 &size, const glm::vec4 &color);
+  static void DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const glm::vec4 &color);
   static void DrawQuad(const glm::vec2 &position, const glm::vec2 &size,
                        const Ref<Texture2D> &texture, float tilingFactor = 1.0f,
                        const glm::vec4 &tintColor = glm::vec4(1.0f));
@@ -30,26 +28,21 @@ public:
                        const Ref<Texture2D> &texture, float tilingFactor = 1.0f,
                        const glm::vec4 &tintColor = glm::vec4(1.0f));
 
-  static void DrawRotatedQuad(const glm::vec2 &position, const glm::vec2 &size,
-                              float rotation, const glm::vec4 &color);
-  static void DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size,
-                              float rotation, const glm::vec4 &color);
-  static void DrawRotatedQuad(const glm::vec2 &position, const glm::vec2 &size,
-                              float rotation, const Ref<Texture2D> &texture,
-                              float tilingFactor = 1.0f,
+  static void DrawRotatedQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation,
+                              const glm::vec4 &color);
+  static void DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation,
+                              const glm::vec4 &color);
+  static void DrawRotatedQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation,
+                              const Ref<Texture2D> &texture, float tilingFactor = 1.0f,
                               const glm::vec4 &tintColor = glm::vec4(1.0f));
-  static void DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size,
-                              float rotation, const Ref<Texture2D> &texture,
-                              float tilingFactor = 1.0f,
+  static void DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation,
+                              const Ref<Texture2D> &texture, float tilingFactor = 1.0f,
                               const glm::vec4 &tintColor = glm::vec4(1.0f));
 
-  static void DrawQuad(const glm::mat4 &transform, SpriteRendererComponent &src,
-                       int entityID);
-  static void DrawQuad(const glm::mat4 &transform, const glm::vec4 &color,
-                       int entityID = -1);
-  static void DrawQuad(const glm::mat4 &transform,
-                       const Ref<Texture2D> &texture, float tilingFactor = 1.0f,
-                       const glm::vec4 &tintColor = glm::vec4(1.0f),
+  static void DrawQuad(const glm::mat4 &transform, SpriteRendererComponent &src, int entityID);
+  static void DrawQuad(const glm::mat4 &transform, const glm::vec4 &color, int entityID = -1);
+  static void DrawQuad(const glm::mat4 &transform, const Ref<Texture2D> &texture,
+                       float tilingFactor = 1.0f, const glm::vec4 &tintColor = glm::vec4(1.0f),
                        int entityID = -1);
 
   struct Statistics {
@@ -63,10 +56,10 @@ public:
   static void ResetStats();
   static Statistics GetStats();
 
-private:
+ private:
   static void StartBatch();
   static void NextBatch();
 };
 
-} // namespace Develle
-#endif // RENDERER2D_HPP_
+}  // namespace Develle
+#endif  // RENDERER2D_HPP_

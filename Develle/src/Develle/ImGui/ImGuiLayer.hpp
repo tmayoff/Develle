@@ -1,7 +1,7 @@
 #ifndef IMGUILAYER_H_
 #define IMGUILAYER_H_
 
-#include <Develle/Core/Layer.h>
+#include <Develle/Core/Layer.hpp>
 #include <Develle/Events/ApplicationEvent.hpp>
 #include <Develle/Events/KeyEvent.hpp>
 #include <Develle/Events/MouseEvent.hpp>
@@ -9,7 +9,7 @@
 namespace Develle {
 
 class ImGuiLayer : public Layer {
-public:
+ public:
   ImGuiLayer();
   ~ImGuiLayer() = default;
 
@@ -22,7 +22,7 @@ public:
 
   void BlockEvents(bool block) { blockEvents = block; }
 
-private:
+ private:
   bool OnKeyPressedEvent(KeyPressedEvent &e);
   bool OnKeyReleasedEvent(KeyReleasedEvent &e);
   bool OnKeyTypedEvent(KeyTypedEvent &e);
@@ -33,5 +33,5 @@ private:
   bool blockEvents = true;
 };
 
-} // namespace Develle
-#endif // IMGUILAYER_H_
+}  // namespace Develle
+#endif  // IMGUILAYER_H_

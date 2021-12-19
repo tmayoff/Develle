@@ -1,12 +1,11 @@
-#include "OpenGLContext.h"
+#include "OpenGLContext.hpp"
 
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
 
 namespace Develle {
 
-OpenGLGraphicsContext::OpenGLGraphicsContext(SDL_Window *window)
-    : windowHandle(window) {
+OpenGLGraphicsContext::OpenGLGraphicsContext(SDL_Window *window) : windowHandle(window) {
   DV_CORE_ASSERT(windowHandle, "Window handle is null");
 }
 
@@ -29,8 +28,7 @@ void OpenGLGraphicsContext::Init() {
   DV_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
   DV_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
 
-  DV_CORE_ASSERT(GLVersion.major > 4 ||
-                     (GLVersion.major == 4 && GLVersion.minor >= 5),
+  DV_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 5),
                  "Develle requires at least OpenGL version 4.5");
 }
 
@@ -38,4 +36,4 @@ void OpenGLGraphicsContext::SwapBuffers() {
   DV_PROFILE_FUNCTION();
   SDL_GL_SwapWindow(windowHandle);
 }
-} // namespace Develle
+}  // namespace Develle

@@ -1,6 +1,5 @@
 #include <Develle/Renderer/RendererAPI.hpp>
-
-#include <Platform/OpenGL/OpenGLRendererAPI.h>
+#include <Platform/OpenGL/OpenGLRendererAPI.hpp>
 
 namespace Develle {
 
@@ -11,4 +10,4 @@ Scope<RendererAPI> RendererAPI::Create() {
   return CreateScope<OpenGLRendererAPI>();
 }
 
-} // namespace Develle
+}  // namespace Develle

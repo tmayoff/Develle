@@ -1,27 +1,27 @@
-#ifndef LOG_H_
-#define LOG_H_
+#ifndef LOG_HPP_
+#define LOG_HPP_
 
 #define FMT_HEADER_ONLY
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/spdlog.h>
 
-#include <Develle/Core/Core.h>
+#include "Core.hpp"
 
 namespace Develle {
 
 class Log {
-public:
+ public:
   static void Init();
 
   static Ref<spdlog::logger> &GetLogger() { return coreLogger; }
   static Ref<spdlog::logger> &GetClientLogger() { return clientLogger; }
 
-private:
+ private:
   static Ref<spdlog::logger> coreLogger;
   static Ref<spdlog::logger> clientLogger;
 };
 
-} // namespace Develle
+}  // namespace Develle
 
 // Clore log macros
 #define DV_CORE_TRACE(...) ::Develle::Log::GetLogger()->trace(__VA_ARGS__)
@@ -31,13 +31,10 @@ private:
 #define DV_CORE_FATAL(...) ::Develle::Log::GetLogger()->critical(__VA_ARGS__)
 
 // Client log macros
-#define DV_CLIENT_TRACE(...)                                                   \
-  ::Develle::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define DV_CLIENT_TRACE(...) ::Develle::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define DV_CLIENT_INFO(...) ::Develle::Log::GetClientLogger()->info(__VA_ARGS__)
 #define DV_CLIENT_WARN(...) ::Develle::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define DV_CLIENT_ERROR(...)                                                   \
-  ::Develle::Log::GetClientLogger()->error(__VA_ARGS__)
-#define DV_CLIENT_FATAL(...)                                                   \
-  ::Develle::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define DV_CLIENT_ERROR(...) ::Develle::Log::GetClientLogger()->error(__VA_ARGS__)
+#define DV_CLIENT_FATAL(...) ::Develle::Log::GetClientLogger()->critical(__VA_ARGS__)
 
-#endif // LOG_H_
+#endif  // LOG_HPP_

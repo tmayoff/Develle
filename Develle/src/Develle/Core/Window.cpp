@@ -1,7 +1,7 @@
-#include <Develle/Core/Window.h>
+#include "Window.hpp"
 
 #ifdef DV_PLATFORM_LINUX
-#include <Platform/Linux/LinuxWindow.h>
+#include <Platform/Linux/LinuxWindow.hpp>
 #endif
 
 namespace Develle {
@@ -15,4 +15,4 @@ Scope<Window> Window::Create(const WindowProps &props) {
 #endif
 }
 
-} // namespace Develle
+}  // namespace Develle

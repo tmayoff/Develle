@@ -1,13 +1,12 @@
-#ifndef COMPONENTS_H_
-#define COMPONENTS_H_
+#ifndef COMPONENTS_HPP_
+#define COMPONENTS_HPP_
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
-
 #include <Develle/Renderer/Texture.hpp>
 #include <Develle/Scene/SceneCamera.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace Develle {
 
@@ -55,5 +54,6 @@ struct CameraComponent {
   CameraComponent(const CameraComponent &) = default;
 };
 
-} // namespace Develle
-#endif // COMPONENTS_H_
+}  // namespace Develle
+
+#endif  // COMPONENTS_HPP_

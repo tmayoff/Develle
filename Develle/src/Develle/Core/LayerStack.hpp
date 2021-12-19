@@ -1,12 +1,12 @@
-#ifndef LAYERSTACK_H_
-#define LAYERSTACK_H_
+#ifndef LAYERSTACK_HPP_
+#define LAYERSTACK_HPP_
 
-#include <Develle/Core/Layer.h>
+#include "Layer.hpp"
 
 namespace Develle {
 
 class LayerStack {
-public:
+ public:
   LayerStack() = default;
   ~LayerStack();
 
@@ -22,17 +22,14 @@ public:
 
   std::vector<Layer *>::const_iterator begin() const { return layers.begin(); }
   std::vector<Layer *>::const_iterator end() const { return layers.end(); }
-  std::vector<Layer *>::const_reverse_iterator rbegin() const {
-    return layers.rbegin();
-  }
-  std::vector<Layer *>::const_reverse_iterator rend() const {
-    return layers.rend();
-  }
+  std::vector<Layer *>::const_reverse_iterator rbegin() const { return layers.rbegin(); }
+  std::vector<Layer *>::const_reverse_iterator rend() const { return layers.rend(); }
 
-private:
+ private:
   std::vector<Layer *> layers;
   uint32_t layerInsertIndex = 0;
 };
 
-} // namespace Develle
-#endif // LAYERSTACK_H_
+}  // namespace Develle
+
+#endif  // LAYERSTACK_HPP_

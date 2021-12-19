@@ -1,6 +1,5 @@
-#include <Develle.h>
-#include <Develle/Core/EntryPoint.h>
-
+#include <Develle.hpp>
+#include <Develle/Core/EntryPoint.hpp>
 #include <EditorLayer.hpp>
 
 namespace Develle {

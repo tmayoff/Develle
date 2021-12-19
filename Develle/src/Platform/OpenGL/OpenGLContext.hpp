@@ -1,7 +1,7 @@
-#ifndef OPENGLCONTEXT_H_
-#define OPENGLCONTEXT_H_
+#ifndef OPENGLCONTEXT_HPP_
+#define OPENGLCONTEXT_HPP_
 
-#include <Develle/Renderer/GraphicsContext.h>
+#include <Develle/Renderer/GraphicsContext.hpp>
 
 struct SDL_Window;
 typedef void *SDL_GLContext;
@@ -9,16 +9,17 @@ typedef void *SDL_GLContext;
 namespace Develle {
 
 class OpenGLGraphicsContext : public GraphicsContext {
-public:
+ public:
   OpenGLGraphicsContext(SDL_Window *window);
 
   void Init() override;
   void SwapBuffers() override;
 
-private:
+ private:
   SDL_Window *windowHandle;
   SDL_GLContext context;
 };
 
-} // namespace Develle
-#endif // OPENGLCONTEXT_H_
+}  // namespace Develle
+
+#endif  // OPENGLCONTEXT_HPP_

@@ -1,9 +1,8 @@
 #ifndef EDITORLAYER_H_
 #define EDITORLAYER_H_
 
-#include <Develle.h>
-#include <Develle/Scene/Scene.h>
-
+#include <Develle.hpp>
+#include <Develle/Scene/Scene.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
 namespace Develle {

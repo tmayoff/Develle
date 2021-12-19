@@ -1,12 +1,11 @@
-#include <Develle/ImGui/ImGuiLayer.h>
+#include "ImGuiLayer.hpp"
 
-#include <Develle/Core/Application.h>
-
+#include <SDL2/SDL.h>
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl.h>
 
-#include <SDL2/SDL.h>
+#include <Develle/Core/Application.hpp>
 
 namespace Develle {
 
@@ -25,8 +24,7 @@ void ImGuiLayer::OnAttach() {
   float fontSize = 18.0f;
 
   Application &app = Application::Get();
-  SDL_Window *window =
-      static_cast<SDL_Window *>(app.GetWindow().GetNativeWindow());
+  SDL_Window *window = static_cast<SDL_Window *>(app.GetWindow().GetNativeWindow());
 
   ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
   ImGui_ImplOpenGL3_Init("#version 410");
@@ -71,18 +69,14 @@ void ImGuiLayer::OnEvent(Event &e) {
   }
 
   EventDispatcher dispatcher(e);
-  dispatcher.Dispatch<KeyPressedEvent>(
-      DV_BIND_EVENT_FN(ImGuiLayer::OnKeyPressedEvent));
-  dispatcher.Dispatch<KeyReleasedEvent>(
-      DV_BIND_EVENT_FN(ImGuiLayer::OnKeyReleasedEvent));
-  dispatcher.Dispatch<KeyTypedEvent>(
-      DV_BIND_EVENT_FN(ImGuiLayer::OnKeyTypedEvent));
+  dispatcher.Dispatch<KeyPressedEvent>(DV_BIND_EVENT_FN(ImGuiLayer::OnKeyPressedEvent));
+  dispatcher.Dispatch<KeyReleasedEvent>(DV_BIND_EVENT_FN(ImGuiLayer::OnKeyReleasedEvent));
+  dispatcher.Dispatch<KeyTypedEvent>(DV_BIND_EVENT_FN(ImGuiLayer::OnKeyTypedEvent));
   dispatcher.Dispatch<MouseButtonPressedEvent>(
       DV_BIND_EVENT_FN(ImGuiLayer::OnMouseButtonPressedEvent));
   dispatcher.Dispatch<MouseButtonReleasedEvent>(
       DV_BIND_EVENT_FN(ImGuiLayer::OnMouseButtonReleasedEvent));
-  dispatcher.Dispatch<MouseScrolledEvent>(
-      DV_BIND_EVENT_FN(ImGuiLayer::OnMouseScrolledEvent));
+  dispatcher.Dispatch<MouseScrolledEvent>(DV_BIND_EVENT_FN(ImGuiLayer::OnMouseScrolledEvent));
   // dispatcher.Dispatch<MouseMovedEvent>(
   //     DV_BIND_EVENT_FN(ImGuiLayer::OnMouseMovedEvent));
 }
@@ -100,8 +94,7 @@ void ImGuiLayer::End() {
 
   ImGuiIO &io = ImGui::GetIO();
   Application &app = Application::Get();
-  io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(),
-                          (float)app.GetWindow().GetHeight());
+  io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -142,15 +135,15 @@ bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent &e) {
 bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent &e) {
   ImGuiIO &io = ImGui::GetIO();
   switch (e.GetMouseButton()) {
-  case Mouse::ButtonLeft:
-    io.MouseDown[0] = true;
-    break;
-  case Mouse::ButtonRight:
-    io.MouseDown[1] = true;
-    break;
-  case Mouse::ButtonMiddle:
-    io.MouseDown[2] = true;
-    break;
+    case Mouse::ButtonLeft:
+      io.MouseDown[0] = true;
+      break;
+    case Mouse::ButtonRight:
+      io.MouseDown[1] = true;
+      break;
+    case Mouse::ButtonMiddle:
+      io.MouseDown[2] = true;
+      break;
   }
 
   return false;
@@ -159,15 +152,15 @@ bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent &e) {
 bool ImGuiLayer::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent &e) {
   ImGuiIO &io = ImGui::GetIO();
   switch (e.GetMouseButton()) {
-  case Mouse::ButtonLeft:
-    io.MouseDown[0] = false;
-    break;
-  case Mouse::ButtonRight:
-    io.MouseDown[1] = false;
-    break;
-  case Mouse::ButtonMiddle:
-    io.MouseDown[2] = false;
-    break;
+    case Mouse::ButtonLeft:
+      io.MouseDown[0] = false;
+      break;
+    case Mouse::ButtonRight:
+      io.MouseDown[1] = false;
+      break;
+    case Mouse::ButtonMiddle:
+      io.MouseDown[2] = false;
+      break;
   }
 
   return false;
@@ -180,4 +173,4 @@ bool ImGuiLayer::OnMouseScrolledEvent(MouseScrolledEvent &e) {
   return false;
 }
 
-} // namespace Develle
+}  // namespace Develle

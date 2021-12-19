@@ -1,7 +1,9 @@
+#include "Scene.hpp"
+
 #include <Develle/Renderer/Renderer2D.hpp>
-#include <Develle/Scene/Components.h>
-#include <Develle/Scene/Entity.h>
-#include <Develle/Scene/Scene.h>
+
+#include "Components.hpp"
+#include "Entity.hpp"
 
 namespace Develle {
 
@@ -25,12 +27,10 @@ void Scene::OnUpdateRuntime(Timestep) {
 void Scene::OnUpdateEditor(Timestep, EditorCamera &camera) {
   Renderer2D::BeginScene(camera);
 
-  auto group =
-      registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+  auto group = registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
   for (auto entity : group) {
-    auto [transform, sprite] =
-        group.get<TransformComponent, SpriteRendererComponent>(entity);
+    auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
     Renderer2D::DrawQuad(transform.GetTransform(), sprite, (int)entity);
   }
 
@@ -44,8 +44,7 @@ void Scene::OnViewportResize(uint32_t width, uint32_t height) {
   auto view = registry.view<CameraComponent>();
   for (auto entity : view) {
     auto &cameraComponent = view.get<CameraComponent>(entity);
-    if (!cameraComponent.FixedAspectRatio)
-      cameraComponent.Camera.SetViewportSize(width, height);
+    if (!cameraComponent.FixedAspectRatio) cameraComponent.Camera.SetViewportSize(width, height);
   }
 }
 
@@ -53,11 +52,10 @@ Entity Scene::GetPrimaryCameraEntity() {
   auto view = registry.view<CameraComponent>();
   for (auto entity : view) {
     const auto &camera = view.get<CameraComponent>(entity);
-    if (camera.Primary)
-      return Entity{entity, this};
+    if (camera.Primary) return Entity{entity, this};
   }
 
   DV_CORE_WARN("No Primary camera");
 }
 
-} // namespace Develle
+}  // namespace Develle

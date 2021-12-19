@@ -1,13 +1,12 @@
 #ifndef DEVELLE_H_
 #define DEVELLE_H_
 
-#include <Develle/Core/Application.h>
-#include <Develle/Core/Assert.h>
-#include <Develle/Core/Core.h>
-#include <Develle/Core/Layer.h>
-#include <Develle/Core/Log.h>
-
+#include <Develle/Core/Application.hpp>
+#include <Develle/Core/Assert.hpp>
+#include <Develle/Core/Core.hpp>
 #include <Develle/Core/Input.hpp>
+#include <Develle/Core/Layer.hpp>
+#include <Develle/Core/Log.hpp>
 #include <Develle/Events/Event.hpp>
 #include <Develle/Renderer/Buffer.hpp>
 #include <Develle/Renderer/Framebuffer.hpp>
