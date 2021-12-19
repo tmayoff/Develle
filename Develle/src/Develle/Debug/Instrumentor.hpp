@@ -1,5 +1,5 @@
-#ifndef INSTRUMENTOR_H_
-#define INSTRUMENTOR_H_
+#ifndef INSTRUMENTOR_HPP_
+#define INSTRUMENTOR_HPP_
 
 #include <Tracy.hpp>
 
@@ -25,4 +25,5 @@
 #define DV_PROFILE_FUNCTION()
 
 #endif  // DV_PROFILE
-#endif  // INSTRUMENTOR_H_
+
+#endif  // INSTRUMENTOR_HPP_

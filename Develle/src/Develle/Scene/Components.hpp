@@ -1,21 +1,24 @@
 #ifndef COMPONENTS_HPP_
 #define COMPONENTS_HPP_
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#define GLM_ENABLE_EXPERIMENTAL
+#include <Develle/Core/Core.hpp>
 #include <Develle/Renderer/Texture.hpp>
 #include <Develle/Scene/SceneCamera.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <string>
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
 namespace Develle {
 
 struct TagComponent {
-  std::string Tag;
-
   TagComponent() = default;
   TagComponent(const TagComponent &) = default;
   TagComponent(const std::string &tag) : Tag(tag) {}
+
+  std::string Tag;
 };
 
 struct TransformComponent {

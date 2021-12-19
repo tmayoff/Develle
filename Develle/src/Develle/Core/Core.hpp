@@ -4,6 +4,8 @@
 #include <memory>
 
 #ifdef DV_DEBUG
+#include <Develle/Debug/Instrumentor.hpp>
+
 #if defined(DV_PLATFORM_WINDOWS)
 #define DV_DEBUGBREAK() __debugbreak()
 #elif defined(DV_PLATFORM_LINUX)
