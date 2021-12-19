@@ -29,7 +29,7 @@ imgui_dep = imgui.get_variable('imgui_dep')
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
 
-# add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
+add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
 tracy = subproject('tracy')
 tracy_dep = tracy.get_variable('tracy_dep')
 
