@@ -1,0 +1,5 @@
+FROM archlinux
+
+RUN pacman -Syu
+
+RUN pacman -Sy shaderc
