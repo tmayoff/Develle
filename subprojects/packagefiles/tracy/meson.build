@@ -2,11 +2,13 @@ project('tracy')
 
 add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
 
-inc = include_directories('.')
-lib_tracy = static_library('tracy', 
+cpp = meson.get_compiler('cpp')
+dl = cpp.find_library('dl')
+
+tracy_inc = include_directories('.')
+tracy_lib = static_library('tracy', 
 	['TracyClient.cpp', 'client/TracyAlloc.cpp', 'client/TracyProfiler.cpp', 'client/tracy_rpmalloc.cpp'], 
-	include_directories: inc)
+	dependencies: dl,
+	include_directories: tracy_inc)
 
-tracy_dep = declare_dependency(include_directories : inc, link_with: lib_tracy)
-
-meson.override_dependency('tracy', tracy_dep)
+tracy_dep = declare_dependency(include_directories: tracy_inc, link_with: tracy_lib)

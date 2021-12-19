@@ -4,6 +4,8 @@ project('Develle', 'cpp',
 
 dependencies = []
 
+shaderc = dependency('shaderc')
+
 add_project_arguments('-DDV_DEBUG', language: 'cpp')
 add_project_arguments('-DDV_PROFILE', language: 'cpp')
 add_project_arguments('-DDV_ENABLE_ASSERTS', language: 'cpp')
@@ -14,7 +16,6 @@ if build_machine.system() == 'linux'
 elif build_machine.system() == 'windows'
   add_project_arguments('-DDV_PLATFORM_WINDOWS', language: 'cpp')
 endif
-
 
 assets_root = meson.current_source_dir() + '/Develle/assets'
 add_project_arguments('-DASSETS_ROOT="' + assets_root + '"', language: 'cpp')
@@ -28,7 +29,7 @@ imgui_dep = imgui.get_variable('imgui_dep')
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
 
-add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
+# add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
 tracy = subproject('tracy')
 tracy_dep = tracy.get_variable('tracy_dep')
 
@@ -48,8 +49,6 @@ yaml_dep = yaml.dependency('yaml-cpp')
 
 pfd = cmake.subproject('pfd')
 pfd_dep = pfd.dependency('portable-file-dialogs')
-
-shaderc = dependency('shaderc')
 
 subdir('external')
 
