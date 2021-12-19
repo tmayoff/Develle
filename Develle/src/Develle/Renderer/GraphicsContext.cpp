@@ -1,13 +1,19 @@
 #include "GraphicsContext.hpp"
 
 #include <Platform/OpenGL/OpenGLContext.hpp>
+#include <Platform/Vulkan/VulkanContext.hpp>
+
+#include "RendererAPI.hpp"
 
 namespace Develle {
 
 Scope<GraphicsContext> GraphicsContext::Create(void *window) {
-  // TODO(tyler) Fill this out with the RendererAPI things
-
-  return CreateScope<OpenGLGraphicsContext>(static_cast<SDL_Window *>(window));
+  switch (RendererAPI::GetAPI()) {
+    case RendererAPI::API::OpenGL:
+      return CreateScope<OpenGLGraphicsContext>(static_cast<SDL_Window *>(window));
+    case RendererAPI::API::Vulkan:
+      return CreateScope<VulkanContext>(static_cast<SDL_Window *>(window));
+  }
 }
 
 }  // namespace Develle

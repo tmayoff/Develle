@@ -3,6 +3,7 @@
 #include <Develle/Events/ApplicationEvent.hpp>
 #include <Develle/Events/KeyEvent.hpp>
 #include <Develle/Events/MouseEvent.hpp>
+#include <Develle/Renderer/RendererAPI.hpp>
 
 namespace Develle {
 
@@ -37,10 +38,23 @@ void LinuxWindow::Init(const WindowProps &props) {
 
   SDL_Init(SDL_INIT_VIDEO);
 
+  int windowFlags = SDL_WINDOW_SHOWN;
+  switch (RendererAPI::GetAPI()) {
+    case RendererAPI::API::OpenGL:
+      windowFlags |= SDL_WINDOW_OPENGL;
+      break;
+    case RendererAPI::API::Vulkan:
+      windowFlags |= SDL_WINDOW_VULKAN;
+      break;
+    default:
+      DV_CORE_ERROR("Unknown RendererAPI");
+      break;
+  }
+
   {
     DV_PROFILE_SCOPE("SDL_CreateWindow");
     window = SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              props.Width, props.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                              props.Width, props.Height, windowFlags);
   }
 
   context = GraphicsContext::Create(window);
