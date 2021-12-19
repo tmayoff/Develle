@@ -1,5 +1,5 @@
 FROM archlinux
 
-RUN pacman -Syu
+RUN pacman -Syu --noconfirm
 
-RUN pacman -Sy shaderc
+RUN pacman -Sy --noconfirm shaderc 
