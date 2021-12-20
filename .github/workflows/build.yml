@@ -28,10 +28,10 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Update
-        run: sudo apt update && sudo apt upgrade
+        run: apt update && sudo apt upgrade
 
       - name: Dependencies
-        run: sudo apt install libsdl2-dev
+        run: apt install libsdl2-dev
 
       - name: Setup Python
         uses: actions/setup-python@v2
