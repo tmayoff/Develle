@@ -31,7 +31,7 @@ jobs:
         run: pacman -Syu --noconfirm 
 
       - name: Move this to docker container
-        run: pacman -S --noconfirm g++ gdb
+        run: pacman -S --noconfirm gcc gdb
 
       - name: Dependencies
         run: pacman -S --noconfirm sdl2
