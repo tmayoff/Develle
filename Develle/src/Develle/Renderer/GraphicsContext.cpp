@@ -13,6 +13,9 @@ Scope<GraphicsContext> GraphicsContext::Create(void *window) {
       return CreateScope<OpenGLGraphicsContext>(static_cast<SDL_Window *>(window));
     case RendererAPI::API::Vulkan:
       return CreateScope<VulkanContext>(static_cast<SDL_Window *>(window));
+    default:
+      DV_CORE_ASSERT(false, "Unknown Renderer API");
+      return nullptr;
   }
 }
 
