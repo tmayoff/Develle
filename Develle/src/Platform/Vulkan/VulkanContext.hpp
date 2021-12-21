@@ -32,6 +32,8 @@ class VulkanContext : public GraphicsContext {
   void Init() override;
   void SwapBuffers() override {}
 
+  VkDevice GetLogicalDevice() const { return device; }
+
  private:
   bool UsableDevice(VkPhysicalDevice);
   bool CheckDeviceExtensionSupport(VkPhysicalDevice device);
@@ -56,6 +58,8 @@ class VulkanContext : public GraphicsContext {
   VkFormat swapchainFormat;
   VkExtent2D swapchainExtent;
   std::vector<VkImage> swapchainImages;
+
+  std::vector<VkImageView> swapchainImageViews;
 };
 
 }  // namespace Develle

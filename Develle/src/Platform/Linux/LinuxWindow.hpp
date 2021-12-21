@@ -23,6 +23,10 @@ class LinuxWindow : public Window {
   bool IsVSync() const override;
 
   virtual void *GetNativeWindow() const override { return window; }
+  GraphicsContext *GetGraphicsContext() const override {
+    // HACK(tyler)
+    return context.get();
+  }
 
  private:
   virtual void Init(const WindowProps &props);

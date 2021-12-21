@@ -73,7 +73,11 @@
 			"typeinfo": "cpp",
 			"valarray": "cpp",
 			"variant": "cpp",
-			"codecvt": "cpp"
+			"codecvt": "cpp",
+			"csignal": "cpp",
+			"future": "cpp",
+			"shared_mutex": "cpp",
+			"span": "cpp"
 		}
 	}
 }

@@ -1,20 +1,18 @@
-#ifndef OPENGLSHADER_HPP_
-#define OPENGLSHADER_HPP_
+#pragma once
+#ifndef VULKANSHADER_HPP_
+#define VULKANSHADER_HPP_
 
 #include <Develle/Renderer/Shader.hpp>
-#include <glm/glm.hpp>
-
-// TODO(tyler) remove
-typedef uint32_t GLenum;
+#include <vulkan/vulkan.hpp>
 
 namespace Develle {
 
-class OpenGLShader : public Shader {
+class VulkanShader : public Shader {
  public:
-  OpenGLShader(const std::string &filepath);
-  OpenGLShader(const std::string &name, const std::string &vertexSource,
+  VulkanShader(const std::string &filepath);
+  VulkanShader(const std::string &name, const std::string &vertexSource,
                const std::string &fragmentSource);
-  ~OpenGLShader();
+  ~VulkanShader();
 
   void Bind() const override;
   void Unbind() const override;
@@ -42,23 +40,20 @@ class OpenGLShader : public Shader {
 
  private:
   std::string ReadFile(const std::string &filepath);
-  std::unordered_map<GLenum, std::string> PreProcess(const std::string &source);
 
-  void CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string> &shaderSources);
-  void CompileOrGetOpenGLBinaries();
+  std::unordered_map<VkShaderStageFlagBits, std::string> PreProcess(const std::string &source);
+
+  void CompileOrGetVulkanBinaries(
+      const std::unordered_map<VkShaderStageFlagBits, std::string> &shaderSources);
   void CreateProgram();
-  void Reflect(GLenum stage, const std::vector<uint32_t> &shaderData);
+  void Reflect(VkShaderStageFlagBits stage, const std::vector<uint32_t> &shaderData);
 
   uint32_t rendererID;
 
   std::string filepath;
   std::string name;
-
-  std::unordered_map<GLenum, std::vector<uint32_t>> vulkanSPIRV;
-  std::unordered_map<GLenum, std::vector<uint32_t>> openGLSPIRV;
-
-  std::unordered_map<GLenum, std::string> openGLSourceCode;
+  std::unordered_map<VkShaderStageFlagBits, std::vector<uint32_t>> vulkanSPIRV;
 };
 
 }  // namespace Develle
-#endif  // OPENGLSHADER_HPP_
+#endif  // VULKANSHADER_HPP_

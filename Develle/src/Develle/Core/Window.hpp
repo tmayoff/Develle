@@ -2,6 +2,7 @@
 #define WINDOW_HPP_
 
 #include <Develle/Events/Event.hpp>
+#include <Develle/Renderer/GraphicsContext.hpp>
 #include <sstream>
 
 #include "Core.hpp"
@@ -34,6 +35,8 @@ class Window {
   virtual bool IsVSync() const = 0;
 
   virtual void *GetNativeWindow() const = 0;
+  // HACK
+  virtual GraphicsContext *GetGraphicsContext() const = 0;
 
   static Scope<Window> Create(const WindowProps &props = WindowProps());
 };

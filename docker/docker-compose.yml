@@ -1,0 +1,4 @@
+services:
+  dev_env:
+    container_name: develle_env
+    image: tmayoff/develle-build
