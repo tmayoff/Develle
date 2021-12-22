@@ -25,36 +25,42 @@ VulkanContext::VulkanContext(SDL_Window* window) : windowHandle(window) {
   const std::array<const char*, 1> validationLayers = {"VK_LAYER_KHRONOS_validation"};
 
   // Vulkan Instance
-  VkApplicationInfo appInfo{};
-  appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-  appInfo.pApplicationName = "Develle";
-  appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-  appInfo.pEngineName = "Develle";
-  appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-  appInfo.apiVersion = VK_API_VERSION_1_0;
+  {
+    DV_PROFILE_SCOPE("Create instance");
+    VkApplicationInfo appInfo{};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Develle";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "Develle";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
 
-  VkInstanceCreateInfo createInfo{};
-  createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-  createInfo.pApplicationInfo = &appInfo;
-  createInfo.enabledExtensionCount = requiredExtension.size();
-  createInfo.ppEnabledExtensionNames = requiredExtension.data();
-  createInfo.enabledLayerCount = validationLayers.size();
-  createInfo.ppEnabledLayerNames = validationLayers.data();
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+    createInfo.enabledExtensionCount = requiredExtension.size();
+    createInfo.ppEnabledExtensionNames = requiredExtension.data();
+    createInfo.enabledLayerCount = validationLayers.size();
+    createInfo.ppEnabledLayerNames = validationLayers.data();
 
-  VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
-  DV_CORE_ASSERT(result == VK_SUCCESS, "vkCreateInstance Failed");
+    VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
+    DV_CORE_ASSERT(result == VK_SUCCESS, "vkCreateInstance Failed");
+  }
 
   // Create surface
-  success = SDL_Vulkan_CreateSurface(window, instance, &surface);
-  DV_CORE_ASSERT(success == SDL_TRUE,
-                 "failed to create VK Surface: " + std::string(SDL_GetError()));
+  {
+    DV_PROFILE_SCOPE("Create Surface");
+    success = SDL_Vulkan_CreateSurface(window, instance, &surface);
+    DV_CORE_ASSERT(success == SDL_TRUE,
+                   "failed to create VK Surface: " + std::string(SDL_GetError()));
+  }
 }
 
 void VulkanContext::Init() {
   VkResult result;
 
   {  // Physical Devices
-
+    DV_PROFILE_SCOPE("")
     uint32_t deviceCount = 0;
     result = vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
     DV_CORE_ASSERT(result == VK_SUCCESS, "Failed to find GPUs with vulkan support");
@@ -71,6 +77,7 @@ void VulkanContext::Init() {
   }
 
   {
+    DV_PROFILE_SCOPE("Logical Devices");
     // Logical Devices & Queues
     QueueFamilyIndices indices = FindQueueFamilies(physicalDevice);
 
