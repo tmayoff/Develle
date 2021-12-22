@@ -35,7 +35,10 @@ void LinuxWindow::Init(const WindowProps &props) {
   data.Width = props.Width;
   data.Height = props.Height;
 
-  SDL_Init(SDL_INIT_VIDEO);
+  {
+    DV_PROFILE_SCOPE("SDL_Init");
+    SDL_Init(SDL_INIT_VIDEO);
+  }
 
   {
     DV_PROFILE_SCOPE("SDL_CreateWindow");
@@ -114,7 +117,10 @@ void LinuxWindow::OnUpdate() {
     }
   }
 
-  SDL_GL_SwapWindow(window);
+  {
+    DV_PROFILE_SCOPE("Swap window");
+    SDL_GL_SwapWindow(window);
+  }
 }
 
 }  // namespace Develle

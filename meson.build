@@ -2,12 +2,17 @@ project('Develle', 'cpp',
   version : '0.1',
   default_options : ['warning_level=3', 'cpp_std=c++20', 'b_sanitize=address'])
 
+# Options
+enable_profiling = get_option('profiling')
+
 dependencies = []
 
 shaderc = dependency('shaderc')
 
+if enable_profiling
+  add_project_arguments('-DDV_PROFILE', language: 'cpp')
+endif
 add_project_arguments('-DDV_DEBUG', language: 'cpp')
-add_project_arguments('-DDV_PROFILE', language: 'cpp')
 add_project_arguments('-DDV_ENABLE_ASSERTS', language: 'cpp')
 if build_machine.system() == 'linux'
   add_project_arguments('-DDV_PLATFORM_LINUX', language: 'cpp')
@@ -32,7 +37,9 @@ glm_dep = glm.get_variable('glm_dep')
 cmake = import('cmake')
 tracy_opt = cmake.subproject_options()
 tracy_opt.add_cmake_defines({'BUILD_SHARED_LIBS': true})
-tracy_opt.add_cmake_defines({'ENABLE_TRACY': true})
+if enable_profiling
+  tracy_opt.add_cmake_defines({'ENABLE_TRACY': true})
+endif
 tracy = cmake.subproject('tracy', options: tracy_opt)
 tracy_dep = tracy.dependency('TracyClient')
 
