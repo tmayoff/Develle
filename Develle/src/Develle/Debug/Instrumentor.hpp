@@ -18,11 +18,15 @@
 
 #define DV_PROFILE_SCOPE(name) ZoneScopedN(name)
 #define DV_PROFILE_FUNCTION() ZoneScoped
+#define DV_PROFILE_THREAD(name) tracy::SetThreadName(name)
+#define DV_PROFILE_FRAME(name) FrameMarkNamed(name)
 
 #else  // DV_PROFILE
 
 #define DV_PROFILE_SCOPE(name)
 #define DV_PROFILE_FUNCTION()
+#define DV_PROFILE_THREAD(name)
+#define DV_PROFILE_THREAD(name)
 
 #endif  // DV_PROFILE
 

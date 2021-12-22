@@ -68,6 +68,7 @@ void Application::Run() {
     }
 
     window->OnUpdate();
+    DV_PROFILE_FRAME("Main");
   }
 }
 

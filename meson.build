@@ -2,13 +2,18 @@ project('Develle', 'cpp',
   version : '0.1',
   default_options : ['warning_level=3', 'cpp_std=c++20', 'b_sanitize=address'])
 
+# Options
+enable_profiling = get_option('profiling')
+
 dependencies = []
 
 shaderc = dependency('shaderc')
 vulkan  = dependency('vulkan')
 
+if enable_profiling
+  add_project_arguments('-DDV_PROFILE', language: 'cpp')
+endif
 add_project_arguments('-DDV_DEBUG', language: 'cpp')
-add_project_arguments('-DDV_PROFILE', language: 'cpp')
 add_project_arguments('-DDV_ENABLE_ASSERTS', language: 'cpp')
 if build_machine.system() == 'linux'
   add_project_arguments('-DDV_PLATFORM_LINUX', language: 'cpp')
@@ -30,11 +35,15 @@ imgui_dep = imgui.get_variable('imgui_dep')
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
 
-# add_project_arguments('-DTRACY_ENABLE', language: 'cpp')
-tracy = subproject('tracy')
-tracy_dep = tracy.get_variable('tracy_dep')
-
 cmake = import('cmake')
+tracy_opt = cmake.subproject_options()
+tracy_opt.add_cmake_defines({'BUILD_SHARED_LIBS': true})
+if enable_profiling
+  tracy_opt.add_cmake_defines({'ENABLE_TRACY': true})
+endif
+tracy = cmake.subproject('tracy', options: tracy_opt)
+tracy_dep = tracy.dependency('TracyClient')
+
 spirv_cross_opt = cmake.subproject_options()
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_STATIC': true})
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_FORCE_PIC': true})
