@@ -57,7 +57,7 @@ void LinuxWindow::Init(const WindowProps &props) {
   {
     DV_PROFILE_SCOPE("SDL_CreateWindow");
     window = SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              props.Width, props.Height, windowFlags);
+                              props.Width, props.Height, windowFlags | SDL_WINDOW_RESIZABLE);
   }
 
   context = GraphicsContext::Create(window);

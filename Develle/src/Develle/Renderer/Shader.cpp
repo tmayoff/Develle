@@ -7,6 +7,19 @@
 
 namespace Develle {
 
+namespace Utils {
+
+std::string GetCacheDirectory(const std::string &api) {
+  return std::string(ASSETS_ROOT) + "/cache/shader/" + api;
+}
+
+void CreateCacheDirectoryIfNeeded(const std::string &api) {
+  std::string cacheDirectory = GetCacheDirectory(api);
+  if (!std::filesystem::exists(cacheDirectory)) std::filesystem::create_directories(cacheDirectory);
+}
+
+}  // namespace Utils
+
 Ref<Shader> Shader::Create(std::string filepath) {
   auto p = std::filesystem::path(filepath);
   if (!p.is_absolute()) filepath = std::string(ASSETS_ROOT) + std::string("/") + filepath;

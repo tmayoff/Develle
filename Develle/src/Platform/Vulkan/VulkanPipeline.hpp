@@ -12,6 +12,8 @@ class VulkanPipeline {
   VulkanPipeline() = default;
   VulkanPipeline(const PipelineOptions& options, const vk::RenderPass& renderPass);
 
+  const vk::Pipeline& GetHandle() const { return handle; }
+
  private:
   vk::Pipeline handle;
   vk::PipelineLayout layout;

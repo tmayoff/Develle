@@ -108,6 +108,10 @@ VulkanPipeline::VulkanPipeline(const PipelineOptions& options, const vk::RenderP
       .setAttachments(colorAttachment)
       .setBlendConstants({0.0f, 0.0f, 0.0f, 0.0f});
 
+  std::array dynamicStates = {vk::DynamicState::eViewport};
+  vk::PipelineDynamicStateCreateInfo dynamic{};
+  dynamic.setDynamicStates(dynamicStates);
+
   layout = context.GetDevice().createPipelineLayout(vk::PipelineLayoutCreateInfo());
 
   vk::GraphicsPipelineCreateInfo pipelineCreateInfo;
@@ -118,6 +122,7 @@ VulkanPipeline::VulkanPipeline(const PipelineOptions& options, const vk::RenderP
       .setPRasterizationState(&rasterizer)
       .setPMultisampleState(&multisample)
       .setPColorBlendState(&colorBlend)
+      .setPDynamicState(&dynamic)
       .setRenderPass(renderPass)
       .setSubpass(0)
       .setLayout(layout);

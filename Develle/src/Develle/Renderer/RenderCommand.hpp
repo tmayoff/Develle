@@ -10,6 +10,8 @@ class RenderCommand {
  public:
   static void Init(const PipelineOptions &options) { rendererAPI->Init(options); }
 
+  static RendererAPI *GetRendererAPI() { return RenderCommand::rendererAPI.get(); }
+
   static void BeginScene() { rendererAPI->BeginScene(); }
 
   static void EndScene() { rendererAPI->EndScene(); }

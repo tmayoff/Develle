@@ -1,17 +1,17 @@
-#include <Sandbox2D.hpp>
-
 #include <imgui.h>
 
+#include <Sandbox2D.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 Sandbox2D::Sandbox2D()
-    : Layer("Sandbox2D"), cameraController(1280.0f / 720.0f),
+    : Layer("Sandbox2D"),
+      cameraController(1280.0f / 720.0f),
       squareColor({0.2f, 0.3f, 0.8f, 1.0f}) {}
 
 void Sandbox2D::OnAttach() {
   DV_PROFILE_FUNCTION();
-  checkerboardTexture = Develle::Texture2D::Create("textures/Checkerboard.png");
+  // checkerboardTexture = Develle::Texture2D::Create("textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach() { DV_PROFILE_FUNCTION(); }
@@ -37,13 +37,12 @@ void Sandbox2D::OnUpdate(Develle::Timestep delta) {
     Develle::Renderer2D::BeginScene(cameraController.GetCamera());
     Develle::Renderer2D::DrawRotatedQuad({1.0f, 0.0f}, {0.8f, 0.8f}, -45.0f,
                                          {0.8f, 0.2f, 0.3f, 1.0f});
-    Develle::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f},
-                                  {0.8f, 0.2f, 0.3f, 1.0f});
+    Develle::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
     Develle::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.75f, 0.75f}, squareColor);
-    Develle::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1}, {20.0f, 20.0f},
-                                  checkerboardTexture, 10.0f);
-    Develle::Renderer2D::DrawRotatedQuad({-2.0f, 0.0f, 0.0f}, {1.0f, 1.0f},
-                                         rotation, checkerboardTexture, 20.0f);
+    // Develle::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1}, {20.0f, 20.0f},
+    // checkerboardTexture, 10.0f);
+    Develle::Renderer2D::DrawRotatedQuad({-2.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, rotation,
+                                         checkerboardTexture, 20.0f);
     Develle::Renderer2D::EndScene();
 
     Develle::Renderer2D::BeginScene(cameraController.GetCamera());

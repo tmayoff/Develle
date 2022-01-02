@@ -8,14 +8,8 @@
 namespace Develle {
 namespace Utils {
 
-static std::string GetCacheDirectory(const std::string &api) {
-  return std::string(ASSETS_ROOT) + "/cache/shader/" + api;
-}
-
-static void CreateCacheDirectoryIfNeeded(const std::string &api) {
-  std::string cacheDirectory = GetCacheDirectory(api);
-  if (!std::filesystem::exists(cacheDirectory)) std::filesystem::create_directories(cacheDirectory);
-}
+std::string GetCacheDirectory(const std::string &api);
+void CreateCacheDirectoryIfNeeded(const std::string &api);
 
 }  // namespace Utils
 

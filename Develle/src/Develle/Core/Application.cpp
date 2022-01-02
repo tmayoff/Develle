@@ -21,8 +21,8 @@ Application::Application(const std::string &name, ApplicationCommandLineArgs arg
 
   Renderer::Init();
 
-  imGuiLayer = new ImGuiLayer();
-  PushOverlay(imGuiLayer);
+  // imGuiLayer = new ImGuiLayer();
+  // PushOverlay(imGuiLayer);
 }
 
 Application::~Application() { DV_PROFILE_FUNCTION(); }
@@ -58,13 +58,13 @@ void Application::Run() {
         for (Layer *layer : layerStack) layer->OnUpdate(delta);
       }
 
-      imGuiLayer->Begin();
-      {
-        DV_PROFILE_SCOPE("LayerStack OnImGuiRender");
+      // imGuiLayer->Begin();
+      // {
+      //   DV_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
-        for (Layer *layer : layerStack) layer->OnImGuiRender();
-      }
-      imGuiLayer->End();
+      //   for (Layer *layer : layerStack) layer->OnImGuiRender();
+      // }
+      // imGuiLayer->End();
     }
 
     window->OnUpdate();
@@ -90,7 +90,7 @@ bool Application::OnWindowClose(WindowCloseEvent &) {
   return true;
 }
 
-bool Application::OnWindowResize(WindowResizeEvent &e) {
+bool Application::OnWindowResize(WindowResizeEvent &) {
   DV_PROFILE_FUNCTION();
 
   // if (e.GetWidth())

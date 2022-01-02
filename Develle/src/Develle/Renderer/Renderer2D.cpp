@@ -29,6 +29,7 @@ struct Renderer2DData {
   Ref<VertexBuffer> QuadVertexBuffer;
   Ref<Shader> TextureShader;
   Ref<Texture2D> WhiteTexture;
+  Ref<IndexBuffer> quadIB;
 
   uint32_t QuadIndexCount = 0;
   QuadVertex *QuadVertexBufferBase = nullptr;
@@ -73,27 +74,24 @@ void Renderer2D::Init() {
     offset += 4;
   }
 
-  Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices.data(), data.MaxIndices);
-  data.QuadVertexArray->SetIndexBuffer(quadIB);
+  data.quadIB = IndexBuffer::Create(quadIndices.data(), data.MaxIndices);
+  // data.QuadVertexArray->SetIndexBuffer(quadIB);
 
-  data.WhiteTexture = Texture2D::Create(1, 1);
-  const uint32_t WhiteTextureData = 0xFFFFFFFF;
-  data.WhiteTexture->SetData((void *)&WhiteTextureData, sizeof(uint32_t));
-
-  std::array<uint32_t, data.MaxTextureSlots> samplers{};
-  for (uint32_t i = 0; i < data.MaxTextureSlots; i++) samplers.at(i) = i;
+  // data.WhiteTexture = Texture2D::Create(1, 1);
+  // const uint32_t WhiteTextureData = 0xFFFFFFFF;
+  // data.WhiteTexture->SetData((void *)&WhiteTextureData, sizeof(uint32_t));
 
   data.TextureShader = Shader::Create("shaders/Texture.glsl");
 
   // Set first texture slot 0
-  data.TextureSlots[0] = data.WhiteTexture;
+  // data.TextureSlots[0] = data.WhiteTexture;
 
   data.QuadVertexPositions[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
   data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
   data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
   data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
 
-  data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+  // data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 }
 
 void Renderer2D::Shutdown() {
@@ -105,8 +103,8 @@ void Renderer2D::BeginScene(const EditorCamera &camera) {
   DV_PROFILE_FUNCTION();
   RenderCommand::BeginScene();
 
-  data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-  data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+  // data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+  // data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();
 }
@@ -115,8 +113,8 @@ void Renderer2D::BeginScene(const OrthographicCamera &camera) {
   DV_PROFILE_FUNCTION();
   RenderCommand::BeginScene();
 
-  data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
-  data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+  // data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
+  // data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();
 }
@@ -136,9 +134,11 @@ void Renderer2D::Flush() {
   data.QuadVertexBuffer->SetData(data.QuadVertexBufferBase, dataSize);
 
   // Bind Textures
-  for (uint32_t i = 0; i < data.TextureSlotIndex; i++) data.TextureSlots[i]->Bind(i);
+  // for (uint32_t i = 0; i < data.TextureSlotIndex; i++) data.TextureSlots[i]->Bind(i);
 
-  data.TextureShader->Bind();
+  // data.TextureShader->Bind();
+  data.quadIB->Bind();
+  data.QuadVertexBuffer->Bind();
   RenderCommand::DrawIndexed(data.QuadVertexArray, data.QuadIndexCount);
   data.Stats.DrawCalls++;
 }

@@ -1,6 +1,9 @@
 #include "VulkanBuffer.hpp"
 
+#include <Develle/Renderer/RenderCommand.hpp>
+
 #include "VulkanContext.hpp"
+#include "VulkanRendererAPI.hpp"
 
 namespace Develle {
 
@@ -43,7 +46,11 @@ VulkanVertexBuffer::~VulkanVertexBuffer() {
   vmaDestroyBuffer(vulkanContext.GetAllocator(), buffer, allocation);
 }
 
-void VulkanVertexBuffer::Bind() const {}
+void VulkanVertexBuffer::Bind() const {
+  auto r = RenderCommand::GetRendererAPI();
+  auto v = static_cast<VulkanRendererAPI *>(r);
+  v->GetCurrentCommandBuffer().Commands.bindVertexBuffers(0, buffer, {0});
+}
 
 void VulkanVertexBuffer::Unbind() const {}
 
@@ -70,6 +77,11 @@ VulkanIndexBuffer::VulkanIndexBuffer(uint32_t *indices, uint32_t count) {
   allocInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_TO_CPU;
   vmaCreateBuffer(vulkanContext.GetAllocator(), (VkBufferCreateInfo *)&bufferInfo, &allocInfo,
                   (VkBuffer *)&buffer, &allocation, nullptr);
+
+  void *mem = nullptr;
+  vmaMapMemory(GetCurrentVulkanContext().GetAllocator(), allocation, &mem);
+  std::memcpy(mem, indices, sizeof(uint32_t) * count);
+  vmaUnmapMemory(GetCurrentVulkanContext().GetAllocator(), allocation);
 }
 
 VulkanIndexBuffer::~VulkanIndexBuffer() {
@@ -77,7 +89,11 @@ VulkanIndexBuffer::~VulkanIndexBuffer() {
   vmaDestroyBuffer(vulkanContext.GetAllocator(), buffer, allocation);
 }
 
-void VulkanIndexBuffer::Bind() const {}
+void VulkanIndexBuffer::Bind() const {
+  auto r = RenderCommand::GetRendererAPI();
+  auto v = static_cast<VulkanRendererAPI *>(r);
+  v->GetCurrentCommandBuffer().Commands.bindIndexBuffer(buffer, 0, vk::IndexType::eUint32);
+}
 
 void VulkanIndexBuffer::Unbind() const {}
 

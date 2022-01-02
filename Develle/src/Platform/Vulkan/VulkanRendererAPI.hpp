@@ -9,6 +9,11 @@
 
 namespace Develle {
 
+struct CommandBuffer {
+  vk::CommandBuffer Commands;
+  vk::Fence CommandQueueFence;
+};
+
 class VulkanRendererAPI : public RendererAPI {
  public:
   VulkanRendererAPI() = default;
@@ -25,10 +30,20 @@ class VulkanRendererAPI : public RendererAPI {
 
   void DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount = 0) override;
 
+  const CommandBuffer &GetCurrentCommandBuffer() { return commandBuffers[currentFrameIndex]; }
+
  private:
   VulkanPipeline pipeline;
   vk::RenderPass renderPass;
   vk::PipelineLayout layout;
+
+  vk::Viewport viewport = vk::Viewport(0.f, 0.f, 1280.f, 720.f);
+
+  uint32_t currentFrameIndex;
+  uint32_t presentImageIndex;
+
+  std::vector<CommandBuffer> commandBuffers;
+  std::vector<vk::Framebuffer> framebuffers;
 };
 
 }  // namespace Develle

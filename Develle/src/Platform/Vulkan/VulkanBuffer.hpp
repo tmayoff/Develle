@@ -14,6 +14,12 @@ class VulkanVertexBuffer : public VertexBuffer {
  public:
   VulkanVertexBuffer(uint32_t size);
   VulkanVertexBuffer(float *vertices, uint32_t size);
+
+  VulkanVertexBuffer(const VulkanVertexBuffer &) = delete;
+  VulkanVertexBuffer(VulkanVertexBuffer &&) = delete;
+  VulkanVertexBuffer &operator=(VulkanVertexBuffer &&) = delete;
+  VulkanVertexBuffer &operator=(const VulkanVertexBuffer &) = delete;
+
   ~VulkanVertexBuffer() override;
 
   void Bind() const override;
@@ -22,6 +28,7 @@ class VulkanVertexBuffer : public VertexBuffer {
   void SetData(const void *data, uint32_t size) override;
 
   const BufferLayout &GetLayout() const override { return layout; }
+  void SetLayout(const BufferLayout &layout) override { this->layout = layout; }
 
  private:
   vk::Buffer buffer;
@@ -32,6 +39,12 @@ class VulkanVertexBuffer : public VertexBuffer {
 class VulkanIndexBuffer : public IndexBuffer {
  public:
   VulkanIndexBuffer(uint32_t *indices, uint32_t count);
+
+  VulkanIndexBuffer(const VulkanIndexBuffer &) = delete;
+  VulkanIndexBuffer(VulkanIndexBuffer &&) = delete;
+  VulkanIndexBuffer &operator=(VulkanIndexBuffer &&) = delete;
+  VulkanIndexBuffer &operator=(const VulkanIndexBuffer &) = delete;
+
   ~VulkanIndexBuffer() override;
 
   void Bind() const override;
