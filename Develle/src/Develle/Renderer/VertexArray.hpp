@@ -6,7 +6,7 @@
 namespace Develle {
 
 class VertexArray {
-public:
+ public:
   virtual ~VertexArray() = default;
 
   virtual void Bind() const = 0;
@@ -21,5 +21,5 @@ public:
   static Ref<VertexArray> Create();
 };
 
-} // namespace Develle
-#endif // VERTEXARRAY_HPP_
+}  // namespace Develle
+#endif  // VERTEXARRAY_HPP_

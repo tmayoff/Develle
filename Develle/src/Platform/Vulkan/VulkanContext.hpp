@@ -6,11 +6,17 @@
 #include <optional>
 #include <vulkan/vulkan.hpp>
 
+struct VmaAllocator_T;
+using VmaAllocator = VmaAllocator_T*;
+
 struct SDL_Window;
 
 namespace Develle {
 
-const std::vector<const char*> RequiredExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+struct VulkanContextCreateOptions {
+  std::vector<const char*> Extensions;
+  std::vector<const char*> Layers;
+};
 
 struct QueueFamilyIndices {
   std::optional<uint32_t> graphicsFamily;
@@ -19,47 +25,62 @@ struct QueueFamilyIndices {
   bool IsComplete() { return graphicsFamily.has_value() && presentFamily.has_value(); }
 };
 
-struct SwapchainSupportDetails {
-  VkSurfaceCapabilitiesKHR capabilities;
-  std::vector<VkSurfaceFormatKHR> formats;
-  std::vector<VkPresentModeKHR> presentModes;
-};
-
 class VulkanContext : public GraphicsContext {
  public:
-  VulkanContext(SDL_Window* window);
+  VulkanContext(SDL_Window* window, const VulkanContextCreateOptions& options);
 
   void Init() override;
   void SwapBuffers() override {}
 
-  VkDevice GetLogicalDevice() const { return device; }
+  static const std::vector<const char*> GetRequiredExtensions(SDL_Window* window);
+
+  const vk::Instance& GetInstance() const { return instance; }
+  const vk::SurfaceKHR& GetSurface() const { return surface; }
+  const vk::PhysicalDevice& GetPhysicalDevice() const { return physicalDevice; }
+  const vk::Device& GetDevice() const { return device; }
+  const vk::SwapchainKHR& GetSwapchain() const { return swapchain; }
+  const vk::Extent2D& GetSurfaceExtent() const { return surfaceExtent; }
+  const vk::SurfaceFormatKHR& GetSurfaceFormat() const { return surfaceFormat; }
+  const vk::Queue& GetGraphicsQueue() const { return graphicsQueue; }
+  const vk::Queue& GetPresentQueue() const { return presentQueue; }
+  const vk::Semaphore& GetImageAvailableSemaphore() const { return imageAvailableSemaphore; }
+  const vk::Semaphore& GetRenderingFinishedSemaphore() const { return renderingFinishedSemaphore; }
+  const std::vector<vk::ImageView>& GetSwapchainImageViews() const { return swapchainImageViews; }
+
+  const VmaAllocator& GetAllocator() const { return allocator; }
+  const vk::CommandPool& GetCommandPool() const { return commandPool; }
 
  private:
-  bool UsableDevice(VkPhysicalDevice);
-  bool CheckDeviceExtensionSupport(VkPhysicalDevice device);
-  QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
-  SwapchainSupportDetails QuerySwapchainSupport(VkPhysicalDevice device);
-  VkSurfaceFormatKHR ChooseSwapchainSurfaceFormat(
-      const std::vector<VkSurfaceFormatKHR>& availableFormats);
-  VkPresentModeKHR ChooseSwapchainPresentMode(
-      const std::vector<VkPresentModeKHR>& availablePresentModes);
-  VkExtent2D ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+  void pickPhysicalDevice(std::vector<vk::PhysicalDevice> devices);
+  QueueFamilyIndices findQueueFamilies(const vk::PhysicalDevice& device);
 
-  SDL_Window* windowHandle;
+  void recreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHeight);
 
-  VkInstance instance;
-  VkSurfaceKHR surface;
-  VkPhysicalDevice physicalDevice;
-  VkDevice device;
-  VkQueue graphicsQueue;
-  VkQueue presentQueue;
+  SDL_Window* window;
 
-  VkSwapchainKHR swapchain;
-  VkFormat swapchainFormat;
-  VkExtent2D swapchainExtent;
-  std::vector<VkImage> swapchainImages;
+  vk::Instance instance;
+  vk::PhysicalDevice physicalDevice;
 
-  std::vector<VkImageView> swapchainImageViews;
+  vk::SurfaceKHR surface;
+  vk::Extent2D surfaceExtent;
+  vk::PresentModeKHR surfacePresentMode;
+  uint32_t presentImageCount = 1;
+  vk::SurfaceFormatKHR surfaceFormat;
+
+  vk::Device device;
+  vk::Queue graphicsQueue;
+  vk::Queue presentQueue;
+
+  VmaAllocator allocator = {};
+
+  vk::SwapchainKHR swapchain;
+  std::vector<vk::Image> swapchainImages;
+  std::vector<vk::ImageView> swapchainImageViews;
+
+  vk::Semaphore imageAvailableSemaphore;
+  vk::Semaphore renderingFinishedSemaphore;
+
+  vk::CommandPool commandPool;
 };
 
 }  // namespace Develle

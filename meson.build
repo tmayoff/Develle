@@ -35,6 +35,9 @@ imgui_dep = imgui.get_variable('imgui_dep')
 glm = subproject('glm')
 glm_dep = glm.get_variable('glm_dep')
 
+vma_proj = subproject('vma')
+vma = vma_proj.get_variable('vma_dep')
+
 cmake = import('cmake')
 tracy_opt = cmake.subproject_options()
 tracy_opt.add_cmake_defines({'BUILD_SHARED_LIBS': true})
@@ -63,7 +66,7 @@ pfd_dep = pfd.dependency('portable-file-dialogs')
 subdir('external')
 
 dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, vulkan, stbi_dep,
-                tracy_dep, yaml_dep, pfd_dep,
+                tracy_dep, yaml_dep, pfd_dep, vma,
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets
