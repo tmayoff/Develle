@@ -6,15 +6,14 @@
 namespace Develle {
 
 class Shader {
-public:
+ public:
   virtual ~Shader() = default;
 
   virtual void Bind() const = 0;
   virtual void Unbind() const = 0;
 
   virtual void SetInt(const std::string &name, int value) = 0;
-  virtual void SetIntArray(const std::string &name, int *values,
-                           uint32_t count) = 0;
+  virtual void SetIntArray(const std::string &name, int *values, uint32_t count) = 0;
   virtual void SetFloat(const std::string &name, float value) = 0;
   virtual void SetFloat2(const std::string &name, const glm::vec2 &value) = 0;
   virtual void SetFloat3(const std::string &name, const glm::vec3 &value) = 0;
@@ -23,14 +22,16 @@ public:
 
   virtual const std::string &GetName() const = 0;
 
+  virtual void *GetVertexModule() const = 0;
+  virtual void *GetFragmentModule() const = 0;
+
   static Ref<Shader> Create(std::string filepath);
-  static Ref<Shader> Create(const std::string &name,
-                            const std::string &vertexSource,
+  static Ref<Shader> Create(const std::string &name, const std::string &vertexSource,
                             const std::string &fragmentSource);
 };
 
 class ShaderLibrary {
-public:
+ public:
   void Add(const std::string &name, const Ref<Shader> &shader);
   void Add(const Ref<Shader> &shader);
   Ref<Shader> Load(const std::string &filepath);
@@ -40,9 +41,9 @@ public:
 
   bool Exists(const std::string &name) const;
 
-private:
+ private:
   std::unordered_map<std::string, Ref<Shader>> shaders;
 };
 
-} // namespace Develle
-#endif // SHADER_HPP_
+}  // namespace Develle
+#endif  // SHADER_HPP_

@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Pipeline.hpp"
+
 namespace Develle {
 
 struct QuadVertex {
@@ -51,20 +53,18 @@ struct Renderer2DData {
 static Renderer2DData data;
 
 void Renderer2D::Init() {
-  // Initialize Pipeline
-
   DV_PROFILE_FUNCTION();
 
-  data.QuadVertexArray = VertexArray::Create();
+  // Initialize Pipeline
+  PipelineOptions options;
+  options.bufferLayout = {
+      {ShaderDataType::Float3, "a_Position"},    {ShaderDataType::Float4, "a_Color"},
+      {ShaderDataType::Float2, "a_TexCoord"},    {ShaderDataType::Float, "a_TexIndex"},
+      {ShaderDataType::Float, "a_TilingFactor"}, {ShaderDataType::Int, "a_EntityID"}};
+
+  auto pipeLine = Pipeline::Create(options);
 
   data.QuadVertexBuffer = VertexBuffer::Create(data.MaxVertices * sizeof(QuadVertex));
-  data.QuadVertexBuffer->SetLayout({{ShaderDataType::Float3, "a_Position"},
-                                    {ShaderDataType::Float4, "a_Color"},
-                                    {ShaderDataType::Float2, "a_TexCoord"},
-                                    {ShaderDataType::Float, "a_TexIndex"},
-                                    {ShaderDataType::Float, "a_TilingFactor"},
-                                    {ShaderDataType::Int, "a_EntityID"}});
-  data.QuadVertexArray->AddVertexBuffer(data.QuadVertexBuffer);
 
   data.QuadVertexBufferBase = new QuadVertex[data.MaxVertices];
 

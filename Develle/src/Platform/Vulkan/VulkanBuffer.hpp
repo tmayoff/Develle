@@ -5,6 +5,7 @@
 #include <vk_mem_alloc.h>
 
 #include <Develle/Renderer/Buffer.hpp>
+#include <Develle/Renderer/Pipeline.hpp>
 #include <vulkan/vulkan.hpp>
 
 namespace Develle {

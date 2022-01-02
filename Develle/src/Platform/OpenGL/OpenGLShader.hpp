@@ -16,6 +16,9 @@ class OpenGLShader : public Shader {
                const std::string &fragmentSource);
   ~OpenGLShader();
 
+  void *GetVertexModule() const override { return nullptr; }
+  void *GetFragmentModule() const override { return nullptr; }
+
   void Bind() const override;
   void Unbind() const override;
 

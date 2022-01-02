@@ -1,6 +1,7 @@
 #include "RendererAPI.hpp"
 
 #include <Platform/OpenGL/OpenGLRendererAPI.hpp>
+#include <Platform/Vulkan/VulkanRendererAPI.hpp>
 
 namespace Develle {
 
@@ -11,8 +12,10 @@ Scope<RendererAPI> RendererAPI::Create() {
   switch (api) {
     case RendererAPI::API::OpenGL:
       return CreateScope<OpenGLRendererAPI>();
+    case RendererAPI::API::Vulkan:
+      return CreateScope<VulkanRendererAPI>();
     default:
-      break;
+      return nullptr;
   }
 }
 

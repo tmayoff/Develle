@@ -3,10 +3,12 @@
 
 #include <Develle/Renderer/Buffer.hpp>
 
+#include "Develle/Renderer/Pipeline.hpp"
+
 namespace Develle {
 
 class OpenGLVertexBuffer : public VertexBuffer {
-public:
+ public:
   OpenGLVertexBuffer(uint32_t size);
   OpenGLVertexBuffer(float *vertices, uint32_t size);
   ~OpenGLVertexBuffer() override;
@@ -19,13 +21,13 @@ public:
   const BufferLayout &GetLayout() const override { return layout; }
   void SetLayout(const BufferLayout &layout) override { this->layout = layout; }
 
-private:
+ private:
   uint32_t rendererID;
   BufferLayout layout;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {
-public:
+ public:
   OpenGLIndexBuffer(uint32_t *indices, uint32_t count);
   ~OpenGLIndexBuffer();
 
@@ -34,10 +36,10 @@ public:
 
   uint32_t GetCount() const { return count; }
 
-private:
+ private:
   uint32_t rendererID;
   uint32_t count;
 };
 
-} // namespace Develle
-#endif // OPENGLBUFFER_HPP_
+}  // namespace Develle
+#endif  // OPENGLBUFFER_HPP_
