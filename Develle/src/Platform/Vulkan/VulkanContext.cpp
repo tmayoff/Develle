@@ -20,7 +20,7 @@ VulkanContext::VulkanContext(SDL_Window* window, const VulkanContextCreateOption
 }
 
 void VulkanContext::Init() {
-  surface = CreateSurfaceKHR(instance);
+  surface = CreateSurfaceKHR(window, instance);
 
   pickPhysicalDevice(instance.enumeratePhysicalDevices());
 
@@ -171,6 +171,17 @@ void VulkanContext::recreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHei
             vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
     swapchainImageViews.push_back(device.createImageView(imageViewInfo));
   }
+}
+
+static VulkanContext* CurrentVulkanContext = nullptr;
+
+VulkanContext& GetCurrentVulkanContext() {
+  assert(CurrentVulkanContext != nullptr);
+  return *CurrentVulkanContext;
+}
+
+void SetCurrentVulkanContext(VulkanContext& context) {
+  CurrentVulkanContext = std::addressof(context);
 }
 
 }  // namespace Develle

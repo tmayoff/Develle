@@ -15,7 +15,9 @@ Scope<GraphicsContext> GraphicsContext::Create(void *window) {
       VulkanContextCreateOptions options{};
       options.Layers = {"VK_LAYER_KHRONOS_validation"};
       options.Extensions = VulkanContext::GetRequiredExtensions(static_cast<SDL_Window *>(window));
-      return CreateScope<VulkanContext>(static_cast<SDL_Window *>(window), options);
+      auto vulkanContext = CreateScope<VulkanContext>(static_cast<SDL_Window *>(window), options);
+      SetCurrentVulkanContext(*vulkanContext.get());
+      return vulkanContext;
     }
     default:
       DV_CORE_ASSERT(false, "Unknown Renderer API");

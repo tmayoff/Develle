@@ -1,1 +1,1 @@
-sources += files('VulkanContext.cpp')
+sources += files('VulkanBuffer.cpp', 'VulkanContext.cpp')

@@ -83,6 +83,9 @@ class VulkanContext : public GraphicsContext {
   vk::CommandPool commandPool;
 };
 
+VulkanContext& GetCurrentVulkanContext();
+void SetCurrentVulkanContext(VulkanContext&);
+
 }  // namespace Develle
 
 #endif  // VULKANCONTEXT_HPP_

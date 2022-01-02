@@ -10,10 +10,9 @@
 
 namespace Develle {
 
-vk::SurfaceKHR CreateSurfaceKHR(const vk::Instance& instance) {
+vk::SurfaceKHR CreateSurfaceKHR(SDL_Window* window, const vk::Instance& instance) {
   VkSurfaceKHR surface = VK_NULL_HANDLE;
-  SDL_Vulkan_CreateSurface((SDL_Window*)Application::Get().GetWindow().GetNativeWindow(), instance,
-                           &surface);
+  SDL_Vulkan_CreateSurface(window, instance, &surface);
   return surface;
 }
 
