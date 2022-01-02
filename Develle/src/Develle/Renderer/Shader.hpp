@@ -1,9 +1,23 @@
+#pragma once
 #ifndef SHADER_HPP_
 #define SHADER_HPP_
 
+#include <filesystem>
 #include <glm/glm.hpp>
 
 namespace Develle {
+namespace Utils {
+
+static std::string GetCacheDirectory(const std::string &api) {
+  return std::string(ASSETS_ROOT) + "/cache/shader/" + api;
+}
+
+static void CreateCacheDirectoryIfNeeded(const std::string &api) {
+  std::string cacheDirectory = GetCacheDirectory(api);
+  if (!std::filesystem::exists(cacheDirectory)) std::filesystem::create_directories(cacheDirectory);
+}
+
+}  // namespace Utils
 
 class Shader {
  public:
@@ -22,8 +36,8 @@ class Shader {
 
   virtual const std::string &GetName() const = 0;
 
-  virtual void *GetVertexModule() const = 0;
-  virtual void *GetFragmentModule() const = 0;
+  virtual void *GetVertexModule() = 0;
+  virtual void *GetFragmentModule() = 0;
 
   static Ref<Shader> Create(std::string filepath);
   static Ref<Shader> Create(const std::string &name, const std::string &vertexSource,
@@ -46,4 +60,5 @@ class ShaderLibrary {
 };
 
 }  // namespace Develle
+
 #endif  // SHADER_HPP_

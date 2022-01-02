@@ -6,8 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Pipeline.hpp"
-
 namespace Develle {
 
 struct QuadVertex {
@@ -54,15 +52,6 @@ static Renderer2DData data;
 
 void Renderer2D::Init() {
   DV_PROFILE_FUNCTION();
-
-  // Initialize Pipeline
-  PipelineOptions options;
-  options.bufferLayout = {
-      {ShaderDataType::Float3, "a_Position"},    {ShaderDataType::Float4, "a_Color"},
-      {ShaderDataType::Float2, "a_TexCoord"},    {ShaderDataType::Float, "a_TexIndex"},
-      {ShaderDataType::Float, "a_TilingFactor"}, {ShaderDataType::Int, "a_EntityID"}};
-
-  auto pipeLine = Pipeline::Create(options);
 
   data.QuadVertexBuffer = VertexBuffer::Create(data.MaxVertices * sizeof(QuadVertex));
 
@@ -114,6 +103,7 @@ void Renderer2D::Shutdown() {
 
 void Renderer2D::BeginScene(const EditorCamera &camera) {
   DV_PROFILE_FUNCTION();
+  RenderCommand::BeginScene();
 
   data.CameraBuffer.ViewProjection = camera.GetViewProjection();
   data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
@@ -123,6 +113,7 @@ void Renderer2D::BeginScene(const EditorCamera &camera) {
 
 void Renderer2D::BeginScene(const OrthographicCamera &camera) {
   DV_PROFILE_FUNCTION();
+  RenderCommand::BeginScene();
 
   data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
   data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
@@ -133,6 +124,8 @@ void Renderer2D::BeginScene(const OrthographicCamera &camera) {
 void Renderer2D::EndScene() {
   DV_PROFILE_FUNCTION();
   Flush();
+
+  RenderCommand::EndScene();
 }
 
 void Renderer2D::Flush() {

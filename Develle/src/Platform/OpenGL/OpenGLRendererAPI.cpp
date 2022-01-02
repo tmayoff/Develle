@@ -25,7 +25,7 @@ void OpenGLMessageCallback(unsigned, unsigned, unsigned, unsigned severity, int,
   }
 }
 
-void OpenGLRendererAPI::Init() {
+void OpenGLRendererAPI::Init(const PipelineOptions &) {
   DV_PROFILE_FUNCTION();
 
 #ifdef DV_DEBUG

@@ -128,10 +128,5 @@ struct PipelineOptions {
   BufferLayout bufferLayout;
 };
 
-class Pipeline {
- public:
-  static Scope<Pipeline> Create(const PipelineOptions &options);
-};
-
 }  // namespace Develle
 #endif  // PIPELINE_HPP_

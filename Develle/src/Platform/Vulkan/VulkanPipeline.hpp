@@ -7,9 +7,10 @@
 
 namespace Develle {
 
-class VulkanPipeline : public Pipeline {
+class VulkanPipeline {
  public:
-  VulkanPipeline(const PipelineOptions &options);
+  VulkanPipeline() = default;
+  VulkanPipeline(const PipelineOptions& options, const vk::RenderPass& renderPass);
 
  private:
   vk::Pipeline handle;

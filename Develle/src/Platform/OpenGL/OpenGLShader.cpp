@@ -1,8 +1,8 @@
+#include "OpenGLShader.hpp"
+
 #include <glad/glad.h>
 
 #include <Develle/Core/Timer.hpp>
-#include <Develle/Utils/ShaderUtils.hpp>
-#include <Platform/OpenGL/OpenGLShader.hpp>
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <shaderc/shaderc.hpp>
@@ -11,10 +11,72 @@
 
 namespace Develle {
 
+namespace Utils {
+
+static GLenum OpenGLShaderTypeFromString(const std::string &type) {
+  if (type == "vertex")
+    return GL_VERTEX_SHADER;
+  else if (type == "fragment" || type == "pixel")
+    return GL_FRAGMENT_SHADER;
+
+  DV_CORE_ASSERT(false, "Unknown shader type");
+  return 0;
+}
+
+static shaderc_shader_kind GLShaderStageToShaderC(GLenum stage) {
+  switch (stage) {
+    case GL_VERTEX_SHADER:
+      return shaderc_glsl_vertex_shader;
+    case GL_FRAGMENT_SHADER:
+      return shaderc_glsl_fragment_shader;
+    default:
+      DV_CORE_ASSERT(false, "Unknown shader stage");
+      return (shaderc_shader_kind)0;
+  }
+}
+
+static const char *GLShaderStageToString(GLenum stage) {
+  switch (stage) {
+    case GL_VERTEX_SHADER:
+      return "GL_VERTEX_SHADER";
+    case GL_FRAGMENT_SHADER:
+      return "GL_FRAGMENT_SHADER";
+    default:
+      DV_CORE_ASSERT(false, "Unknown shader stage");
+      return nullptr;
+  }
+}
+
+static const char *GLShaderStageCachedOpenGLFileExtension(uint32_t stage) {
+  switch (stage) {
+    case GL_VERTEX_SHADER:
+      return ".cached_opengl.vert";
+    case GL_FRAGMENT_SHADER:
+      return ".cached_opengl.frag";
+    default:
+      DV_CORE_ASSERT(false, "Unknown shader stage");
+      return "";
+  }
+}
+
+static const char *GLShaderStageCachedVulkanFileExtension(uint32_t stage) {
+  switch (stage) {
+    case GL_VERTEX_SHADER:
+      return ".cached_vulkan.vert";
+    case GL_FRAGMENT_SHADER:
+      return ".cached_vulkan.frag";
+    default:
+      DV_CORE_ASSERT(false, "Unknown shader stage");
+      return "";
+  }
+}
+
+}  // namespace Utils
+
 OpenGLShader::OpenGLShader(const std::string &filepath) : filepath(filepath) {
   DV_PROFILE_FUNCTION();
 
-  Utils::CreateCacheDirectoryIfNeeded();
+  Utils::CreateCacheDirectoryIfNeeded("opengl");
 
   std::string source = ReadFile(filepath);
   auto shaderSources = PreProcess(source);
@@ -192,7 +254,7 @@ void OpenGLShader::CompileOrGetVulkanBinaries(
   const bool optimize = true;
   if (optimize) options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
-  std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
+  std::filesystem::path cacheDirectory = Utils::GetCacheDirectory("opengl");
 
   auto &shaderData = vulkanSPIRV;
   shaderData.clear();
@@ -243,7 +305,7 @@ void OpenGLShader::CompileOrGetOpenGLBinaries() {
   const bool optimize = false;
   if (optimize) options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
-  std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
+  std::filesystem::path cacheDirectory = Utils::GetCacheDirectory("opengl");
 
   shaderData.clear();
   openGLSourceCode.clear();

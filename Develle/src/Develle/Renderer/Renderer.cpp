@@ -1,12 +1,22 @@
-#include <Develle/Renderer/Renderer.hpp>
-#include <Develle/Renderer/Renderer2D.hpp>
+#include "Renderer.hpp"
+
+#include "Pipeline.hpp"
+#include "Renderer2D.hpp"
 
 namespace Develle {
 
 void Renderer::Init() {
   DV_PROFILE_FUNCTION();
 
-  RenderCommand::Init();
+  // Initialize Pipeline
+  PipelineOptions options;
+  options.bufferLayout = {
+      {ShaderDataType::Float3, "a_Position"},    {ShaderDataType::Float4, "a_Color"},
+      {ShaderDataType::Float2, "a_TexCoord"},    {ShaderDataType::Float, "a_TexIndex"},
+      {ShaderDataType::Float, "a_TilingFactor"}, {ShaderDataType::Int, "a_EntityID"}};
+  options.shader = Shader::Create("shaders/Texture.glsl");
+
+  RenderCommand::Init(options);
   Renderer2D::Init();
 }
 
@@ -20,4 +30,4 @@ void Renderer::BeginScene() {}
 
 void Renderer::EndScene() {}
 
-} // namespace Develle
+}  // namespace Develle

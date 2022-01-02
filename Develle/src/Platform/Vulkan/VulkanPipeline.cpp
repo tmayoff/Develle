@@ -29,7 +29,7 @@ static vk::Format ShaderDataTypeToVkForamt(ShaderDataType type) {
   }
 }
 
-VulkanPipeline::VulkanPipeline(const PipelineOptions& options) {
+VulkanPipeline::VulkanPipeline(const PipelineOptions& options, const vk::RenderPass& renderPass) {
   auto& context = GetCurrentVulkanContext();
 
   std::array shaderStageInfos = {
@@ -118,7 +118,7 @@ VulkanPipeline::VulkanPipeline(const PipelineOptions& options) {
       .setPRasterizationState(&rasterizer)
       .setPMultisampleState(&multisample)
       .setPColorBlendState(&colorBlend)
-      //   .setRenderPass(renderPass)
+      .setRenderPass(renderPass)
       .setSubpass(0)
       .setLayout(layout);
 
