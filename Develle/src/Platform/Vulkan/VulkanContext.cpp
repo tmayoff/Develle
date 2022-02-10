@@ -78,7 +78,7 @@ void VulkanContext::Init() {
   vmaCreateAllocator(&allocatorInfo, &allocator);
 
   // Swapchain
-  recreateSwapchain(surfaceExtent.width, surfaceExtent.width);
+  RecreateSwapchain(surfaceExtent.width, surfaceExtent.width);
 
   imageAvailableSemaphore = device.createSemaphore(vk::SemaphoreCreateInfo());
   renderingFinishedSemaphore = device.createSemaphore(vk::SemaphoreCreateInfo());
@@ -130,7 +130,7 @@ QueueFamilyIndices VulkanContext::findQueueFamilies(const vk::PhysicalDevice& de
   return indices;
 }
 
-void VulkanContext::recreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHeight) {
+void VulkanContext::RecreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHeight) {
   device.waitIdle();
 
   auto surfaceCapabilities = physicalDevice.getSurfaceCapabilitiesKHR(surface);

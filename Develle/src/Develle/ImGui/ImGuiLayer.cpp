@@ -4,8 +4,10 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl.h>
+#include <imgui_impl_vulkan.h>
 
 #include <Develle/Core/Application.hpp>
+#include <Develle/Renderer/RendererAPI.hpp>
 
 namespace Develle {
 
@@ -26,8 +28,17 @@ void ImGuiLayer::OnAttach() {
   Application &app = Application::Get();
   SDL_Window *window = static_cast<SDL_Window *>(app.GetWindow().GetNativeWindow());
 
-  ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
-  ImGui_ImplOpenGL3_Init("#version 410");
+  switch (RendererAPI::GetAPI()) {
+    case RendererAPI::API::OpenGL:
+      ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
+      ImGui_ImplOpenGL3_Init("#version 410");
+      break;
+      // case RendererAPI::API::Vulkan:
+      // ImGui_ImplSDL2_InitForVulkan(window);
+      // ImGui_ImplVulkan_InitInfo initInfo{};
+
+      // ImGui_ImplVulkan_Init(initInfo, VkRenderPass render_pass);
+  }
 
   // KeyMap
   io.KeyMap[ImGuiKey_Tab] = Key::TAB;

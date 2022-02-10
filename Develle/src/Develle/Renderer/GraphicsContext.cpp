@@ -13,7 +13,7 @@ Scope<GraphicsContext> GraphicsContext::Create(void *window) {
       return CreateScope<OpenGLGraphicsContext>(static_cast<SDL_Window *>(window));
     case RendererAPI::API::Vulkan: {
       VulkanContextCreateOptions options{};
-      options.Layers = {"VK_LAYER_KHRONOS_validation"};
+      options.Layers = {"VK_LAYER_KHRONOS_validation" /*, "VK_LAYER_RENDERDOC_Capture"*/};
       options.Extensions = VulkanContext::GetRequiredExtensions(static_cast<SDL_Window *>(window));
       auto vulkanContext = CreateScope<VulkanContext>(static_cast<SDL_Window *>(window), options);
       SetCurrentVulkanContext(*vulkanContext.get());

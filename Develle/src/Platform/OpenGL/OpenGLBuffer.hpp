@@ -18,12 +18,12 @@ class OpenGLVertexBuffer : public VertexBuffer {
 
   void SetData(const void *data, uint32_t size) override;
 
-  const BufferLayout &GetLayout() const override { return layout; }
-  void SetLayout(const BufferLayout &layout) override { this->layout = layout; }
+  const VertexBufferLayout &GetLayout() const override { return layout; }
+  void SetLayout(const VertexBufferLayout &layout) override { this->layout = layout; }
 
  private:
   uint32_t rendererID;
-  BufferLayout layout;
+  VertexBufferLayout layout;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {

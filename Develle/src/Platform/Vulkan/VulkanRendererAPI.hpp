@@ -33,11 +33,21 @@ class VulkanRendererAPI : public RendererAPI {
   const CommandBuffer &GetCurrentCommandBuffer() { return commandBuffers[currentFrameIndex]; }
 
  private:
+  void recreateSwapchain();
+  void recreateRenderPass();
+  void recreateFramebuffers();
+  void recreateCommandBuffers();
+
+  PipelineOptions pipelineOptions;
   VulkanPipeline pipeline;
+  vk::DescriptorSetLayout descriptorSetLayout;
   vk::RenderPass renderPass;
   vk::PipelineLayout layout;
 
+  bool viewportResized = false;
   vk::Viewport viewport = vk::Viewport(0.f, 0.f, 1280.f, 720.f);
+  vk::Rect2D scissor = vk::Rect2D({0, 0}, {1280, 720});
+  std::array<float, 4> clearColor = {0.0f, 0.0f, 0.0f, 1.0f};
 
   uint32_t currentFrameIndex;
   uint32_t presentImageIndex;

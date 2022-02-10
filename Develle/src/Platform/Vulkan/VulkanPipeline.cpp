@@ -108,7 +108,7 @@ VulkanPipeline::VulkanPipeline(const PipelineOptions& options, const vk::RenderP
       .setAttachments(colorAttachment)
       .setBlendConstants({0.0f, 0.0f, 0.0f, 0.0f});
 
-  std::array dynamicStates = {vk::DynamicState::eViewport};
+  std::array dynamicStates = {vk::DynamicState::eViewport, vk::DynamicState::eScissor};
   vk::PipelineDynamicStateCreateInfo dynamic{};
   dynamic.setDynamicStates(dynamicStates);
 

@@ -20,7 +20,7 @@ struct QuadVertex {
 };
 
 struct Renderer2DData {
-  static const uint32_t MaxQuads = 20000;
+  static const uint32_t MaxQuads = 200000;
   static const uint32_t MaxVertices = MaxQuads * 4;
   static const uint32_t MaxIndices = MaxQuads * 6;
   static const uint32_t MaxTextureSlots = 32;
@@ -91,7 +91,7 @@ void Renderer2D::Init() {
   data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
   data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
 
-  // data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+  data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 }
 
 void Renderer2D::Shutdown() {
@@ -103,8 +103,8 @@ void Renderer2D::BeginScene(const EditorCamera &camera) {
   DV_PROFILE_FUNCTION();
   RenderCommand::BeginScene();
 
-  // data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-  // data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+  data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+  data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();
 }
@@ -113,8 +113,8 @@ void Renderer2D::BeginScene(const OrthographicCamera &camera) {
   DV_PROFILE_FUNCTION();
   RenderCommand::BeginScene();
 
-  // data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
-  // data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+  data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
+  data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();
 }

@@ -15,6 +15,7 @@ void Renderer::Init() {
       {ShaderDataType::Float2, "a_TexCoord"},    {ShaderDataType::Float, "a_TexIndex"},
       {ShaderDataType::Float, "a_TilingFactor"}, {ShaderDataType::Int, "a_EntityID"}};
   options.shader = Shader::Create("shaders/Texture.glsl");
+  options.descriptorLayouts = {DescriptorLayout{0, DescriptorType::UNIFORM_BUFFER}};
 
   RenderCommand::Init(options);
   Renderer2D::Init();

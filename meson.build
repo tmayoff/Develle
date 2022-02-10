@@ -60,13 +60,18 @@ yaml_opt.add_cmake_defines({'YAML_BUILD_SHARED_LIBS': true})
 yaml = cmake.subproject('yaml-cpp', options: yaml_opt)
 yaml_dep = yaml.dependency('yaml-cpp')
 
+gsl_opt = cmake.subproject_options()
+gsl_opt.add_cmake_defines({'GSL_TEST': false})
+gsl_proj = cmake.subproject('gsl', options: gsl_opt)
+gsl = gsl_proj.dependency('GSL')
+
 pfd = cmake.subproject('pfd')
 pfd_dep = pfd.dependency('portable-file-dialogs')
 
 subdir('external')
 
 dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, glad_dep, glm_dep, vulkan, stbi_dep,
-                tracy_dep, yaml_dep, pfd_dep, vma,
+                tracy_dep, yaml_dep, pfd_dep, vma, gsl,
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets

@@ -93,10 +93,10 @@ struct BufferElement {
   }
 };
 
-class BufferLayout {
+class VertexBufferLayout {
  public:
-  BufferLayout() {}
-  BufferLayout(std::initializer_list<BufferElement> elements) : elements(elements) {
+  VertexBufferLayout() {}
+  VertexBufferLayout(std::initializer_list<BufferElement> elements) : elements(elements) {
     CalculateOffsetsAndStride();
   }
 
@@ -123,9 +123,17 @@ class BufferLayout {
   uint32_t stride = 0;
 };
 
+enum class DescriptorType { UNIFORM_BUFFER };
+
+struct DescriptorLayout {
+  uint32_t Binding;
+  DescriptorType Type;
+};
+
 struct PipelineOptions {
   Ref<Shader> shader;
-  BufferLayout bufferLayout;
+  VertexBufferLayout bufferLayout;
+  std::vector<DescriptorLayout> descriptorLayouts;
 };
 
 }  // namespace Develle

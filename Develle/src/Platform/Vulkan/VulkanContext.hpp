@@ -27,12 +27,14 @@ struct QueueFamilyIndices {
 
 class VulkanContext : public GraphicsContext {
  public:
+  static const std::vector<const char*> GetRequiredExtensions(SDL_Window* window);
+
   VulkanContext(SDL_Window* window, const VulkanContextCreateOptions& options);
 
   void Init() override;
   void SwapBuffers() override {}
 
-  static const std::vector<const char*> GetRequiredExtensions(SDL_Window* window);
+  void RecreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHeight);
 
   const vk::Instance& GetInstance() const { return instance; }
   const vk::SurfaceKHR& GetSurface() const { return surface; }
@@ -54,8 +56,6 @@ class VulkanContext : public GraphicsContext {
   void pickPhysicalDevice(std::vector<vk::PhysicalDevice> devices);
   QueueFamilyIndices findQueueFamilies(const vk::PhysicalDevice& device);
 
-  void recreateSwapchain(uint32_t surfaceWidth, uint32_t surfaceHeight);
-
   SDL_Window* window;
 
   vk::Instance instance;
@@ -76,6 +76,7 @@ class VulkanContext : public GraphicsContext {
   vk::SwapchainKHR swapchain;
   std::vector<vk::Image> swapchainImages;
   std::vector<vk::ImageView> swapchainImageViews;
+  std::vector<vk::Framebuffer> framebuffers;
 
   vk::Semaphore imageAvailableSemaphore;
   vk::Semaphore renderingFinishedSemaphore;
