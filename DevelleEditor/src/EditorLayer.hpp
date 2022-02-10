@@ -39,7 +39,7 @@ class EditorLayer : public Layer {
 
   bool viewportFocused = false, viewportHovered = false;
   glm::vec2 viewportSize = {0.0f, 0.0f};
-  std::array<glm::vec2, 2> viewportBounds;
+  std::array<glm::vec2, 2> viewportBounds{};
 };
 
 }  // namespace Develle

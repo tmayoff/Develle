@@ -19,11 +19,12 @@ static void DrawComponent(const std::string &name, Entity entity, UIFunction uiF
     ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
-    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;  // NOLINT
     ImGui::Separator();
-    bool open = ImGui::TreeNodeEx((void *)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+    bool open = ImGui::TreeNodeEx((void *)typeid(T).hash_code(), treeNodeFlags, "%s",  // NOLINT
+                                  name.c_str());                                       // NOLINT
     ImGui::PopStyleVar();
-    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);  // NOLINT
     if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) ImGui::OpenPopup("ComponentSettings");
 
     bool removeComponent = false;
@@ -50,51 +51,51 @@ static void DrawVec3Control(const std::string &label, glm::vec3 &values, float r
 
   ImGui::Columns(2);
   ImGui::SetColumnWidth(0, columnWidth);
-  ImGui::Text(label.c_str());
+  ImGui::Text("%s", label.c_str());  // NOLINT
   ImGui::NextColumn();
 
   ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
   ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
 
-  float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-  ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
+  float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;  // NOLINT
+  ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};                              // NOLINT
 
-  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});        // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});  // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});  // NOLINT
   ImGui::PushFont(boldFont);
   if (ImGui::Button("X", buttonSize)) values.x = resetValue;
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");  // NOLINT
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
-  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});         // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});  // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});   // NOLINT
   ImGui::PushFont(boldFont);
   if (ImGui::Button("Y", buttonSize)) values.y = resetValue;
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");  // NOLINT
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
-  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.2f, 0.35f, 0.9f, 1.0f});
-  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});         // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.2f, 0.35f, 0.9f, 1.0f});  // NOLINT
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});   // NOLINT
   ImGui::PushFont(boldFont);
-  if (ImGui::Button("Z", buttonSize)) values.z = resetValue;
+  if (ImGui::Button("Z", buttonSize)) values.z = resetValue;  // NOLINT
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");  // NOLINT
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
@@ -145,7 +146,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
   ImGuiTreeNodeFlags flags = ((selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) |
                              ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 
-  bool opened = ImGui::TreeNodeEx((void *)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+  bool opened = ImGui::TreeNodeEx((void *)(uint64_t)(uint32_t)entity, flags, "%s", tag.c_str());
 
   if (ImGui::IsItemClicked()) selectionContext = entity;
 
@@ -158,6 +159,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
 
   if (opened) {
     // TODO(tyler) Recursively DrawEntityNodes for children nodes
+    ImGui::TreePop();
   }
 
   if (entityDeleted) {

@@ -9,18 +9,18 @@ namespace Develle {
 EditorLayer::EditorLayer() : Layer("Editor Layer") {}
 
 void EditorLayer::OnAttach() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   FramebufferSpecification fbSpec;
   fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER,
                         FramebufferTextureFormat::Depth};
-  fbSpec.Width = 1280;
-  fbSpec.Height = 720;
+  fbSpec.Width = 1280;  // NOLINT
+  fbSpec.Height = 720;  // NOLINT
   framebuffer = Framebuffer::Create(fbSpec);
 
   activeScene = CreateRef<Scene>();
 
-  editorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+  editorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);  // NOLINT
 
   sceneHierarchyPanel.SetContext(activeScene);
 }
@@ -28,21 +28,21 @@ void EditorLayer::OnAttach() {
 void EditorLayer::OnDetach() {}
 
 void EditorLayer::OnUpdate(Timestep deltaTime) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   // Resize framebuffer
   FramebufferSpecification spec = framebuffer->GetSpecification();
-  if (viewportSize.x > 0.0f && viewportSize.y > 0.0f &&
-      (spec.Width != viewportSize.x || spec.Height != viewportSize.y)) {
-    framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-    editorCamera.SetViewportSize(viewportSize.x, viewportSize.y);
-    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+  if (viewportSize.x > 0.0f && viewportSize.y > 0.0f &&                                 // NOLINT
+      (spec.Width != viewportSize.x || spec.Height != viewportSize.y)) {                // NOLINT
+    framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);            // NOLINT
+    editorCamera.SetViewportSize(viewportSize.x, viewportSize.y);                       // NOLINT
+    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);  // NOLINT
   }
 
   // Render
   Renderer2D::ResetStats();
   framebuffer->Bind();
-  RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+  RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});  // NOLINT
   RenderCommand::Clear();
 
   editorCamera.OnUpdate(deltaTime);
@@ -52,22 +52,24 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
   framebuffer->ClearAttachment(1, -1);
 
   auto [mx, my] = ImGui::GetMousePos();
-  mx -= viewportBounds[0].x;
-  my -= viewportBounds[0].y;
+  mx -= viewportBounds[0].x;  // NOLINT
+  my -= viewportBounds[0].y;  // NOLINT
   glm::vec2 viewportSize = viewportBounds[1] - viewportBounds[0];
-  my = viewportSize.y - my;
+  my = viewportSize.y - my;  // NOLINT
   int mouseX = (int)mx;
   int mouseY = (int)my;
-  if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
+  if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x &&  // NOLINT
+      mouseY < (int)viewportSize.y) {                                // NOLINT
     int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-    hoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, activeScene.get());
+    hoveredEntity =
+        pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, activeScene.get());  // NOLINT
   }
 
   framebuffer->Unbind();
 }
 
 void EditorLayer::OnImGuiRender() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   bool optFullscreen = true;
   static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
@@ -99,7 +101,7 @@ void EditorLayer::OnImGuiRender() {
   ImGuiIO &io = ImGui::GetIO();
   ImGuiStyle &style = ImGui::GetStyle();
   float minWinSizeX = style.WindowMinSize.x;
-  style.WindowMinSize.x = 370.0f;
+  style.WindowMinSize.x = 370.0f;  // NOLINT
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
     ImGuiID dockspaceID = ImGui::GetID("Develle Editor");
     ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
@@ -127,14 +129,14 @@ void EditorLayer::OnImGuiRender() {
   ImGui::Begin("Stats");
   std::string name = "None";
   if (hoveredEntity) name = hoveredEntity.GetComponent<TagComponent>().Tag;
-  ImGui::Text("Hovered Entity: %s", name.c_str());
+  ImGui::Text("Hovered Entity: %s", name.c_str());  // NOLINT
 
   auto stats = Renderer2D::GetStats();
-  ImGui::Text("Renderer2D Stats:");
-  ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-  ImGui::Text("Quads: %d", stats.QuadCount);
-  ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-  ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+  ImGui::Text("Renderer2D Stats:");                          // NOLINT
+  ImGui::Text("Draw Calls: %d", stats.DrawCalls);            // NOLINT
+  ImGui::Text("Quads: %d", stats.QuadCount);                 // NOLINT
+  ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());  // NOLINT
+  ImGui::Text("Indices: %d", stats.GetTotalIndexCount());    // NOLINT
 
   ImGui::End();
 
@@ -156,7 +158,8 @@ void EditorLayer::OnImGuiRender() {
   viewportSize = {viewportPanelSize.x, viewportPanelSize.y};
 
   uint64_t textureID = framebuffer->GetColorAttachmentRendererID();
-  ImGui::Image(reinterpret_cast<void *>(textureID), ImVec2{viewportSize.x, viewportSize.y});
+  ImGui::Image(reinterpret_cast<void *>(textureID),      // NOLINT
+               ImVec2{viewportSize.x, viewportSize.y});  // NOLINT
 
   ImGui::End();
   ImGui::PopStyleVar();
@@ -184,7 +187,7 @@ void EditorLayer::OpenScene(const std::filesystem::path &path) {
   SceneSerializer serializer(newScene);
   if (serializer.Deserialize(path.string())) {
     activeScene = newScene;
-    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);  // NOLINT
     sceneHierarchyPanel.SetContext(activeScene);
   }
 }
