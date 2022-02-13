@@ -4,12 +4,13 @@
 #include <Develle/Core/Timestep.hpp>
 #include <Develle/Events/ApplicationEvent.hpp>
 #include <Develle/Events/MouseEvent.hpp>
-#include <Develle/Renderer/OrthographicCamera.hpp>
+
+#include "Camera.hpp"
 
 namespace Develle {
 
 class OrthographicCameraController {
-public:
+ public:
   OrthographicCameraController(float aspectRatio, bool rotation = false);
 
   void OnUpdate(Timestep delta);
@@ -17,13 +18,13 @@ public:
 
   void OnResize(float width, float height);
 
-  OrthographicCamera &GetCamera() { return camera; }
-  const OrthographicCamera &GetCamera() const { return camera; }
+  Camera &GetCamera() { return camera; }
+  const Camera &GetCamera() const { return camera; }
 
   float GetZoomLevel() const { return zoomLevel; }
   void SetZoomLevel(float level) { zoomLevel = level; }
 
-private:
+ private:
   bool OnMouseScrolled(MouseScrolledEvent &e);
   bool OnWindowResized(WindowResizeEvent &e);
 
@@ -31,13 +32,14 @@ private:
   float zoomLevel = 1.0f;
   bool rotation;
 
-  OrthographicCamera camera;
+  Camera camera;
 
-  glm::vec3 cameraPosition = {0.0f, 0.0f, 0.0f};
-  float cameraRotation = 0.0f;
-  float cameraMoveSpeed = 5.0f;
-  float cameraRotationSpeed = 180.0f;
+  glm::vec3 cameraPosition = glm::vec3(0.0f);
+
+  float cameraRotation = 0.0f;         // NOLINT
+  float cameraMoveSpeed = 5.0f;        // NOLINT
+  float cameraRotationSpeed = 180.0f;  // NOLINT
 };
 
-} // namespace Develle
-#endif // ORTHOGRAPHICCAMERACONTROLLER_HPP_
+}  // namespace Develle
+#endif  // ORTHOGRAPHICCAMERACONTROLLER_HPP_

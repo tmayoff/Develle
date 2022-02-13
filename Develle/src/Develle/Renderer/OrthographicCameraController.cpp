@@ -1,40 +1,31 @@
-#include <Develle/Renderer/OrthographicCameraController.hpp>
-
 #include <Develle/Core/Input.hpp>
+#include <Develle/Renderer/OrthographicCameraController.hpp>
 
 namespace Develle {
 
-OrthographicCameraController::OrthographicCameraController(float aspectRatio,
-                                                           bool rotation)
-    : aspectRation(aspectRatio), rotation(rotation),
-      camera(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel,
-             zoomLevel) {}
+OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
+    : aspectRation(aspectRatio),
+      rotation(rotation),
+      camera(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel)) {
+}
 
 void OrthographicCameraController::OnUpdate(Timestep delta) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   if (Input::IsKeyPressed(Key::A)) {
-    cameraPosition.x -=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y -=
-        sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.x -= cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y -= sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   } else if (Input::IsKeyPressed(Key::D)) {
-    cameraPosition.x +=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y +=
-        sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.x += cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y += sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   }
 
   if (Input::IsKeyPressed(Key::W)) {
-    cameraPosition.x +=
-        sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y +=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.x += sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y += cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   } else if (Input::IsKeyPressed(Key::S)) {
-    cameraPosition.x -=
-        sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
-    cameraPosition.y -=
-        cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.x -= sin(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
+    cameraPosition.y -= cos(glm::radians(cameraRotation)) * cameraMoveSpeed * delta;
   }
 
   if (rotation) {
@@ -54,7 +45,7 @@ void OrthographicCameraController::OnUpdate(Timestep delta) {
 }
 
 void OrthographicCameraController::OnEvent(Event &e) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   EventDispatcher dispatcher(e);
   dispatcher.Dispatch<MouseScrolledEvent>(
@@ -65,17 +56,17 @@ void OrthographicCameraController::OnEvent(Event &e) {
 
 void OrthographicCameraController::OnResize(float width, float height) {
   aspectRation = width / height;
-  camera.SetProjection(-aspectRation * zoomLevel, aspectRation * zoomLevel,
-                       -zoomLevel, zoomLevel);
+  camera.SetProjection(
+      glm::ortho(-aspectRation * zoomLevel, aspectRation * zoomLevel, -zoomLevel, zoomLevel));
 }
 
 bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &e) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   zoomLevel -= e.GetYOffset() * 0.25f;
   zoomLevel = std::max(zoomLevel, 0.25f);
-  camera.SetProjection(-aspectRation * zoomLevel, aspectRation * zoomLevel,
-                       -zoomLevel, zoomLevel);
+  camera.SetProjection(
+      glm::ortho(-aspectRation * zoomLevel, aspectRation * zoomLevel, -zoomLevel, zoomLevel));
   return false;
 }
 
@@ -85,4 +76,4 @@ bool OrthographicCameraController::OnWindowResized(WindowResizeEvent &e) {
   OnResize((float)e.GetWidth(), (float)e.GetHeight());
   return false;
 }
-} // namespace Develle
+}  // namespace Develle
