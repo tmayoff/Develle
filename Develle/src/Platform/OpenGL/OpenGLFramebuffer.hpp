@@ -6,7 +6,7 @@
 namespace Develle {
 
 class OpenGLFramebuffer : public Framebuffer {
-public:
+ public:
   OpenGLFramebuffer(const FramebufferSpecification &spec);
   ~OpenGLFramebuffer();
 
@@ -21,26 +21,22 @@ public:
   void ClearAttachment(uint32_t attachmentIndex, int value) override;
 
   uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const override {
-    DV_CORE_ASSERT(index < colorAttachments.size(),
-                   "Color attachment index out of range");
+    DV_CORE_ASSERT(index < colorAttachments.size(), "Color attachment index out of range");
     return colorAttachments[index];
   }
 
-  const FramebufferSpecification &GetSpecification() const override {
-    return specification;
-  }
+  const FramebufferSpecification &GetSpecification() const override { return specification; }
 
-private:
+ private:
   uint32_t rendererID = 0;
   FramebufferSpecification specification;
 
   std::vector<FramebufferTextureSpecification> colorAttachmentSpecifications;
-  FramebufferTextureSpecification depthAttachmentSpecification =
-      FramebufferTextureFormat::None;
+  FramebufferTextureSpecification depthAttachmentSpecification = FramebufferTextureFormat::None;
 
   std::vector<uint32_t> colorAttachments;
   uint32_t depthAttachment = 0;
 };
 
-} // namespace Develle
-#endif // OPENGLFRAMEBUFFER_HPP_
+}  // namespace Develle
+#endif  // OPENGLFRAMEBUFFER_HPP_
