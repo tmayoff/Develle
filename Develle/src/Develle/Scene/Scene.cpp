@@ -25,7 +25,7 @@ void Scene::OnUpdateRuntime(Timestep) {
 }
 
 void Scene::OnUpdateEditor(Timestep, EditorCamera &camera) {
-  Renderer2D::BeginScene(camera);
+  Renderer2D::BeginScene(camera.GetCamera());
 
   auto group = registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 

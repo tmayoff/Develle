@@ -146,7 +146,8 @@ void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
   ImGuiTreeNodeFlags flags = ((selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) |
                              ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 
-  bool opened = ImGui::TreeNodeEx((void *)(uint64_t)(uint32_t)entity, flags, "%s", tag.c_str());
+  bool opened =
+      ImGui::TreeNodeEx((void *)(uint64_t)(uint32_t)entity, flags, "%s", tag.c_str());  // NOLINT
 
   if (ImGui::IsItemClicked()) selectionContext = entity;
 
@@ -171,10 +172,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
 void SceneHierarchyPanel::DrawComponents(Entity entity) {
   if (entity.HasComponent<TagComponent>()) {
     auto &tag = entity.GetComponent<TagComponent>().Tag;
-    char buffer[256];
-    memset(buffer, 0, sizeof(buffer));
-    std::strncpy(buffer, tag.c_str(), sizeof(buffer));
-    if (ImGui::InputText("##Tag", buffer, sizeof(buffer))) tag = std::string(buffer);
+    ImGui::InputText("##Tag", tag.data(), 256);  // NOLINT
   }
 
   ImGui::SameLine();
@@ -184,7 +182,10 @@ void SceneHierarchyPanel::DrawComponents(Entity entity) {
 
   if (ImGui::BeginPopup("AddComponent")) {
     if (ImGui::MenuItem("Camera")) {
-      // if (!selectionContext.HasComponent<CameraCompone)
+      if (!selectionContext.HasComponent<CameraComponent>())
+        selectionContext.AddComponent<CameraComponent>();
+      else
+        DV_CORE_WARN("Entity already has Scene camera");
 
       ImGui::CloseCurrentPopup();
     }

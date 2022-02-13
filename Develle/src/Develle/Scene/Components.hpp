@@ -50,11 +50,11 @@ struct SpriteRendererComponent {
 
 struct CameraComponent {
   SceneCamera Camera;
-  bool Primary = true;
-  bool FixedAspectRatio = false;
-
   CameraComponent() = default;
   CameraComponent(const CameraComponent &) = default;
+
+  bool Primary = true;
+  bool FixedAspectRatio = false;
 };
 
 }  // namespace Develle

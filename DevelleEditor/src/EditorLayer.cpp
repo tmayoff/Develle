@@ -133,19 +133,27 @@ void EditorLayer::OnImGuiRender() {
 
   sceneHierarchyPanel.OnImGuiRender();
 
-  ImGui::Begin("Stats");
-  std::string name = "None";
-  if (hoveredEntity) name = hoveredEntity.GetComponent<TagComponent>().Tag;
-  ImGui::Text("Hovered Entity: %s", name.c_str());  // NOLINT
+  {
+    ImGui::Begin("Stats");
+    std::string name = "None";
+    if (hoveredEntity) name = hoveredEntity.GetComponent<TagComponent>().Tag;
+    ImGui::Text("Hovered Entity: %s", name.c_str());  // NOLINT
 
-  auto stats = Renderer2D::GetStats();
-  ImGui::Text("Renderer2D Stats:");                          // NOLINT
-  ImGui::Text("Draw Calls: %d", stats.DrawCalls);            // NOLINT
-  ImGui::Text("Quads: %d", stats.QuadCount);                 // NOLINT
-  ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());  // NOLINT
-  ImGui::Text("Indices: %d", stats.GetTotalIndexCount());    // NOLINT
+    auto stats = Renderer2D::GetStats();
+    ImGui::Text("Renderer2D Stats:");                          // NOLINT
+    ImGui::Text("Draw Calls: %d", stats.DrawCalls);            // NOLINT
+    ImGui::Text("Quads: %d", stats.QuadCount);                 // NOLINT
+    ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());  // NOLINT
+    ImGui::Text("Indices: %d", stats.GetTotalIndexCount());    // NOLINT
 
-  ImGui::End();
+    ImGui::End();
+  }
+
+  {
+    ImGui::Begin("Camera");  // bool optFullscreen = true;
+
+    ImGui::End();
+  }
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0f, 0.0f});
   ImGui::Begin("Viewport");
