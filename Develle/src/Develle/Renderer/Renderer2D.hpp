@@ -1,10 +1,10 @@
 #ifndef RENDERER2D_HPP_
 #define RENDERER2D_HPP_
-
 #include <Develle/Renderer/EditorCamera.hpp>
 #include <Develle/Renderer/OrthographicCamera.hpp>
 #include <Develle/Renderer/Texture.hpp>
 #include <Develle/Scene/Components.hpp>
+#include <glm/glm.hpp>
 
 namespace Develle {
 
