@@ -22,6 +22,8 @@ void EditorLayer::OnAttach() {
 
   editorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);  // NOLINT
 
+  OpenScene(std::string(ASSETS_ROOT) + "/example.develle");
+
   sceneHierarchyPanel.SetContext(activeScene);
 }
 
