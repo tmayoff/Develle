@@ -1,6 +1,6 @@
-#include <Develle/Core/Input.hpp>
-
 #include <SDL2/SDL.h>
+
+#include <Develle/Core/Input.hpp>
 
 namespace Develle {
 
@@ -16,7 +16,7 @@ bool Input::IsMouseButtonPressed(const MouseCode button) {
 }
 
 glm::vec2 Input::GetMousePosition() {
-  int x, y;
+  int x = 0, y = 0;
   SDL_GetMouseState(&x, &y);
   return {x, y};
 }
@@ -25,4 +25,4 @@ float Input::GetMouseX() { return GetMousePosition().x; }
 
 float Input::GetMouseY() { return GetMousePosition().y; }
 
-} // namespace Develle
+}  // namespace Develle

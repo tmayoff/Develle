@@ -23,6 +23,6 @@ enum : MouseCode {
   ButtonMiddle = Button2
 };
 
-} // namespace Mouse
-} // namespace Develle
-#endif // MOUSECODES_HPP_
+}  // namespace Mouse
+}  // namespace Develle
+#endif  // MOUSECODES_HPP_

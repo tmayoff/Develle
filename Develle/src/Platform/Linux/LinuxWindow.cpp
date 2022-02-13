@@ -6,44 +6,45 @@
 
 namespace Develle {
 
-LinuxWindow::LinuxWindow(const WindowProps &props) {
-  DV_PROFILE_FUNCTION();
+LinuxWindow::LinuxWindow(const WindowProps &props) : window(nullptr) {
+  DV_PROFILE_FUNCTION();  // NOLINT
   Init(props);
 }
 
 LinuxWindow::~LinuxWindow() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
   Shutdown();
 }
 
 void LinuxWindow::Shutdown() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
   SDL_Quit();
 }
 
 void LinuxWindow::SetVSync(bool enabled) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
   SDL_GL_SetSwapInterval(enabled);
 }
 
 bool LinuxWindow::IsVSync() const { return SDL_GL_GetSwapInterval(); }
 
 void LinuxWindow::Init(const WindowProps &props) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   data.Title = props.Title;
   data.Width = props.Width;
   data.Height = props.Height;
 
   {
-    DV_PROFILE_SCOPE("SDL_Init");
+    DV_PROFILE_SCOPE("SDL_Init");  // NOLINT
     SDL_Init(SDL_INIT_VIDEO);
   }
 
   {
-    DV_PROFILE_SCOPE("SDL_CreateWindow");
-    window = SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              props.Width, props.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    DV_PROFILE_SCOPE("SDL_CreateWindow");  // NOLINT
+    window =
+        SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                         (int)props.Width, (int)props.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
 
   context = GraphicsContext::Create(window);
@@ -51,11 +52,11 @@ void LinuxWindow::Init(const WindowProps &props) {
 }
 
 void LinuxWindow::OnUpdate() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
-    DV_PROFILE_SCOPE("Poll Event");
+    DV_PROFILE_SCOPE("Poll Event");  // NOLINT
     switch (e.type) {
       case SDL_WINDOWEVENT: {
         switch (e.window.event) {
@@ -77,7 +78,7 @@ void LinuxWindow::OnUpdate() {
         break;
       }
       case SDL_TEXTINPUT: {
-        KeyTypedEvent event(e.text.text);
+        KeyTypedEvent event(e.text.text);  // NOLINT
         data.EventCallback(event);
         break;
       }
@@ -92,22 +93,22 @@ void LinuxWindow::OnUpdate() {
         break;
       }
       case SDL_MOUSEMOTION: {
-        MouseMovedEvent event(e.motion.x, e.motion.y);
+        MouseMovedEvent event((float)e.motion.x, (float)e.motion.y);
         data.EventCallback(event);
         break;
       }
       case SDL_MOUSEWHEEL: {
-        MouseScrolledEvent event(e.wheel.x, e.wheel.y);
+        MouseScrolledEvent event((float)e.wheel.x, (float)e.wheel.y);
         data.EventCallback(event);
         break;
       }
       case SDL_MOUSEBUTTONUP: {
-        MouseButtonReleasedEvent event(e.button.button);
+        MouseButtonReleasedEvent event(e.button.button - 1);
         data.EventCallback(event);
         break;
       }
       case SDL_MOUSEBUTTONDOWN: {
-        MouseButtonPressedEvent event(e.button.button);
+        MouseButtonPressedEvent event(e.button.button - 1);
         data.EventCallback(event);
         break;
       }
@@ -118,7 +119,7 @@ void LinuxWindow::OnUpdate() {
   }
 
   {
-    DV_PROFILE_SCOPE("Swap window");
+    DV_PROFILE_SCOPE("Swap window");  // NOLINT
     SDL_GL_SwapWindow(window);
   }
 }
