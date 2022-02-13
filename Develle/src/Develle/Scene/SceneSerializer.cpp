@@ -42,7 +42,7 @@ struct convert<glm::vec4> {
   }
 
   static bool decode(const Node &node, glm::vec4 &rhs) {
-    if (!node.IsSequence() || node.size() != 3) return false;
+    if (!node.IsSequence() || node.size() != 4) return false;
 
     rhs.x = node[0].as<float>();
     rhs.y = node[1].as<float>();

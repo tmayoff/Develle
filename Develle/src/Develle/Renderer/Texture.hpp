@@ -1,10 +1,14 @@
 #ifndef TEXTURE_HPP_
 #define TEXTURE_HPP_
 
+#include <Develle/Core/Core.hpp>
+#include <cstdint>
+#include <string>
+
 namespace Develle {
 
 class Texture {
-public:
+ public:
   virtual ~Texture() = default;
 
   virtual uint32_t GetWidth() const = 0;
@@ -21,10 +25,10 @@ public:
 };
 
 class Texture2D : public Texture {
-public:
+ public:
   static Ref<Texture2D> Create(uint32_t width, uint32_t height);
   static Ref<Texture2D> Create(std::string path);
 };
 
-} // namespace Develle
-#endif // TEXTURE_HPP_
+}  // namespace Develle
+#endif  // TEXTURE_HPP_
