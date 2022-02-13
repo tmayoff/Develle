@@ -1,10 +1,10 @@
 #ifndef RENDERER2D_HPP_
 #define RENDERER2D_HPP_
-#include <Develle/Renderer/EditorCamera.hpp>
-#include <Develle/Renderer/OrthographicCamera.hpp>
 #include <Develle/Renderer/Texture.hpp>
 #include <Develle/Scene/Components.hpp>
 #include <glm/glm.hpp>
+
+#include "Camera.hpp"
 
 namespace Develle {
 
@@ -13,8 +13,7 @@ class Renderer2D {
   static void Init();
   static void Shutdown();
 
-  static void BeginScene(const EditorCamera &camera);
-  static void BeginScene(const OrthographicCamera &camera);
+  static void BeginScene(const Camera &camera);
 
   static void EndScene();
   static void Flush();

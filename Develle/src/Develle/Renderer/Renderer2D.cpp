@@ -110,19 +110,10 @@ void Renderer2D::Shutdown() {
   DV_PROFILE_FUNCTION();  // NOLINT
 }
 
-void Renderer2D::BeginScene(const EditorCamera &camera) {
+void Renderer2D::BeginScene(const Camera &camera) {
   DV_PROFILE_FUNCTION();  // NOLINT
 
   data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-  data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
-
-  StartBatch();
-}
-
-void Renderer2D::BeginScene(const OrthographicCamera &camera) {
-  DV_PROFILE_FUNCTION();  // NOLINT
-
-  data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
   data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();
