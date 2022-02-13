@@ -21,7 +21,7 @@ void ImGuiLayer::OnAttach() {
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-  float fontSize = 18.0f;
+  // float fontSize = 18.0f;
 
   Application &app = Application::Get();
   SDL_Window *window = static_cast<SDL_Window *>(app.GetWindow().GetNativeWindow());
@@ -135,13 +135,13 @@ bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent &e) {
 bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent &e) {
   ImGuiIO &io = ImGui::GetIO();
   switch (e.GetMouseButton()) {
-    case Mouse::ButtonLeft:
+    case MouseCode::ButtonLeft:
       io.MouseDown[0] = true;
       break;
-    case Mouse::ButtonRight:
+    case MouseCode::ButtonRight:
       io.MouseDown[1] = true;
       break;
-    case Mouse::ButtonMiddle:
+    case MouseCode::ButtonMiddle:
       io.MouseDown[2] = true;
       break;
   }
@@ -152,13 +152,13 @@ bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent &e) {
 bool ImGuiLayer::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent &e) {
   ImGuiIO &io = ImGui::GetIO();
   switch (e.GetMouseButton()) {
-    case Mouse::ButtonLeft:
+    case MouseCode::ButtonLeft:
       io.MouseDown[0] = false;
       break;
-    case Mouse::ButtonRight:
+    case MouseCode::ButtonRight:
       io.MouseDown[1] = false;
       break;
-    case Mouse::ButtonMiddle:
+    case MouseCode::ButtonMiddle:
       io.MouseDown[2] = false;
       break;
   }

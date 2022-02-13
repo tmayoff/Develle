@@ -7,7 +7,7 @@
 namespace Develle {
 
 class MouseMovedEvent : public Event {
-public:
+ public:
   MouseMovedEvent(float x, float y) : mouseX(x), mouseY(y) {}
 
   float GetX() const { return mouseX; }
@@ -22,12 +22,12 @@ public:
   EVENT_CLASS_TYPE(MouseMoved)
   EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-private:
+ private:
   float mouseX, mouseY;
 };
 
 class MouseScrolledEvent : public Event {
-public:
+ public:
   MouseScrolledEvent(const float xOffset, const float yOffset)
       : xOffset(xOffset), yOffset(yOffset) {}
 
@@ -43,30 +43,29 @@ public:
   EVENT_CLASS_TYPE(MouseScrolled)
   EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-private:
+ private:
   float xOffset, yOffset;
 };
 
 class MouseButtonEvent : public Event {
-public:
+ public:
   MouseCode GetMouseButton() const { return button; }
 
-  EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput |
-                       EventCategoryMouseButton)
+  EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 
-protected:
+ protected:
   MouseButtonEvent(const MouseCode button) : button(button) {}
 
   MouseCode button;
 };
 
 class MouseButtonPressedEvent : public MouseButtonEvent {
-public:
+ public:
   MouseButtonPressedEvent(const MouseCode button) : MouseButtonEvent(button) {}
 
   std::string ToString() const override {
     std::stringstream ss;
-    ss << "MouseButtonPressedEvent: " << button;
+    ss << "MouseButtonPressedEvent: " << (int)button;
     return ss.str();
   }
 
@@ -74,17 +73,17 @@ public:
 };
 
 class MouseButtonReleasedEvent : public MouseButtonEvent {
-public:
+ public:
   MouseButtonReleasedEvent(const MouseCode button) : MouseButtonEvent(button) {}
 
   std::string ToString() const override {
     std::stringstream ss;
-    ss << "MouseButtonReleasedEvent: " << button;
+    ss << "MouseButtonReleasedEvent: " << (int)button;
     return ss.str();
   }
 
   EVENT_CLASS_TYPE(MouseButtonReleased)
 };
 
-} // namespace Develle
-#endif // MOUSEEVENT_HPP_
+}  // namespace Develle
+#endif  // MOUSEEVENT_HPP_

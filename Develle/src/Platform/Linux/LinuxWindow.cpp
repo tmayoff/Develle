@@ -42,9 +42,9 @@ void LinuxWindow::Init(const WindowProps &props) {
 
   {
     DV_PROFILE_SCOPE("SDL_CreateWindow");  // NOLINT
-    window =
-        SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                         (int)props.Width, (int)props.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(props.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                              (int)props.Width, (int)props.Height,
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   }
 
   context = GraphicsContext::Create(window);
@@ -103,12 +103,37 @@ void LinuxWindow::OnUpdate() {
         break;
       }
       case SDL_MOUSEBUTTONUP: {
-        MouseButtonReleasedEvent event(e.button.button - 1);
+        MouseCode mouseButton = (MouseCode)0;
+        switch (e.button.button) {
+          case SDL_BUTTON_LEFT:
+            mouseButton = MouseCode::ButtonLeft;
+            break;
+          case SDL_BUTTON_MIDDLE:
+            mouseButton = MouseCode::ButtonMiddle;
+            break;
+          case SDL_BUTTON_RIGHT:
+            mouseButton = MouseCode::ButtonRight;
+            break;
+        }
+        MouseButtonReleasedEvent event(mouseButton);
         data.EventCallback(event);
         break;
       }
       case SDL_MOUSEBUTTONDOWN: {
-        MouseButtonPressedEvent event(e.button.button - 1);
+        MouseCode mouseButton = (MouseCode)0;
+        switch (e.button.button) {
+          case SDL_BUTTON_LEFT:
+            mouseButton = MouseCode::ButtonLeft;
+            break;
+          case SDL_BUTTON_MIDDLE:
+            mouseButton = MouseCode::ButtonMiddle;
+            break;
+          case SDL_BUTTON_RIGHT:
+            mouseButton = MouseCode::ButtonRight;
+            break;
+        }
+
+        MouseButtonPressedEvent event(mouseButton);
         data.EventCallback(event);
         break;
       }
