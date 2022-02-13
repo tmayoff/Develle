@@ -71,7 +71,7 @@ bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &e) {
 }
 
 bool OrthographicCameraController::OnWindowResized(WindowResizeEvent &e) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   OnResize((float)e.GetWidth(), (float)e.GetHeight());
   return false;
