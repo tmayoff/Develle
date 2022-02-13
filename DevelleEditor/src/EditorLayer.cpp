@@ -43,16 +43,19 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
 
   // Render
   Renderer2D::ResetStats();
+
+  // Clear
   framebuffer->Bind();
+
   RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});  // NOLINT
   RenderCommand::Clear();
 
-  editorCamera.OnUpdate(deltaTime);
-
-  activeScene->OnUpdateEditor(deltaTime, editorCamera);
-
   framebuffer->ClearAttachment(1, -1);
 
+  editorCamera.OnUpdate(deltaTime);
+  activeScene->OnUpdateEditor(deltaTime, editorCamera);
+
+  // Mouse picking
   auto [mx, my] = ImGui::GetMousePos();
   mx -= viewportBounds[0].x;  // NOLINT
   my -= viewportBounds[0].y;  // NOLINT
@@ -63,8 +66,10 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
   if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x &&  // NOLINT
       mouseY < (int)viewportSize.y) {                                // NOLINT
     int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-    hoveredEntity =
-        pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, activeScene.get());  // NOLINT
+    if (pixelData != -1)
+      hoveredEntity = Entity((entt::entity)pixelData, activeScene.get());
+    else
+      hoveredEntity = Entity();
   }
 
   framebuffer->Unbind();
