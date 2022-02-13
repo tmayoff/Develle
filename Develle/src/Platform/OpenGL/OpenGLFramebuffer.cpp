@@ -1,10 +1,10 @@
-#include <glad/glad.h>
+#include "OpenGLFramebuffer.hpp"
 
-#include <Platform/OpenGL/OpenGLFramebuffer.hpp>
+#include <glad/glad.h>
 
 namespace Develle {
 
-static const uint32_t maxFramebufferSize = 8192;
+static const uint32_t MaxFramebufferSize = 8192;
 
 namespace Utils {
 
@@ -12,8 +12,8 @@ static GLenum TextureTarget(bool multisampled) {
   return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
 }
 
-static void CreateTextures(bool multisampled, uint32_t *outID, uint32_t count) {
-  glCreateTextures(TextureTarget(multisampled), (int)count, outID);
+static void CreateTextures(bool multisampled, uint32_t* outID, uint32_t count) {
+  glCreateTextures(TextureTarget(multisampled), count, outID);
 }
 
 static void BindTexture(bool multisampled, uint32_t id) {
@@ -82,7 +82,7 @@ static GLenum DevelleFBTextureFormatToGL(FramebufferTextureFormat format) {
 
 }  // namespace Utils
 
-OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification &spec) : specification(spec) {
+OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec) : specification(spec) {
   for (auto spec : specification.Attachments.Attachments) {
     if (!Utils::IsDepthFormat(spec.TextureFormat))
       colorAttachmentSpecifications.emplace_back(spec);
@@ -96,14 +96,14 @@ OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification &spec) : spe
 OpenGLFramebuffer::~OpenGLFramebuffer() {
   glDeleteFramebuffers(1, &rendererID);
   glDeleteTextures(colorAttachments.size(), colorAttachments.data());
-  glDeleteTextures(1, &rendererID);
+  glDeleteTextures(1, &depthAttachment);
 }
 
 void OpenGLFramebuffer::Invalidate() {
   if (rendererID) {
     glDeleteFramebuffers(1, &rendererID);
     glDeleteTextures(colorAttachments.size(), colorAttachments.data());
-    glDeleteTextures(1, &rendererID);
+    glDeleteTextures(1, &depthAttachment);
 
     colorAttachments.clear();
     depthAttachment = 0;
@@ -130,7 +130,7 @@ void OpenGLFramebuffer::Invalidate() {
           Utils::AttachColorTexture(colorAttachments[i], specification.Samples, GL_R32I,
                                     GL_RED_INTEGER, specification.Width, specification.Height, i);
           break;
-      };
+      }
     }
   }
 
@@ -147,7 +147,9 @@ void OpenGLFramebuffer::Invalidate() {
   }
 
   if (colorAttachments.size() > 1) {
-    DV_CORE_ASSERT(colorAttachments.size() <= 4);
+    DV_CORE_ASSERT(colorAttachments.size() <= 4, "We don't support more than 4 color attachments");
+    // std::array<GLenum, 4> buffers = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+    //                                  GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
     GLenum buffers[4]{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
     glDrawBuffers(colorAttachments.size(), buffers);
   } else if (colorAttachments.empty()) {
@@ -168,7 +170,7 @@ void OpenGLFramebuffer::Bind() {
 void OpenGLFramebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
 void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height) {
-  if (width == 0 || height == 0 || width > maxFramebufferSize || height > maxFramebufferSize) {
+  if (width == 0 || height == 0 || width > MaxFramebufferSize || height > MaxFramebufferSize) {
     DV_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
     return;
   }
@@ -191,7 +193,7 @@ int OpenGLFramebuffer::ReadPixel(uint32_t attachmentIndex, int x, int y) {
 void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value) {
   DV_CORE_ASSERT(attachmentIndex < colorAttachments.size(), "Color attachment index out of bounds");
 
-  auto &spec = colorAttachmentSpecifications[attachmentIndex];
+  auto& spec = colorAttachmentSpecifications[attachmentIndex];
   glClearTexImage(colorAttachments[attachmentIndex], 0,
                   Utils::DevelleFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
 }
