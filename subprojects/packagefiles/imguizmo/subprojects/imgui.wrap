@@ -1,0 +1,8 @@
+[wrap-git]
+url = https://github.com/ocornut/imgui
+revision = docking
+
+patch_directory = imgui_patch
+
+[provide]
+imgui = imgui_dep
