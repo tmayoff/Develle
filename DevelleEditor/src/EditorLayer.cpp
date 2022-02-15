@@ -206,9 +206,10 @@ void EditorLayer::OnImGuiRender() {
                       viewportBounds[1].y - viewportBounds[0].y);  // NOLINT
 
     // Cube
-    ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), 8,
-                             {viewportBounds[0].x, viewportBounds[0].y}, ImVec2{100, 100},
-                             0x10101011);
+    ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), 8,               // NOLINT
+                             {viewportBounds[0].x, viewportBounds[0].y},  // NOLINT
+                             ImVec2{100, 100},                            // NOLINT
+                             0x10101011);                                 // NOLINT
 
     // Transform controls
     Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
