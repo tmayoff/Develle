@@ -13,8 +13,7 @@ Scene::~Scene() {}
 Entity Scene::CreateEntity(const std::string &name) {
   Entity entity{registry.create(), this};
   entity.AddComponent<TransformComponent>();
-  auto &tag = entity.AddComponent<TagComponent>();
-  tag.Tag = name.empty() ? "Entity" : name;
+  entity.AddComponent<TagComponent>(name.empty() ? "Entity" : name);
   return entity;
 }
 
@@ -56,6 +55,7 @@ Entity Scene::GetPrimaryCameraEntity() {
   }
 
   DV_CORE_WARN("No Primary camera");
+  return {};
 }
 
 }  // namespace Develle

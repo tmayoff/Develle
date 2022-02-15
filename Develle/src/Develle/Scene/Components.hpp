@@ -14,21 +14,17 @@
 namespace Develle {
 
 struct TagComponent {
-  TagComponent() = default;
-  TagComponent(const TagComponent &) = default;
   TagComponent(const std::string &tag) : Tag(tag) {}
 
   std::string Tag;
 };
 
 struct TransformComponent {
+  TransformComponent(const glm::vec3 &position = glm::vec3(0.0f)) : Position(position) {}
+
   glm::vec3 Position = {0.0f, 0.0f, 0.0f};
   glm::vec3 Rotation = {0.0f, 0.0f, 0.0f};
   glm::vec3 Scale = {1.0f, 1.0f, 1.0f};
-
-  TransformComponent() = default;
-  TransformComponent(const TransformComponent &) = default;
-  TransformComponent(const glm::vec3 &position) : Position(position) {}
 
   glm::mat4 GetTransform() const {
     glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
@@ -39,20 +35,15 @@ struct TransformComponent {
 };
 
 struct SpriteRendererComponent {
+  SpriteRendererComponent(const glm::vec4 &color = glm::vec4(1.0f)) : Color(color) {}
+
   glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
   Ref<Texture2D> Texture;
   float TilingFactor = 1.0f;
-
-  SpriteRendererComponent() = default;
-  SpriteRendererComponent(const SpriteRendererComponent &) = default;
-  SpriteRendererComponent(const glm::vec4 &color) : Color(color) {}
 };
 
 struct CameraComponent {
   SceneCamera Camera;
-  CameraComponent() = default;
-  CameraComponent(const CameraComponent &) = default;
-
   bool Primary = true;
   bool FixedAspectRatio = false;
 };
