@@ -60,6 +60,7 @@ spirv_cross_glsl_dep = spirv_cross.dependency('spirv-cross-glsl')
 
 yaml_opt = cmake.subproject_options()
 yaml_opt.add_cmake_defines({'YAML_BUILD_SHARED_LIBS': true})
+yaml_opt.add_cmake_defines({'YAML_CPP_BUILD_TESTS': false})
 yaml = cmake.subproject('yaml-cpp', options: yaml_opt)
 yaml_dep = yaml.dependency('yaml-cpp')
 
