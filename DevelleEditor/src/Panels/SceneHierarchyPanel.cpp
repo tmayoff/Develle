@@ -212,7 +212,7 @@ void SceneHierarchyPanel::DrawComponents(Entity entity) {
     DrawVec3Control("Scale", component.Scale, 1.0f);
   });
 
-  DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto component) {
+  DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto &component) {
     ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 
     ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
