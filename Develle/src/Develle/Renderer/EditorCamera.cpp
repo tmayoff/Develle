@@ -1,40 +1,35 @@
-#include <Develle/Renderer/EditorCamera.hpp>
-
 #include <Develle/Core/Input.hpp>
 #include <Develle/Core/KeyCodes.hpp>
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
+#include <Develle/Renderer/EditorCamera.hpp>
 
 namespace Develle {
 
-EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip,
-                           float farClip)
-    : fov(fov), aspectRatio(aspectRatio), nearClip(nearClip), farClip(farClip) {
+EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
+    : camera(glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip)) {
   UpdateView();
 }
 
 void EditorCamera::OnUpdate(Timestep) {
   if (Input::IsKeyPressed(Key::LALT)) {
     const glm::vec2 &mouse{Input::GetMouseX(), Input::GetMouseY()};
-    glm::vec2 mouseDelta = (mouse - initialMousePosition) * 0.003f;
+    glm::vec2 mouseDelta = (mouse - initialMousePosition) * 0.003f;  // NOLINT
     initialMousePosition = mouse;
 
-    if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
+    if (Input::IsMouseButtonPressed(MouseCode::ButtonMiddle))
       MousePan(mouseDelta);
-    else if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
+    else if (Input::IsMouseButtonPressed(MouseCode::ButtonLeft))
       MouseRotate(mouseDelta);
-    else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
+    else if (Input::IsMouseButtonPressed(MouseCode::ButtonRight))
       MouseZoom(mouseDelta.y);
   }
 
+  camera.SetPosition(cameraPosition);
   UpdateView();
 }
 
 void EditorCamera::OnEvent(Event &e) {
   EventDispatcher dispatcher(e);
-  dispatcher.Dispatch<MouseScrolledEvent>(
-      DV_BIND_EVENT_FN(EditorCamera::OnMouseScrolled));
+  dispatcher.Dispatch<MouseScrolledEvent>(DV_BIND_EVENT_FN(EditorCamera::OnMouseScrolled));
 }
 
 glm::vec3 EditorCamera::GetUpDirection() const {
@@ -49,24 +44,17 @@ glm::vec3 EditorCamera::GetForwardDirection() const {
   return glm::rotate(GetOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
 }
 
-glm::quat EditorCamera::GetOrientation() const {
-  return glm::quat(glm::vec3(-pitch, -yaw, 0.0f));
-}
+glm::quat EditorCamera::GetOrientation() const { return glm::quat(glm::vec3(-pitch, -yaw, 0.0f)); }
 
 void EditorCamera::UpdateProjection() {
   aspectRatio = viewportWidth / viewportHeight;
-  projection =
-      glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip);
+  camera.SetProjection(glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip));
 }
 
 void EditorCamera::UpdateView() {
   // yaw = pitch = 0.0f // Lock the camera's rotation
-  position = CalculatePosition();
-
-  glm::quat orientation = GetOrientation();
-  viewMatrix =
-      glm::translate(glm::mat4(1.0f), position) * glm::toMat4(orientation);
-  viewMatrix = glm::inverse(viewMatrix);
+  camera.SetPosition(CalculatePosition());
+  camera.SetRotation(GetOrientation());
 }
 
 bool EditorCamera::OnMouseScrolled(MouseScrolledEvent &e) {
@@ -101,10 +89,10 @@ glm::vec3 EditorCamera::CalculatePosition() const {
 }
 
 std::pair<float, float> EditorCamera::PanSpeed() const {
-  float x = std::min(viewportWidth / 1000.0f, 2.4f); // max = 2.4f
+  float x = std::min(viewportWidth / 1000.0f, 2.4f);  // max = 2.4f
   float xFactor = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;
 
-  float y = std::min(viewportHeight / 1000.0f, 2.4f); // max = 2.4f
+  float y = std::min(viewportHeight / 1000.0f, 2.4f);  // max = 2.4f
   float yFactor = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;
 
   return {xFactor, yFactor};
@@ -116,9 +104,9 @@ float EditorCamera::ZoomSpeed() const {
   float distance = this->distance * 0.2f;
   distance = std::max(distance, 0.0f);
   float speed = distance * distance;
-  speed = std::min(speed, 100.0f); // max = 100.0f
+  speed = std::min(speed, 100.0f);  // max = 100.0f
 
   return speed;
 }
 
-} // namespace Develle
+}  // namespace Develle

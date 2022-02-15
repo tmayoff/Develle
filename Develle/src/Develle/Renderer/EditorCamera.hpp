@@ -5,18 +5,29 @@
 #include <Develle/Events/Event.hpp>
 #include <Develle/Events/MouseEvent.hpp>
 #include <Develle/Renderer/Camera.hpp>
-
 #include <glm/glm.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 namespace Develle {
 
-class EditorCamera : public Camera {
-public:
+class EditorCamera {
+ public:
   EditorCamera() = default;
+
+  /// @brief Construct a new Editor Camera object
+  ///
+  /// @param fov In degrees
+  /// @param aspectRatio
+  /// @param nearClip
+  /// @param farClip
   EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 
   void OnUpdate(Timestep delta);
-  void OnEvent(Event &e);
+  void OnEvent(Event& e);
+
+  inline Camera& GetCamera() { return camera; }
 
   inline float GetDistance() const { return distance; }
   inline void SetDistance(float distance) { this->distance = distance; }
@@ -27,26 +38,22 @@ public:
     UpdateProjection();
   }
 
-  const glm::mat4 &GetViewMatrix() const { return viewMatrix; }
-  glm::mat4 GetViewProjection() const { return projection * viewMatrix; }
-
   glm::vec3 GetUpDirection() const;
   glm::vec3 GetRightDirection() const;
   glm::vec3 GetForwardDirection() const;
-  const glm::vec3 &GetPosition() const { return position; }
   glm::quat GetOrientation() const;
 
-  float GetPitch() const { return pitch; }
-  float GetYaw() const { return yaw; }
+  // float GetPitch() const { return pitch; }
+  // float GetYaw() const { return yaw; }
 
-private:
+ private:
   void UpdateProjection();
   void UpdateView();
 
-  bool OnMouseScrolled(MouseScrolledEvent &e);
+  bool OnMouseScrolled(MouseScrolledEvent& e);
 
-  void MousePan(const glm::vec2 &delta);
-  void MouseRotate(const glm::vec2 &delta);
+  void MousePan(const glm::vec2& delta);
+  void MouseRotate(const glm::vec2& delta);
   void MouseZoom(float delta);
 
   glm::vec3 CalculatePosition() const;
@@ -55,10 +62,14 @@ private:
   float RotationSpeed() const;
   float ZoomSpeed() const;
 
-  float fov = 45.0f, aspectRatio = 1.778f, nearClip = 0.1f, farClip = 1000.0f;
+  Camera camera;
 
-  glm::mat4 viewMatrix;
-  glm::vec3 position = {0.0f, 0.0f, 0.0f};
+  float fov = 45.0f;           // NOLINT
+  float aspectRatio = 1.778f;  // NOLINT
+  float nearClip = 0.001f;     // NOLINT
+  float farClip = 1000.0f;     // NOLINT
+
+  glm::vec3 cameraPosition = glm::vec3{0.0f, 0.0f, 10.0f};
   glm::vec3 focalPoint = {0.0f, 0.0f, 0.0f};
 
   glm::vec2 initialMousePosition = {0.0f, 0.0f};
@@ -66,8 +77,9 @@ private:
   float distance = 10.0f;
   float pitch = 0.0f, yaw = 0.0f;
 
-  float viewportWidth = 1280, viewportHeight = 720;
+  float viewportWidth = 1280;  // NOLINT
+  float viewportHeight = 720;  // NOLINT
 };
 
-} // namespace Develle
-#endif // EDITORCAMERA_HPP_
+}  // namespace Develle
+#endif  // EDITORCAMERA_HPP_

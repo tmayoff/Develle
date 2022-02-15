@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+
 namespace Develle {
 
 class Camera {
@@ -18,18 +21,24 @@ class Camera {
   virtual ~Camera() = default;
 
   void SetPosition(const glm::vec3 &pos) { position = pos; }
+  glm::vec3 GetPosition() { return position; }
+
+  void SetRotation(const glm::quat &rot) { rotation = rot; }
+  glm::quat GetRotation() { return rotation; }
 
   const glm::mat4 &GetProjection() const { return projection; }
   void SetProjection(const glm::mat4 &mat) { projection = mat; }
 
   glm::mat4 GetViewProjection() const {
     DV_PROFILE_FUNCTION();  // NOLINT
-    return projection * glm::inverse(glm::translate(glm::mat4(1.0), position));
+    return projection *
+           glm::inverse(glm::translate(glm::mat4(1.0), position) * glm::toMat4(rotation));
   }
 
  private:
   glm::mat4 projection = glm::mat4(1.0f);  // NOLINT
   glm::vec3 position = glm::vec3(0.0f);
+  glm::quat rotation{};
 };
 
 }  // namespace Develle

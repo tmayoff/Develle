@@ -24,6 +24,7 @@ class EditorLayer : public Layer {
   void OpenScene(const std::filesystem::path &path);
   void SaveSceneAs();
   bool OnKeyPressed(KeyPressedEvent &e);
+  bool OnMouseButtonPressed(MouseButtonPressedEvent &e);
 
   Ref<Scene> activeScene;
 

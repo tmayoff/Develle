@@ -173,8 +173,8 @@ void EditorLayer::OnImGuiRender() {
   viewportSize = {viewportPanelSize.x, viewportPanelSize.y};
 
   uint64_t textureID = framebuffer->GetColorAttachmentRendererID();
-  ImGui::Image(reinterpret_cast<void *>(textureID),      // NOLINT
-               ImVec2{viewportSize.x, viewportSize.y});  // NOLINT
+  ImGui::Image(reinterpret_cast<void *>(textureID),                                  // NOLINT
+               ImVec2{viewportSize.x, viewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});  // NOLINT
 
   ImGui::End();
   ImGui::PopStyleVar();
@@ -185,6 +185,9 @@ void EditorLayer::OnImGuiRender() {
 void EditorLayer::OnEvent(Event &e) {
   EventDispatcher dispatcher(e);
   dispatcher.Dispatch<KeyPressedEvent>(DV_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+  dispatcher.Dispatch<MouseButtonPressedEvent>(DV_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+
+  editorCamera.OnEvent(e);
 }
 
 void EditorLayer::OpenScene() {
@@ -234,6 +237,11 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
       break;
   }
 
+  return false;
+}
+
+bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent &) {
+  if (viewportHovered) sceneHierarchyPanel.SetSelectedEntity(hoveredEntity);
   return false;
 }
 
