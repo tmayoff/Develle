@@ -10,7 +10,8 @@ EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float f
 }
 
 void EditorCamera::OnUpdate(Timestep) {
-  if (Input::IsKeyPressed(Key::LALT)) {
+  isUsing = Input::IsKeyPressed(Key::LALT);
+  if (isUsing) {
     const glm::vec2 &mouse{Input::GetMouseX(), Input::GetMouseY()};
     glm::vec2 mouseDelta = (mouse - initialMousePosition) * 0.003f;  // NOLINT
     initialMousePosition = mouse;

@@ -71,7 +71,7 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
     int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
     if (pixelData != -1)
       hoveredEntity = Entity((entt::entity)pixelData, activeScene.get());
-    else
+    else if (!editorCamera.IsUsing())
       hoveredEntity = Entity();
   }
 
@@ -284,7 +284,7 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
   if (e.GetRepeatCount() > 0) return false;
 
   bool ctrl = Input::IsKeyPressed(Key::LCTRL) || Input::IsKeyPressed(Key::RCTRL);
-  bool shft = Input::IsKeyPressed(Key::LSHIFT) || Input::IsKeyPressed(Key::RSHIFT);
+  bool shift = Input::IsKeyPressed(Key::LSHIFT) || Input::IsKeyPressed(Key::RSHIFT);
 
   switch (e.GetKeyCode()) {
     case Key::N:
@@ -294,7 +294,7 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
       if (ctrl) OpenScene();
       break;
     case Key::S:
-      if (ctrl && shft) SaveSceneAs();
+      if (ctrl && shift) SaveSceneAs();
       break;
 
     // Guizmo

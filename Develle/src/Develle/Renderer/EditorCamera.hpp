@@ -27,6 +27,8 @@ class EditorCamera {
   void OnUpdate(Timestep delta);
   void OnEvent(Event& e);
 
+  bool IsUsing() { return isUsing; }
+
   inline Camera& GetCamera() { return camera; }
 
   inline float GetDistance() const { return distance; }
@@ -63,6 +65,8 @@ class EditorCamera {
   float ZoomSpeed() const;
 
   Camera camera;
+
+  bool isUsing = false;
 
   float fov = 45.0f;           // NOLINT
   float aspectRatio = 1.778f;  // NOLINT
