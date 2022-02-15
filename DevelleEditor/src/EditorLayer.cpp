@@ -55,7 +55,7 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
 
   framebuffer->ClearAttachment(1, -1);
 
-  editorCamera.OnUpdate(deltaTime);
+  if (!ImGuizmo::IsUsing()) editorCamera.OnUpdate(deltaTime);
   activeScene->OnUpdateEditor(deltaTime, editorCamera);
 
   // Mouse picking
@@ -196,18 +196,22 @@ void EditorLayer::OnImGuiRender() {
                ImVec2{viewportSize.x, viewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});  // NOLINT
   {
     // Guizmos
-    const glm::mat4 &cameraProjection = editorCamera.GetCamera().GetProjection();
-    glm::mat4 cameraView = editorCamera.GetCamera().GetViewProjection();
+    const glm::mat4 &cameraProjection = editorCamera.GetCamera().GetProjectionMatrix();
+    glm::mat4 cameraView = editorCamera.GetCamera().GetViewMatrix();
 
-    ImGuizmo::SetOrthographic(true);
+    ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist();
     ImGuizmo::SetRect(viewportBounds[0].x, viewportBounds[0].y,    // NOLINT
                       viewportBounds[1].x - viewportBounds[0].x,   // NOLINT
                       viewportBounds[1].y - viewportBounds[0].y);  // NOLINT
 
-    Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
+    // Cube
+    ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), 8,
+                             {viewportBounds[0].x, viewportBounds[0].y}, ImVec2{100, 100},
+                             0x10101011);
 
     // Transform controls
+    Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
     if (selectedEntity && guizmoOperation != -1) {
       auto &tc = selectedEntity.GetComponent<TransformComponent>();
       glm::mat4 transform = tc.GetTransform();
@@ -220,6 +224,16 @@ void EditorLayer::OnImGuiRender() {
       ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
                            (ImGuizmo::OPERATION)guizmoOperation, ImGuizmo::LOCAL,
                            glm::value_ptr(transform), nullptr, snap ? snapValues.data() : nullptr);
+
+      if (ImGuizmo::IsUsing()) {
+        glm::vec3 position, rotation, scale;
+        ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position),
+                                              glm::value_ptr(rotation), glm::value_ptr(scale));
+        glm::vec3 deltaRot = rotation - tc.Rotation;
+        tc.Position = position;
+        tc.Rotation += deltaRot;
+        tc.Scale = scale;
+      }
     }
   }
 

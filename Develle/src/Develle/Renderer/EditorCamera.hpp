@@ -69,12 +69,12 @@ class EditorCamera {
   float nearClip = 0.001f;     // NOLINT
   float farClip = 1000.0f;     // NOLINT
 
-  glm::vec3 cameraPosition = glm::vec3{0.0f, 0.0f, 10.0f};
+  glm::vec3 cameraPosition = glm::vec3{0.0f, 0.0f, 10.0f};  // NOLINT
   glm::vec3 focalPoint = {0.0f, 0.0f, 0.0f};
 
   glm::vec2 initialMousePosition = {0.0f, 0.0f};
 
-  float distance = 10.0f;
+  float distance = 10.0f;  // NOLINT
   float pitch = 0.0f, yaw = 0.0f;
 
   float viewportWidth = 1280;  // NOLINT

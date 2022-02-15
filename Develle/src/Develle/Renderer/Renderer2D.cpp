@@ -113,7 +113,7 @@ void Renderer2D::Shutdown() {
 void Renderer2D::BeginScene(const Camera &camera) {
   DV_PROFILE_FUNCTION();  // NOLINT
 
-  data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+  data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
   data.CameraUniformBuffer->SetData(&data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
   StartBatch();

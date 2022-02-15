@@ -20,7 +20,7 @@ void EditorCamera::OnUpdate(Timestep) {
     else if (Input::IsMouseButtonPressed(MouseCode::ButtonLeft))
       MouseRotate(mouseDelta);
     else if (Input::IsMouseButtonPressed(MouseCode::ButtonRight))
-      MouseZoom(mouseDelta.y);
+      MouseZoom(mouseDelta.y);  // NOLINT
   }
 
   camera.SetPosition(cameraPosition);
@@ -58,7 +58,7 @@ void EditorCamera::UpdateView() {
 }
 
 bool EditorCamera::OnMouseScrolled(MouseScrolledEvent &e) {
-  float delta = e.GetYOffset() * 0.1f;
+  float delta = e.GetYOffset() * 0.1f;  // NOLINT
   MouseZoom(delta);
   UpdateView();
   return false;
@@ -66,14 +66,14 @@ bool EditorCamera::OnMouseScrolled(MouseScrolledEvent &e) {
 
 void EditorCamera::MousePan(const glm::vec2 &delta) {
   auto [xSpeed, ySpeed] = PanSpeed();
-  focalPoint += -GetRightDirection() * delta.x * xSpeed * distance;
-  focalPoint += GetUpDirection() * delta.y * ySpeed * distance;
+  focalPoint += -GetRightDirection() * delta.x * xSpeed * distance;  // NOLINT
+  focalPoint += GetUpDirection() * delta.y * ySpeed * distance;      // NOLINT
 }
 
 void EditorCamera::MouseRotate(const glm::vec2 &delta) {
-  float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;
-  yaw += yawSign * delta.x * RotationSpeed();
-  pitch += delta.y * RotationSpeed();
+  float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;  // NOLINT
+  yaw += yawSign * delta.x * RotationSpeed();             // NOLINT
+  pitch += delta.y * RotationSpeed();                     // NOLINT
 }
 
 void EditorCamera::MouseZoom(float delta) {
@@ -89,19 +89,19 @@ glm::vec3 EditorCamera::CalculatePosition() const {
 }
 
 std::pair<float, float> EditorCamera::PanSpeed() const {
-  float x = std::min(viewportWidth / 1000.0f, 2.4f);  // max = 2.4f
-  float xFactor = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;
+  float x = std::min(viewportWidth / 1000.0f, 2.4f);          // max = 2.4f //NOLINT
+  float xFactor = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;  // NOLINT
 
-  float y = std::min(viewportHeight / 1000.0f, 2.4f);  // max = 2.4f
-  float yFactor = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;
+  float y = std::min(viewportHeight / 1000.0f, 2.4f);         // max = 2.4f //NOLINT
+  float yFactor = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;  // NOLINT
 
   return {xFactor, yFactor};
 }
 
-float EditorCamera::RotationSpeed() const { return 0.8f; }
+float EditorCamera::RotationSpeed() const { return 0.8f; }  // NOLINT
 
 float EditorCamera::ZoomSpeed() const {
-  float distance = this->distance * 0.2f;
+  float distance = this->distance * 0.2f;  // NOLINT
   distance = std::max(distance, 0.0f);
   float speed = distance * distance;
   speed = std::min(speed, 100.0f);  // max = 100.0f

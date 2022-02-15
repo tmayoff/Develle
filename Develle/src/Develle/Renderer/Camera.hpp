@@ -1,6 +1,7 @@
 #ifndef CAMERA_HPP_
 #define CAMERA_HPP_
 
+#include <Develle/Debug/Instrumentor.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -26,13 +27,14 @@ class Camera {
   void SetRotation(const glm::quat &rot) { rotation = rot; }
   glm::quat GetRotation() { return rotation; }
 
-  const glm::mat4 &GetProjection() const { return projection; }
+  glm::mat4 GetViewProjectionMatrix() const { return projection * GetViewMatrix(); }
+
+  const glm::mat4 &GetProjectionMatrix() const { return projection; }
   void SetProjection(const glm::mat4 &mat) { projection = mat; }
 
-  glm::mat4 GetViewProjection() const {
+  glm::mat4 GetViewMatrix() const {
     DV_PROFILE_FUNCTION();  // NOLINT
-    return projection *
-           glm::inverse(glm::translate(glm::mat4(1.0), position) * glm::toMat4(rotation));
+    return glm::inverse(glm::translate(glm::mat4(1.0), position) * glm::toMat4(rotation));
   }
 
  private:
