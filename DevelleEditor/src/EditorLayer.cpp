@@ -1,8 +1,11 @@
 #include <imgui.h>
+//
+#include <ImGuizmo.h>
 
 #include <Develle/Scene/SceneSerializer.hpp>
 #include <Develle/Utils/PlatformUtils.hpp>
 #include <EditorLayer.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Develle {
 
@@ -150,7 +153,23 @@ void EditorLayer::OnImGuiRender() {
   }
 
   {
-    ImGui::Begin("Camera");  // bool optFullscreen = true;
+    ImGui::Begin("ImGuizmo");
+
+    ImGui::Text("Using: %s", ImGuizmo::IsUsing() ? "true" : "false");  // NOLINT
+    switch ((ImGuizmo::OPERATION)guizmoOperation) {
+      case ImGuizmo::OPERATION::TRANSLATE:
+        ImGui::Text("Operation: %s", "translate");  // NOLINT
+        break;
+      case ImGuizmo::OPERATION::SCALE:
+        ImGui::Text("Operation: %s", "scale");  // NOLINT
+        break;
+      case ImGuizmo::OPERATION::ROTATE:
+        ImGui::Text("Operation: %s", "rotate");  // NOLINT
+        break;
+      default:
+        ImGui::Text("Operation: %s", "none");  // NOLINT
+        break;
+    }
 
     ImGui::End();
   }
@@ -175,6 +194,34 @@ void EditorLayer::OnImGuiRender() {
   uint64_t textureID = framebuffer->GetColorAttachmentRendererID();
   ImGui::Image(reinterpret_cast<void *>(textureID),                                  // NOLINT
                ImVec2{viewportSize.x, viewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});  // NOLINT
+  {
+    // Guizmos
+    const glm::mat4 &cameraProjection = editorCamera.GetCamera().GetProjection();
+    glm::mat4 cameraView = editorCamera.GetCamera().GetViewProjection();
+
+    ImGuizmo::SetOrthographic(true);
+    ImGuizmo::SetDrawlist();
+    ImGuizmo::SetRect(viewportBounds[0].x, viewportBounds[0].y,    // NOLINT
+                      viewportBounds[1].x - viewportBounds[0].x,   // NOLINT
+                      viewportBounds[1].y - viewportBounds[0].y);  // NOLINT
+
+    Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
+
+    // Transform controls
+    if (selectedEntity && guizmoOperation != -1) {
+      auto &tc = selectedEntity.GetComponent<TransformComponent>();
+      glm::mat4 transform = tc.GetTransform();
+
+      bool snap = Input::IsKeyPressed(Key::LCTRL);
+      float snapValue = 0.5f;                                                 // NOLINT
+      if (guizmoOperation == ImGuizmo::OPERATION::ROTATE) snapValue = 45.0f;  // NOLINT
+      std::array<float, 3> snapValues = {snapValue, snapValue, snapValue};
+
+      ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+                           (ImGuizmo::OPERATION)guizmoOperation, ImGuizmo::LOCAL,
+                           glm::value_ptr(transform), nullptr, snap ? snapValues.data() : nullptr);
+    }
+  }
 
   ImGui::End();
   ImGui::PopStyleVar();
@@ -234,6 +281,20 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
       break;
     case Key::S:
       if (ctrl && shft) SaveSceneAs();
+      break;
+
+    // Guizmo
+    case Key::Q:
+      if (!ImGuizmo::IsUsing()) guizmoOperation = -1;
+      break;
+    case Key::W:
+      if (!ImGuizmo::IsUsing()) guizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+      break;
+    case Key::E:
+      if (!ImGuizmo::IsUsing()) guizmoOperation = ImGuizmo::OPERATION::SCALE;
+      break;
+    case Key::R:
+      if (!ImGuizmo::IsUsing()) guizmoOperation = ImGuizmo::OPERATION::ROTATE;
       break;
   }
 

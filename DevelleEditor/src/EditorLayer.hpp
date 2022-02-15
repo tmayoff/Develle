@@ -34,6 +34,9 @@ class EditorLayer : public Layer {
 
   EditorCamera editorCamera;
 
+  // Guizmos
+  int guizmoOperation = -1;
+
   SceneHierarchyPanel sceneHierarchyPanel;
   // ContentBrowserPanel contentBrowserPanel;
   Ref<Framebuffer> framebuffer;

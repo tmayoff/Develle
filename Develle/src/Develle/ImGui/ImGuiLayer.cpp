@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl.h>
+//
+#include <ImGuizmo.h>
 
 #include <Develle/Core/Application.hpp>
 
@@ -87,6 +89,7 @@ void ImGuiLayer::Begin() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplSDL2_NewFrame();
   ImGui::NewFrame();
+  ImGuizmo::BeginFrame();
 }
 
 void ImGuiLayer::End() {

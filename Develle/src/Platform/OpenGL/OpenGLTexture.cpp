@@ -5,8 +5,7 @@
 
 namespace Develle {
 
-OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
-    : width(width), height(height) {
+OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : width(width), height(height) {
   DV_PROFILE_FUNCTION();
 
   internalFormat = GL_RGBA8;
@@ -29,8 +28,9 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &path) : path(path) {
   stbi_set_flip_vertically_on_load(1);
   stbi_uc *data = nullptr;
   {
-    DV_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const "
-                     "std::string& name)");
+    DV_PROFILE_SCOPE(
+        "stbi_load - OpenGLTexture2D::OpenGLTexture2D(const "
+        "std::string& name)");
     data = stbi_load(path.c_str(), &width, &height, &channels, 0);
   }
 
@@ -60,8 +60,7 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &path) : path(path) {
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    glTextureSubImage2D(rendererID, 0, 0, 0, width, height, dataFormat,
-                        GL_UNSIGNED_BYTE, data);
+    glTextureSubImage2D(rendererID, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 
     stbi_image_free(data);
   } else {
@@ -80,8 +79,7 @@ void OpenGLTexture2D::SetData(void *data, uint32_t size) {
 
   uint32_t bpp = dataFormat == GL_RGBA ? 4 : 3;
   DV_CORE_ASSERT(size == width * height * bpp, "Data must be entire texture");
-  glTextureSubImage2D(rendererID, 0, 0, 0, width, height, dataFormat,
-                      GL_UNSIGNED_BYTE, data);
+  glTextureSubImage2D(rendererID, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 }
 
 void OpenGLTexture2D::Bind(uint32_t slot) const {
@@ -90,4 +88,4 @@ void OpenGLTexture2D::Bind(uint32_t slot) const {
   glBindTextureUnit(slot, rendererID);
 }
 
-} // namespace Develle
+}  // namespace Develle
