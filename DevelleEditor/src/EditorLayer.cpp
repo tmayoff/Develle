@@ -135,6 +135,7 @@ void EditorLayer::OnImGuiRender() {
   }
 
   sceneHierarchyPanel.OnImGuiRender();
+  fileBrowser.OnImGuiRender();
 
   {
     ImGui::Begin("Stats");

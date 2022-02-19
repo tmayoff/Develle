@@ -1,1 +1,1 @@
-sources += files('SceneHierarchyPanel.cpp')
+sources += files('FileBrowser.cpp', 'SceneHierarchyPanel.cpp')

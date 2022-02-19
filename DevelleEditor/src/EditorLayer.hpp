@@ -3,6 +3,7 @@
 
 #include <Develle.hpp>
 #include <Develle/Scene/Scene.hpp>
+#include <Panels/FileBrowser.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
 namespace Develle {
@@ -38,7 +39,7 @@ class EditorLayer : public Layer {
   int guizmoOperation = -1;
 
   SceneHierarchyPanel sceneHierarchyPanel;
-  // ContentBrowserPanel contentBrowserPanel;
+  FileBrowser fileBrowser;
   Ref<Framebuffer> framebuffer;
 
   bool viewportFocused = false, viewportHovered = false;
