@@ -1,5 +1,7 @@
-#include <Develle/Renderer/Renderer.hpp>
-#include <Develle/Renderer/Renderer2D.hpp>
+#include "Renderer.hpp"
+
+#include "Renderer2D.hpp"
+#include "Renderer3D.hpp"
 
 namespace Develle {
 
