@@ -3,11 +3,14 @@
 
 namespace Develle {
 
-void Renderer::Init() {
-  DV_PROFILE_FUNCTION();
+void Renderer::Init(RenderMode mode) {
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   RenderCommand::Init();
-  Renderer2D::Init();
+  if (mode == RenderMode::Render2D)
+    Renderer2D::Init();
+  else if (mode == RenderMode::Render3D)
+    Renderer3D::Init();
 }
 
 void Renderer::Shutdown() { Renderer2D::Shutdown(); }
@@ -16,8 +19,4 @@ void Renderer::OnWindowResize(uint32_t width, uint32_t height) {
   RenderCommand::SetViewport(0, 0, width, height);
 }
 
-void Renderer::BeginScene() {}
-
-void Renderer::EndScene() {}
-
-} // namespace Develle
+}  // namespace Develle
