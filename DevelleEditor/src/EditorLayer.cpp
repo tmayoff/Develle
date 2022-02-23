@@ -9,8 +9,6 @@
 
 namespace Develle {
 
-EditorLayer::EditorLayer() : Layer("Editor Layer") {}
-
 void EditorLayer::OnAttach() {
   DV_PROFILE_FUNCTION();  // NOLINT
 
@@ -28,6 +26,7 @@ void EditorLayer::OnAttach() {
   OpenScene(std::string(ASSETS_ROOT) + "/example.develle");
 
   sceneHierarchyPanel.SetContext(activeScene);
+  fileBrowser.SetProjectPath(openProject);
 }
 
 void EditorLayer::OnDetach() {}
@@ -124,6 +123,8 @@ void EditorLayer::OnImGuiRender() {
       if (ImGui::MenuItem("New", "Ctrl+N")) {
       }
 
+      if (ImGui::MenuItem("Open Project")) OpenProject();
+
       if (ImGui::MenuItem("Open...", "Ctrl+O")) OpenScene();
 
       if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) SaveSceneAs();
@@ -195,6 +196,15 @@ void EditorLayer::OnImGuiRender() {
   uint64_t textureID = framebuffer->GetColorAttachmentRendererID();
   ImGui::Image(reinterpret_cast<void *>(textureID),                                  // NOLINT
                ImVec2{viewportSize.x, viewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});  // NOLINT
+
+  if (ImGui::BeginDragDropTarget()) {
+    if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+      const char *path = (const char *)payload->Data;
+      OpenScene(std::filesystem::path(openProject) / path);
+    }
+    ImGui::EndDragDropTarget();
+  }
+
   {
     // Guizmos
     const glm::mat4 &cameraProjection = editorCamera.GetCamera().GetProjectionMatrix();
@@ -251,6 +261,11 @@ void EditorLayer::OnEvent(Event &e) {
   dispatcher.Dispatch<MouseButtonPressedEvent>(DV_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 
   editorCamera.OnEvent(e);
+}
+
+void EditorLayer::OpenProject() {
+  auto project = FileDialogs::OpenFolder("Open Project");
+  if (!project.empty()) openProject = project;
 }
 
 void EditorLayer::OpenScene() {
@@ -318,7 +333,8 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
 }
 
 bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent &) {
-  if (viewportHovered) sceneHierarchyPanel.SetSelectedEntity(hoveredEntity);
+  if (viewportHovered && !Input::IsKeyPressed(Key::LALT))
+    sceneHierarchyPanel.SetSelectedEntity(hoveredEntity);
   return false;
 }
 

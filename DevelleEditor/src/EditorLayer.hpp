@@ -10,9 +10,6 @@ namespace Develle {
 
 class EditorLayer : public Layer {
  public:
-  EditorLayer();
-  ~EditorLayer() = default;
-
   void OnAttach() override;
   void OnDetach() override;
 
@@ -21,11 +18,14 @@ class EditorLayer : public Layer {
   void OnEvent(Event &e) override;
 
  private:
+  void OpenProject();
   void OpenScene();
   void OpenScene(const std::filesystem::path &path);
   void SaveSceneAs();
   bool OnKeyPressed(KeyPressedEvent &e);
   bool OnMouseButtonPressed(MouseButtonPressedEvent &e);
+
+  std::filesystem::path openProject = "/home/tyler/Documents/Develle";
 
   Ref<Scene> activeScene;
 

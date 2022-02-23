@@ -22,15 +22,13 @@ OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : width(width)
 }
 
 OpenGLTexture2D::OpenGLTexture2D(const std::string &path) : path(path) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
-  int width, height, channels;
+  int width = 0, height = 0, channels = 0;
   stbi_set_flip_vertically_on_load(1);
   stbi_uc *data = nullptr;
   {
-    DV_PROFILE_SCOPE(
-        "stbi_load - OpenGLTexture2D::OpenGLTexture2D(const "
-        "std::string& name)");
+    DV_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D");  // NOLINT
     data = stbi_load(path.c_str(), &width, &height, &channels, 0);
   }
 

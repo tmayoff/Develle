@@ -7,6 +7,8 @@
 
 namespace Develle {
 
+std::filesystem::path assetPath;
+
 template <typename T, typename UIFunction>
 static void DrawComponent(const std::string &name, Entity entity, UIFunction uiFunction) {
   const ImGuiTreeNodeFlags treeNodeFlags =
@@ -216,7 +218,13 @@ void SceneHierarchyPanel::DrawComponents(Entity entity) {
     ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 
     ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
-
+    if (ImGui::BeginDragDropTarget()) {
+      if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+        const char *path = (const char *)payload->Data;
+        std::filesystem::path texturePath = std::filesystem::path(assetPath) / path;
+        component.Texture = Texture2D::Create(texturePath.string());
+      }
+    }
     ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
   });
 }
