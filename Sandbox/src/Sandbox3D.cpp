@@ -10,7 +10,7 @@ void Sandbox3D::OnAttach() {
   mesh = Develle::Mesh::CreateQuadMesh();
 
   checkerboard = Develle::Texture2D::Create(
-      "/home/tyler/src/Develle/Sandbox/assets/textures/Checkerboard.png");
+      "/home/tyler/src/Develle/Sandbox/assets/textures/prototype_512x512_blue.png");
 }
 
 void Sandbox3D::OnDetach() {}
@@ -23,8 +23,9 @@ void Sandbox3D::OnUpdate(Develle::Timestep delta) {
   Develle::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});  // NOLINT
   Develle::RenderCommand::Clear();
 
-  Develle::Renderer3D::DrawMesh(mesh, {0.0f, 0.0f, 0.0f}, {-90.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f},
-                                checkerboard, {1.0f, 1.0f, 1.0f, 1.0f});
+  // Floor
+  Develle::Renderer3D::DrawMesh(mesh, {0.0f, -1.0f, 0.0f}, {-90.0f, 0.0f, 0.0f},
+                                {15.0f, 15.0f, 1.0f}, checkerboard, {1.0f, 1.0f, 1.0f, 1.0f});
 
   Develle::Renderer3D::EndScene();
 }
