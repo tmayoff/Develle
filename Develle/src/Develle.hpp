@@ -10,6 +10,7 @@
 #include <Develle/Events/Event.hpp>
 #include <Develle/Renderer/Buffer.hpp>
 #include <Develle/Renderer/Framebuffer.hpp>
+#include <Develle/Renderer/Light.hpp>
 #include <Develle/Renderer/Mesh.hpp>
 #include <Develle/Renderer/OrthographicCameraController.hpp>
 #include <Develle/Renderer/RenderCommand.hpp>

@@ -22,7 +22,7 @@ elif build_machine.system() == 'windows'
   add_project_arguments('-DDV_PLATFORM_WINDOWS', language: 'cpp')
 endif
 
-assets_root = meson.current_source_dir() + '/DevelleEditor/assets'
+assets_root = meson.current_source_dir() + '/Develle/assets'
 add_project_arguments('-DASSETS_ROOT="' + assets_root + '"', language: 'cpp')
 
 spdlog = subproject('spdlog')
