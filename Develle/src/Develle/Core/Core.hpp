@@ -9,7 +9,7 @@
 #if defined(DV_PLATFORM_WINDOWS)
 #define DV_DEBUGBREAK() __debugbreak()
 #elif defined(DV_PLATFORM_LINUX)
-#include <signal.h>
+#include <csignal>
 #define DV_DEBUGBREAK raise(SIGTRAP)
 #else
 #error "Platform doesn't support debugbreak yet!"
@@ -33,14 +33,14 @@ namespace Develle {
 template <typename T>
 using Scope = std::unique_ptr<T>;
 template <typename T, typename... Args>
-constexpr Scope<T> CreateScope(Args &&...args) {
+constexpr auto CreateScope(Args &&...args) -> Scope<T> {
   return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
 template <typename T>
 using Ref = std::shared_ptr<T>;
 template <typename T, typename... Args>
-constexpr Ref<T> CreateRef(Args &&...args) {
+constexpr auto CreateRef(Args &&...args) -> Ref<T> {
   return std::make_shared<T>(std::forward<Args>(args)...);
 }
 

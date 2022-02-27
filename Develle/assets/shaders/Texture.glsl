@@ -38,7 +38,7 @@ void main() {
 
   v_Light.u_Intensity = light.u_Intensity;
   v_Light.u_Postition = light.u_Postition;
-  v_Light.u_Color = light.u_Color;
+  v_Light.u_Color = vec3(1.0, 1.0, 1.0);
 
   gl_Position = u_ViewProjection * a_Position;
 }
@@ -76,6 +76,6 @@ void main() {
   vec3 diffuse = diff * v_Light.u_Color;
 
   vec4 textureTint = Input.Color * texture(u_Texture, Input.TexCoord); 
-  vec4 lighting = vec4(ambient + diffuse, 1.0);
-  color = textureTint * lighting;
+  vec3 result = (ambient + diffuse) * textureTint.rgb;
+  color = vec4(result, 1.0);
 }

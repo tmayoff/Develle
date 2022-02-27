@@ -3,6 +3,7 @@
 #define RENDERER3D_HPP_
 
 #include "Camera.hpp"
+#include "Light.hpp"
 #include "Mesh.hpp"
 #include "Texture.hpp"
 
@@ -12,7 +13,7 @@ class Renderer3D {
  public:
   static void Init();
 
-  static void BeginScene(const Camera& camera);
+  static void BeginScene(const Camera& camera, const std::vector<Light>& lights);
   static void EndScene();
 
   static void DrawMesh(Mesh mesh, const glm::vec3& position, const glm::vec3& rotation,

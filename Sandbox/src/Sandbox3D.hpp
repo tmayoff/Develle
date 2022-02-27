@@ -7,9 +7,6 @@
 
 class Sandbox3D : public Develle::Layer {
  public:
-  Sandbox3D();
-  ~Sandbox3D() = default;
-
   void OnAttach() override;
   void OnDetach() override;
 
@@ -18,8 +15,10 @@ class Sandbox3D : public Develle::Layer {
   void OnEvent(Develle::Event &e) override;
 
  private:
+  Develle::Light light;
   Develle::EditorCamera camera;
   Develle::Mesh mesh;
+  Develle::Mesh cube;
   Develle::Ref<Develle::Texture2D> checkerboard;
 };
 

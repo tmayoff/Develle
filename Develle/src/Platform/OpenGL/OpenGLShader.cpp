@@ -189,13 +189,14 @@ void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shader
       std::string info;
       info.resize(maxLength);
       glGetShaderInfoLog(shader, maxLength, nullptr, info.data());
+      DV_CORE_ERROR(info);
     }
 
     glAttachShader(rendererID, shader);
   }
 
-  glLinkProgram(rendererID);
   GLint success = 0;
+  glLinkProgram(rendererID);
   glGetProgramiv(rendererID, GL_LINK_STATUS, &success);
   if (success != GL_TRUE) {
     int maxLength = 0;
@@ -203,6 +204,7 @@ void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shader
     std::string info;
     info.resize(maxLength);
     glGetShaderInfoLog(rendererID, maxLength, nullptr, info.data());
+    DV_CORE_ERROR(info);
   }
 }
 
