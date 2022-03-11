@@ -8,7 +8,7 @@
 namespace YAML {
 template <>
 struct convert<glm::vec3> {
-  static Node encode(const glm::vec3 &rhs) {
+  static auto encode(const glm::vec3 &rhs) -> Node {
     Node node;
 
     node.push_back(rhs.x);
@@ -18,7 +18,7 @@ struct convert<glm::vec3> {
     return node;
   }
 
-  static bool decode(const Node &node, glm::vec3 &rhs) {
+  static auto decode(const Node &node, glm::vec3 &rhs) -> bool {
     if (!node.IsSequence() || node.size() != 3) return false;
 
     rhs.x = node[0].as<float>();
@@ -30,7 +30,7 @@ struct convert<glm::vec3> {
 
 template <>
 struct convert<glm::vec4> {
-  static Node encode(const glm::vec4 &rhs) {
+  static auto encode(const glm::vec4 &rhs) -> Node {
     Node node;
 
     node.push_back(rhs.x);
@@ -41,7 +41,7 @@ struct convert<glm::vec4> {
     return node;
   }
 
-  static bool decode(const Node &node, glm::vec4 &rhs) {
+  static auto decode(const Node &node, glm::vec4 &rhs) -> bool {
     if (!node.IsSequence() || node.size() != 4) return false;
 
     rhs.x = node[0].as<float>();
@@ -55,13 +55,13 @@ struct convert<glm::vec4> {
 
 namespace Develle {
 
-YAML::Emitter &operator<<(YAML::Emitter &out, const glm::vec3 &v) {
+auto operator<<(YAML::Emitter &out, const glm::vec3 &v) -> YAML::Emitter & {
   out << YAML::Flow;
   out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
   return out;
 }
 
-YAML::Emitter &operator<<(YAML::Emitter &out, const glm::vec4 &v) {
+auto operator<<(YAML::Emitter &out, const glm::vec4 &v) -> YAML::Emitter & {
   out << YAML::Flow;
   out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
   return out;
@@ -102,7 +102,8 @@ static void SerializeEntity(YAML::Emitter &out, Entity entity) {
 
     out << YAML::Key << "Camera" << YAML::Value;
     out << YAML::BeginMap;  // Camera
-    out << YAML::Key << "ProjectionType" << YAML::Value << (int)camera.GetProjectionType();
+    out << YAML::Key << "ProjectionType" << YAML::Value
+        << static_cast<int>(camera.GetProjectionType());
     out << YAML::Key << "PerspectiveFOV" << YAML::Value << camera.GetPerspectiveVerticalFOV();
     out << YAML::Key << "PerspectiveNear" << YAML::Value << camera.GetPerspectiveNear();
     out << YAML::Key << "PerspectiveFar" << YAML::Value << camera.GetPerspectiveFar();
@@ -155,7 +156,7 @@ void SceneSerializer::SerializeRuntime(const std::string &) {
   DV_CORE_ASSERT(false, "Not implemented yet");
 }
 
-bool SceneSerializer::Deserialize(const std::string &filepath) {
+auto SceneSerializer::Deserialize(const std::string &filepath) -> bool {
   YAML::Node data;
   try {
     data = YAML::LoadFile(filepath);
@@ -165,13 +166,13 @@ bool SceneSerializer::Deserialize(const std::string &filepath) {
 
   if (!data["Scene"]) return false;
 
-  std::string sceneName = data["Scene"].as<std::string>();
+  auto sceneName = data["Scene"].as<std::string>();
   DV_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
   auto entities = data["Entities"];
   if (entities) {
     for (auto entity : entities) {
-      uint64_t uuid = entity["Entity"].as<uint64_t>();
+      auto uuid = entity["Entity"].as<uint64_t>();
 
       std::string name;
       auto tagComponent = entity["TagComponent"];
@@ -196,7 +197,7 @@ bool SceneSerializer::Deserialize(const std::string &filepath) {
 
         auto cameraProps = cameraComponent["Camera"];
         cc.Camera.SetProjectionType(
-            (SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
+            static_cast<SceneCamera::ProjectionType>(cameraProps["ProjectionType"].as<int>()));
 
         cc.Camera.SetPerspectiveVerticalFOV(cameraProps["PerspectiveFOV"].as<float>());
         cc.Camera.SetPerspectiveNear(cameraProps["PerspectiveNear"].as<float>());
@@ -221,7 +222,7 @@ bool SceneSerializer::Deserialize(const std::string &filepath) {
   return true;
 }
 
-bool SceneSerializer::DeserializeRuntime(const std::string &) {
+auto SceneSerializer::DeserializeRuntime(const std::string & /*unused*/) -> bool {
   DV_CORE_ASSERT(false, "Not implemented yet");
   return false;
 }
