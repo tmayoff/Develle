@@ -27,17 +27,17 @@ void FileBrowser::OnImGuiRender() {
     if (ImGui::Button("<-")) currentDirectory = currentDirectory.parent_path();
   }
 
-  static float padding = 16.0f;
-  static float thumbnailSize = 128.0f;
+  static float padding = 16.0F;
+  static float thumbnailSize = 128.0F;
   float cellSize = thumbnailSize + padding;
 
   float panelWidth = ImGui::GetContentRegionAvail().x;
-  int columntCount = (int)(panelWidth / cellSize);
+  int columntCount = static_cast<int>(panelWidth / cellSize);
   if (columntCount < 1) columntCount = 1;
 
-  ImGui::Columns(columntCount, 0, false);
+  ImGui::Columns(columntCount, nullptr, false);
 
-  for (auto& directoryEntry : std::filesystem::directory_iterator(currentDirectory)) {
+  for (const auto& directoryEntry : std::filesystem::directory_iterator(currentDirectory)) {
     const auto& path = directoryEntry.path();
     auto relativePath = std::filesystem::relative(path, projectPath);
     std::string filename = relativePath.filename().string();
@@ -49,7 +49,7 @@ void FileBrowser::OnImGuiRender() {
                        {1, 0});
 
     if (ImGui::BeginDragDropSource()) {
-      auto* itemPath = relativePath.c_str();
+      const auto* itemPath = relativePath.c_str();
       ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath,
                                 (strlen(itemPath) + 1) * sizeof(char));
       ImGui::EndDragDropSource();

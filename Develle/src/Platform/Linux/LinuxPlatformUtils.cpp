@@ -8,21 +8,21 @@
 
 namespace Develle {
 
-std::string FileDialogs::OpenFolder(const std::string& dialogTitle) {
+auto FileDialogs::OpenFolder(const std::string& dialogTitle) -> std::string {
   auto f = pfd::select_folder(dialogTitle, "${HOME}").result();
   return f;
 }
 
-std::string FileDialogs::OpenFile(const std::vector<std::string>& filters) {
-  auto f = pfd::open_file("Open File", "${HOME}", filters, false).result();
-  if (f.empty()) return std::string();
+auto FileDialogs::OpenFile(const std::vector<std::string>& filters) -> std::string {
+  auto f = pfd::open_file("Open File", "${HOME}", filters, pfd::opt::none).result();
+  if (f.empty()) return {};
 
   return f[0];
 }
 
-std::string FileDialogs::SaveFile(const std::vector<std::string>& filters) {
-  auto f = pfd::save_file("Save File", "", filters, true).result();
-  if (f.empty()) return std::string();
+auto FileDialogs::SaveFile(const std::vector<std::string>& filters) -> std::string {
+  auto f = pfd::save_file("Save File", "", filters, pfd::opt::none).result();
+  if (f.empty()) return {};
 
   return f;
 }
