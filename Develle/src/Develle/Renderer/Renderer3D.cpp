@@ -22,6 +22,7 @@ struct Render3DData {
   };
 
   Ref<Shader> shader;
+  Ref<VertexArray> vertexArray;
 
   LightData LightBuffer{};
   CameraData CameraBuffer{};
