@@ -6,8 +6,8 @@
 namespace Develle {
 
 class OpenGLVertexBuffer : public VertexBuffer {
-public:
-  OpenGLVertexBuffer(uint32_t size);
+ public:
+  explicit OpenGLVertexBuffer(uint32_t size);
   OpenGLVertexBuffer(float *vertices, uint32_t size);
   ~OpenGLVertexBuffer() override;
 
@@ -16,28 +16,28 @@ public:
 
   void SetData(const void *data, uint32_t size) override;
 
-  const BufferLayout &GetLayout() const override { return layout; }
+  [[nodiscard]] auto GetLayout() const -> const BufferLayout & override { return layout; }
   void SetLayout(const BufferLayout &layout) override { this->layout = layout; }
 
-private:
+ private:
   uint32_t rendererID;
   BufferLayout layout;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {
-public:
+ public:
   OpenGLIndexBuffer(uint32_t *indices, uint32_t count);
-  ~OpenGLIndexBuffer();
+  ~OpenGLIndexBuffer() override;
 
-  void Bind() const;
-  void Unbind() const;
+  void Bind() const override;
+  void Unbind() const override;
 
-  uint32_t GetCount() const { return count; }
+  [[nodiscard]] auto GetCount() const -> uint32_t override { return count; }
 
-private:
+ private:
   uint32_t rendererID;
   uint32_t count;
 };
 
-} // namespace Develle
-#endif // OPENGLBUFFER_HPP_
+}  // namespace Develle
+#endif  // OPENGLBUFFER_HPP_

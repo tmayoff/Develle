@@ -5,20 +5,17 @@
 
 namespace Develle {
 
+enum class RenderMode { Render3D, Render2D };
+
 class Renderer {
-public:
-  static void Init();
+ public:
+  static void Init(RenderMode mode);
   static void Shutdown();
 
   static void OnWindowResize(uint32_t width, uint32_t height);
 
-  static void BeginScene();
-  static void EndScene();
-
-  //   static void Submit(const Ref<Shader)
-
   static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 };
 
-} // namespace Develle
-#endif // RENDERER_HPP_
+}  // namespace Develle
+#endif  // RENDERER_HPP_

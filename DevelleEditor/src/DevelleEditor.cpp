@@ -6,7 +6,8 @@ namespace Develle {
 
 class DevelleEditor : public Application {
  public:
-  DevelleEditor(ApplicationCommandLineArgs args) : Application("Develle Editor", args) {
+  DevelleEditor(ApplicationCommandLineArgs args)
+      : Application("Develle Editor", args, RenderMode::Render2D) {
     PushLayer(new EditorLayer());
   }
 

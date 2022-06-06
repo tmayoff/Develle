@@ -8,6 +8,7 @@ enable_profiling = get_option('profiling')
 dependencies = []
 
 shaderc = dependency('shaderc')
+tracy = dependency('tracy')
 
 if enable_profiling
   add_project_arguments('-DDV_PROFILE', language: 'cpp')
@@ -22,7 +23,7 @@ elif build_machine.system() == 'windows'
   add_project_arguments('-DDV_PLATFORM_WINDOWS', language: 'cpp')
 endif
 
-assets_root = meson.current_source_dir() + '/DevelleEditor/assets'
+assets_root = meson.current_source_dir() + '/Develle/assets'
 add_project_arguments('-DASSETS_ROOT="' + assets_root + '"', language: 'cpp')
 
 spdlog = subproject('spdlog')
@@ -40,16 +41,7 @@ glm_dep = glm.get_variable('glm_dep')
 gsl = subproject('microsoft-gsl')
 gsl_dep = gsl.get_variable('microsoft_gsl_dep')
 
-# CMake
 cmake = import('cmake')
-tracy_opt = cmake.subproject_options()
-tracy_opt.add_cmake_defines({'BUILD_SHARED_LIBS': true})
-if enable_profiling
-  tracy_opt.add_cmake_defines({'ENABLE_TRACY': true})
-endif
-tracy = cmake.subproject('tracy', options: tracy_opt)
-tracy_dep = tracy.dependency('TracyClient')
-
 spirv_cross_opt = cmake.subproject_options()
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_STATIC': true})
 spirv_cross_opt.add_cmake_defines({'SPIRV_CROSS_FORCE_PIC': true})
@@ -70,7 +62,7 @@ pfd_dep = pfd.dependency('portable-file-dialogs')
 subdir('external')
 
 dependencies += [shaderc, spdlog_dep, entt_dep, imgui_dep, imguizmo_dep, glad_dep, glm_dep, stbi_dep,
-                tracy_dep, yaml_dep, pfd_dep, 
+                tracy, yaml_dep, pfd_dep, 
                 spirv_cross_core_dep, spirv_cross_cpp_dep, spirv_cross_glsl_dep]
 
 # Targets

@@ -1,11 +1,11 @@
-#include <Platform/OpenGL/OpenGLBuffer.hpp>
-
 #include <glad/glad.h>
+
+#include <Platform/OpenGL/OpenGLBuffer.hpp>
 
 namespace Develle {
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glCreateBuffers(1, &rendererID);
   glBindBuffer(GL_ARRAY_BUFFER, rendererID);
@@ -13,7 +13,7 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
 }
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, uint32_t size) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glCreateBuffers(1, &rendererID);
   glBindBuffer(GL_ARRAY_BUFFER, rendererID);
@@ -21,19 +21,19 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, uint32_t size) {
 }
 
 OpenGLVertexBuffer::~OpenGLVertexBuffer() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glDeleteBuffers(1, &rendererID);
 }
 
 void OpenGLVertexBuffer::Bind() const {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glBindBuffer(GL_ARRAY_BUFFER, rendererID);
 }
 
 void OpenGLVertexBuffer::Unbind() const {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -43,9 +43,8 @@ void OpenGLVertexBuffer::SetData(const void *data, uint32_t size) {
   glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 }
 
-OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count)
-    : count(count) {
-  DV_PROFILE_FUNCTION();
+OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count) : count(count) {
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glCreateBuffers(1, &rendererID);
 
@@ -53,26 +52,25 @@ OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count)
   // Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO
   // state
   glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-  glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices,
-               GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }
 
 OpenGLIndexBuffer::~OpenGLIndexBuffer() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glDeleteBuffers(1, &rendererID);
 }
 
 void OpenGLIndexBuffer::Bind() const {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
 }
 
 void OpenGLIndexBuffer::Unbind() const {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-} // namespace Develle
+}  // namespace Develle

@@ -8,9 +8,9 @@ namespace Develle {
 
 Application *Application::instance = nullptr;
 
-Application::Application(const std::string &name, ApplicationCommandLineArgs args)
+Application::Application(const std::string &name, ApplicationCommandLineArgs args, RenderMode mode)
     : commandLineArgs(args) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   DV_CORE_ASSERT(!instance, "Application already exits");
 
@@ -19,22 +19,24 @@ Application::Application(const std::string &name, ApplicationCommandLineArgs arg
   window = Window::Create(name);
   window->SetEventCallback(DV_BIND_EVENT_FN(Application::OnEvent));
 
-  Renderer::Init();
+  Renderer::Init(mode);
 
   imGuiLayer = new ImGuiLayer();
   PushOverlay(imGuiLayer);
 }
 
-Application::~Application() { DV_PROFILE_FUNCTION(); }
+Application::~Application() {
+  DV_PROFILE_FUNCTION();  // NOLINT
+}
 
 void Application::PushLayer(Layer *layer) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
   layerStack.PushOverlay(layer);
   layer->OnAttach();
 }
 
 void Application::PushOverlay(Layer *layer) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
   layerStack.PushOverlay(layer);
   layer->OnAttach();
 }
@@ -42,10 +44,10 @@ void Application::PushOverlay(Layer *layer) {
 void Application::Close() { running = false; }
 
 void Application::Run() {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   while (running) {
-    DV_PROFILE_SCOPE("RunLoop");
+    DV_PROFILE_SCOPE("RunLoop");  // NOLINT
 
     float timeMS = static_cast<float>(SDL_GetTicks());
     Timestep delta = timeMS - lastFrameTimeMS;
@@ -53,14 +55,14 @@ void Application::Run() {
 
     if (!minimized) {
       {
-        DV_PROFILE_SCOPE("LayerStack OnUpdate");
+        DV_PROFILE_SCOPE("LayerStack OnUpdate");  // NOLINT
 
         for (Layer *layer : layerStack) layer->OnUpdate(delta);
       }
 
       imGuiLayer->Begin();
       {
-        DV_PROFILE_SCOPE("LayerStack OnImGuiRender");
+        DV_PROFILE_SCOPE("LayerStack OnImGuiRender");  // NOLINT
 
         for (Layer *layer : layerStack) layer->OnImGuiRender();
       }
@@ -73,7 +75,7 @@ void Application::Run() {
 }
 
 void Application::OnEvent(Event &e) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   EventDispatcher dispatcher(e);
 
@@ -91,7 +93,7 @@ bool Application::OnWindowClose(WindowCloseEvent &) {
 }
 
 bool Application::OnWindowResize(WindowResizeEvent &e) {
-  DV_PROFILE_FUNCTION();
+  DV_PROFILE_FUNCTION();  // NOLINT
 
   // if (e.GetWidth())
 

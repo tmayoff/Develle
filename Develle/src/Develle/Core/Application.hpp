@@ -4,6 +4,7 @@
 #include <Develle/Events/ApplicationEvent.hpp>
 #include <Develle/Events/Event.hpp>
 #include <Develle/ImGui/ImGuiLayer.hpp>
+#include <Develle/Renderer/Renderer.hpp>
 
 #include "Core.hpp"
 #include "LayerStack.hpp"
@@ -26,7 +27,8 @@ struct ApplicationCommandLineArgs {
 class Application {
  public:
   Application(const std::string &name = "Develle App",
-              ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
+              ApplicationCommandLineArgs args = ApplicationCommandLineArgs(),
+              RenderMode mode = RenderMode::Render2D);
   virtual ~Application();
 
   void OnEvent(Event &e);
@@ -57,7 +59,7 @@ class Application {
   bool minimized = false;
   float lastFrameTimeMS = 0.0f;
 
-  static Application *instance;
+  static Application *instance;  // NOLINT
   friend int ::main(int argc, char **argv);
 };
 

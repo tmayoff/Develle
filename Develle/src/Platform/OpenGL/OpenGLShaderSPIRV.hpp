@@ -1,4 +1,3 @@
-#pragma once
 #ifndef OPENGLSHADER_HPP_
 #define OPENGLSHADER_HPP_
 
@@ -6,17 +5,18 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 using GLenum = uint32_t;
 
 namespace Develle {
 
-class OpenGLShader : public Shader {
+class OpenGLShaderSPIRV : public Shader {
  public:
-  explicit OpenGLShader(const std::string &filepath);
-  OpenGLShader(const std::string &name, const std::string &vertexSource,
-               const std::string &fragmentSource);
-  ~OpenGLShader() override;
+  explicit OpenGLShaderSPIRV(const std::string &filepath);
+  OpenGLShaderSPIRV(const std::string &name, const std::string &vertexSource,
+                    const std::string &fragmentSource);
+  ~OpenGLShaderSPIRV() override;
 
   void Bind() const override;
   void Unbind() const override;
@@ -43,14 +43,25 @@ class OpenGLShader : public Shader {
   void UploadUniformMat4(const std::string &name, const glm::mat4 &matrix);
 
  private:
-  static auto ReadFile(const std::string &filepath) -> std::string;
-  static auto PreProcess(const std::string &source) -> std::unordered_map<GLenum, std::string>;
-  void Compile(const std::unordered_map<GLenum, std::string> &shaders);
+  const bool CACHE_SHADERS = false;
 
-  uint32_t rendererID = -1;
+  auto ReadFile(const std::string &filepath) -> std::string;
+  auto PreProcess(const std::string &source) -> std::unordered_map<GLenum, std::string>;
+
+  void CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string> &shaderSources);
+  void CompileOrGetOpenGLBinaries();
+  void CreateProgram();
+  void Reflect(GLenum stage, const std::vector<uint32_t> &shaderData);
+
+  uint32_t rendererID;
 
   std::string filepath;
   std::string name;
+
+  std::unordered_map<GLenum, std::vector<uint32_t>> vulkanSPIRV;
+  std::unordered_map<GLenum, std::vector<uint32_t>> openGLSPIRV;
+
+  std::unordered_map<GLenum, std::string> openGLSourceCode;
 };
 
 }  // namespace Develle

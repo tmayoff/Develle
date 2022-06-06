@@ -1,6 +1,6 @@
-#include <Platform/OpenGL/OpenGLUniformBuffer.hpp>
-
 #include <glad/glad.h>
+
+#include <Platform/OpenGL/OpenGLUniformBuffer.hpp>
 
 namespace Develle {
 
@@ -12,8 +12,7 @@ OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t size, uint32_t binding) {
 
 OpenGLUniformBuffer::~OpenGLUniformBuffer() { glDeleteBuffers(1, &rendererID); }
 
-void OpenGLUniformBuffer::SetData(const void *data, uint32_t size,
-                                  uint32_t offset) {
+void OpenGLUniformBuffer::SetData(const void *data, uint32_t size, uint32_t offset) {
   glNamedBufferSubData(rendererID, offset, size, data);
 }
-} // namespace Develle
+}  // namespace Develle

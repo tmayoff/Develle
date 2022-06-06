@@ -1,6 +1,7 @@
 #ifndef OPENGLRENDERERAPI_HPP_
 #define OPENGLRENDERERAPI_HPP_
 
+#include <Develle/Core/Core.hpp>
 #include <Develle/Renderer/RendererAPI.hpp>
 
 namespace Develle {

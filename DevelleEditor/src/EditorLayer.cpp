@@ -10,18 +10,18 @@
 namespace Develle {
 
 void EditorLayer::OnAttach() {
-  DV_PROFILE_FUNCTION();  // NOLINT
+  DV_PROFILE_FUNCTION();
 
   FramebufferSpecification fbSpec;
   fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER,
                         FramebufferTextureFormat::Depth};
-  fbSpec.Width = 1280;  // NOLINT
-  fbSpec.Height = 720;  // NOLINT
+  fbSpec.Width = 1280;
+  fbSpec.Height = 720;
   framebuffer = Framebuffer::Create(fbSpec);
 
   activeScene = CreateRef<Scene>();
 
-  editorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);  // NOLINT
+  editorCamera = EditorCamera(30.0F, 1.778F, 0.1F, 1000.0F);
 
   OpenScene(std::string(ASSETS_ROOT) + "/example.develle");
 
@@ -32,15 +32,17 @@ void EditorLayer::OnAttach() {
 void EditorLayer::OnDetach() {}
 
 void EditorLayer::OnUpdate(Timestep deltaTime) {
-  DV_PROFILE_FUNCTION();  // NOLINT
+  DV_PROFILE_FUNCTION();
 
   // Resize framebuffer
   FramebufferSpecification spec = framebuffer->GetSpecification();
-  if (viewportSize.x > 0.0f && viewportSize.y > 0.0f &&                                 // NOLINT
-      (spec.Width != viewportSize.x || spec.Height != viewportSize.y)) {                // NOLINT
-    framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);            // NOLINT
-    editorCamera.SetViewportSize(viewportSize.x, viewportSize.y);                       // NOLINT
-    activeScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);  // NOLINT
+  if (viewportSize.x > 0.0F && viewportSize.y > 0.0F &&
+      (spec.Width != viewportSize.x || spec.Height != viewportSize.y)) {
+    framebuffer->Resize(static_cast<uint32_t>(viewportSize.x),
+                        static_cast<uint32_t>(viewportSize.y));
+    editorCamera.SetViewportSize(viewportSize.x, viewportSize.y);
+    activeScene->OnViewportResize(static_cast<uint32_t>(viewportSize.x),
+                                  static_cast<uint32_t>(viewportSize.y));
   }
 
   // Render
@@ -49,7 +51,7 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
   // Clear
   framebuffer->Bind();
 
-  RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});  // NOLINT
+  RenderCommand::SetClearColor({0.1F, 0.1F, 0.1F, 1.0F});
   RenderCommand::Clear();
 
   framebuffer->ClearAttachment(1, -1);
@@ -63,15 +65,16 @@ void EditorLayer::OnUpdate(Timestep deltaTime) {
   my -= viewportBounds[0].y;  // NOLINT
   glm::vec2 viewportSize = viewportBounds[1] - viewportBounds[0];
   my = viewportSize.y - my;  // NOLINT
-  int mouseX = (int)mx;
-  int mouseY = (int)my;
+  int mouseX = static_cast<int>(mx);
+  int mouseY = static_cast<int>(my);
   if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x &&  // NOLINT
       mouseY < (int)viewportSize.y) {                                // NOLINT
     int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-    if (pixelData != -1)
-      hoveredEntity = Entity((entt::entity)pixelData, activeScene.get());
-    else if (!editorCamera.IsUsing())
+    if (pixelData != -1) {
+      hoveredEntity = Entity(static_cast<entt::entity>(pixelData), activeScene.get());
+    } else if (!editorCamera.IsUsing()) {
       hoveredEntity = Entity();
+    }
   }
 
   framebuffer->Unbind();
@@ -89,17 +92,18 @@ void EditorLayer::OnImGuiRender() {
     ImGui::SetNextWindowPos(viewport->Pos);
     ImGui::SetNextWindowSize(viewport->Size);
     ImGui::SetNextWindowViewport(viewport->ID);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0F);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0F);
     windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
                    ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
                    ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
   }
 
-  if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
+  if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) {
     windowFlags |= ImGuiWindowFlags_NoBackground;
+  }
 
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0F, 0.0F));
   static bool dockspaceOpen = true;
   ImGui::Begin("Develle Editor", &dockspaceOpen, windowFlags);
   ImGui::PopStyleVar();
@@ -113,7 +117,7 @@ void EditorLayer::OnImGuiRender() {
   style.WindowMinSize.x = 370.0f;  // NOLINT
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
     ImGuiID dockspaceID = ImGui::GetID("Develle Editor");
-    ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
+    ImGui::DockSpace(dockspaceID, ImVec2(0.0F, 0.0F), dockspaceFlags);
   }
 
   style.WindowMinSize.x = minWinSizeX;
@@ -158,7 +162,7 @@ void EditorLayer::OnImGuiRender() {
     ImGui::Begin("ImGuizmo");
 
     ImGui::Text("Using: %s", ImGuizmo::IsUsing() ? "true" : "false");  // NOLINT
-    switch ((ImGuizmo::OPERATION)guizmoOperation) {
+    switch (static_cast<ImGuizmo::OPERATION>(guizmoOperation)) {
       case ImGuizmo::OPERATION::TRANSLATE:
         ImGui::Text("Operation: %s", "translate");  // NOLINT
         break;
@@ -166,17 +170,17 @@ void EditorLayer::OnImGuiRender() {
         ImGui::Text("Operation: %s", "scale");  // NOLINT
         break;
       case ImGuizmo::OPERATION::ROTATE:
-        ImGui::Text("Operation: %s", "rotate");  // NOLINT
+        ImGui::Text("Operation: %s", "rotate");
         break;
       default:
-        ImGui::Text("Operation: %s", "none");  // NOLINT
+        ImGui::Text("Operation: %s", "none");
         break;
     }
 
     ImGui::End();
   }
 
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0f, 0.0f});
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0F, 0.0F});
   ImGui::Begin("Viewport");
   auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
   auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -199,7 +203,7 @@ void EditorLayer::OnImGuiRender() {
 
   if (ImGui::BeginDragDropTarget()) {
     if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-      const char *path = (const char *)payload->Data;
+      const char *path = static_cast<const char *>(payload->Data);
       OpenScene(std::filesystem::path(openProject) / path);
     }
     ImGui::EndDragDropTarget();
@@ -212,15 +216,15 @@ void EditorLayer::OnImGuiRender() {
 
     ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist();
-    ImGuizmo::SetRect(viewportBounds[0].x, viewportBounds[0].y,    // NOLINT
-                      viewportBounds[1].x - viewportBounds[0].x,   // NOLINT
-                      viewportBounds[1].y - viewportBounds[0].y);  // NOLINT
+    ImGuizmo::SetRect(viewportBounds[0].x, viewportBounds[0].y,
+                      viewportBounds[1].x - viewportBounds[0].x,
+                      viewportBounds[1].y - viewportBounds[0].y);
 
     // Cube
-    ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), 8,               // NOLINT
-                             {viewportBounds[0].x, viewportBounds[0].y},  // NOLINT
-                             ImVec2{100, 100},                            // NOLINT
-                             0x10101011);                                 // NOLINT
+    ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), 8,              
+                             {viewportBounds[0].x, viewportBounds[0].y}, 
+                             ImVec2{100, 100},                           
+                             0x10101011);                                
 
     // Transform controls
     Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
@@ -229,16 +233,18 @@ void EditorLayer::OnImGuiRender() {
       glm::mat4 transform = tc.GetTransform();
 
       bool snap = Input::IsKeyPressed(Key::LCTRL);
-      float snapValue = 0.5f;                                                 // NOLINT
-      if (guizmoOperation == ImGuizmo::OPERATION::ROTATE) snapValue = 45.0f;  // NOLINT
+      float snapValue = 0.5F; 
+      if (guizmoOperation == ImGuizmo::OPERATION::ROTATE) snapValue = 45.0F;
       std::array<float, 3> snapValues = {snapValue, snapValue, snapValue};
 
       ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-                           (ImGuizmo::OPERATION)guizmoOperation, ImGuizmo::LOCAL,
+                           static_cast<ImGuizmo::OPERATION>(guizmoOperation), ImGuizmo::LOCAL,
                            glm::value_ptr(transform), nullptr, snap ? snapValues.data() : nullptr);
 
       if (ImGuizmo::IsUsing()) {
-        glm::vec3 position, rotation, scale;
+        glm::vec3 position;
+        glm::vec3 rotation;
+        glm::vec3 scale;
         ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position),
                                               glm::value_ptr(rotation), glm::value_ptr(scale));
         glm::vec3 deltaRot = rotation - tc.Rotation;
@@ -297,7 +303,7 @@ void EditorLayer::SaveSceneAs() {
   }
 }
 
-bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
+auto EditorLayer::OnKeyPressed(KeyPressedEvent &e) -> bool {
   if (e.GetRepeatCount() > 0) return false;
 
   bool ctrl = Input::IsKeyPressed(Key::LCTRL) || Input::IsKeyPressed(Key::RCTRL);
@@ -332,9 +338,10 @@ bool EditorLayer::OnKeyPressed(KeyPressedEvent &e) {
   return false;
 }
 
-bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent &) {
-  if (viewportHovered && !Input::IsKeyPressed(Key::LALT))
+auto EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent & /*unused*/) -> bool {
+  if (viewportHovered && !Input::IsKeyPressed(Key::LALT)) {
     sceneHierarchyPanel.SetSelectedEntity(hoveredEntity);
+  }
   return false;
 }
 
