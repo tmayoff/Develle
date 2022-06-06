@@ -13,7 +13,7 @@ class EditorLayer : public Layer {
   void OnAttach() override;
   void OnDetach() override;
 
-  void OnUpdate(Timestep ts) override;
+  void OnUpdate(Timestep deltaTime) override;
   void OnImGuiRender() override;
   void OnEvent(Event &e) override;
 
@@ -22,8 +22,8 @@ class EditorLayer : public Layer {
   void OpenScene();
   void OpenScene(const std::filesystem::path &path);
   void SaveSceneAs();
-  bool OnKeyPressed(KeyPressedEvent &e);
-  bool OnMouseButtonPressed(MouseButtonPressedEvent &e);
+  auto OnKeyPressed(KeyPressedEvent &e) -> bool;
+  auto OnMouseButtonPressed(MouseButtonPressedEvent &e) -> bool;
 
   std::filesystem::path openProject = "/home/tyler/Documents/Develle";
 
@@ -43,7 +43,7 @@ class EditorLayer : public Layer {
   Ref<Framebuffer> framebuffer;
 
   bool viewportFocused = false, viewportHovered = false;
-  glm::vec2 viewportSize = {0.0f, 0.0f};
+  glm::vec2 viewportSize = {0.0F, 0.0F};
   std::array<glm::vec2, 2> viewportBounds{};
 };
 
